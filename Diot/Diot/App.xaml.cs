@@ -69,9 +69,10 @@ namespace Diot
 
             #region Pages
 
-            containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<AddNewPage, AddNewPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<MovieDetailsPage, MovieDetailsPageViewModel>();
+            containerRegistry.RegisterForNavigation<NavigationPage>();
 
             #endregion
         }

@@ -1,29 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<pages1:BasePage
-    xmlns:pages1="clr-namespace:Diot.Views.Pages"
+<pages:BasePage
+    xmlns:pages="clr-namespace:Diot.Views.Pages"
     xmlns="http://xamarin.com/schemas/2014/forms"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:pages="clr-namespace:Diot.Views.Pages;assembly=Diot"
-            xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
-            x:Class="Diot.Views.Pages.MainPage"
-            Title="{extensions:Translate Library}">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+    x:Class="Diot.Views.Pages.MainPage"
+    Title="{extensions:Translate Library}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{extensions:Translate AddNew}" Command="{Binding NavigateToAddNewPageCommand}" />
+        <ToolbarItem
+            Text="{extensions:Translate AddNew}"
+            Command="{Binding NavigateToAddNewPageCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <Grid>
-            <ListView ItemsSource="{Binding MoviesList}">
+            <ListView x:Name="MoviesList"
+                ItemsSource="{Binding MoviesList}"
+                SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ImageCell ImageSource="{Binding CoverImage, Mode=TwoWay}"
-                                   Text="{Binding Title}"
-                                   Detail="{Binding Overview}"/>
+                        <ImageCell 
+                            ImageSource="{Binding CoverImage, Mode=TwoWay}"
+                            Text="{Binding Title}"
+                            Detail="{Binding Overview}">
+                        </ImageCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </ContentPage.Content>
-</pages1:BasePage>
+</pages:BasePage>

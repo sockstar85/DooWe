@@ -1,4 +1,6 @@
-﻿namespace Diot.Views.Pages
+﻿using Xamarin.Forms;
+
+namespace Diot.Views.Pages
 {
     public partial class MainPage
     {

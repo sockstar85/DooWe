@@ -120,10 +120,13 @@
   <data name="AddNew" xml:space="preserve">
     <value>Add New</value>
   </data>
+  <data name="DeleteTitle" xml:space="preserve">
+    <value>Delete Title</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
   <data name="Library" xml:space="preserve">
     <value>My Library</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
   </data>
 </root>

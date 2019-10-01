@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ namespace Diot.ViewModels
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
+        private MovieDbModel _selectedMovie;
 
         #endregion
 
@@ -35,6 +37,12 @@ namespace Diot.ViewModels
             set => SetProperty(ref _moviesList, value);
         }
 
+        public MovieDbModel SelectedMovie
+        {
+            get => _selectedMovie;
+            set => SetProperty(ref _selectedMovie, value, async () => { await navigateToMovieDetailsPage(); });
+        }
+
         #endregion
 
         #region Methods
@@ -47,7 +55,6 @@ namespace Diot.ViewModels
         public MainPageViewModel(IExtendedNavigation navigationService, IPageDialogService dialogService)
             : base(navigationService, dialogService)
         {
-            Title = "Main Page";
         }
 
         #endregion
@@ -57,7 +64,38 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToAddNewPage()
         {
-            await NavigationService.NavigateAsync(PageNames.AddNewPage);
+            var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
+
+            if (!navigationResult.Success)
+            {
+                //TODO: handle failed navigation.
+            }
+        }
+
+        /// <summary>
+        ///     Navigates to movie details page.
+        /// </summary>
+        private async Task navigateToMovieDetailsPage()
+        {
+            if (SelectedMovie == null)
+            {
+                return;
+            }
+
+            var navigationParameters = new NavigationParameters
+            {
+                { NavParamKeys.SelectedMovie, SelectedMovie }
+            };
+
+            //reset the selected movie
+            SelectedMovie = null;
+
+            var navigationResults = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
+
+            if (!navigationResults.Success)
+            {
+                //TODO: handle failed navigation.
+            }
         }
 
         /// <summary>
