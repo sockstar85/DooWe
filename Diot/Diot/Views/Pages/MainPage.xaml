@@ -1,41 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages1:BasePage
+    xmlns:pages1="clr-namespace:Diot.Views.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:pages="clr-namespace:Diot.Views.Pages;assembly=Diot"
             xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
-            x:Class="Diot.Views.Pages.MainPage">
+            x:Class="Diot.Views.Pages.MainPage"
+            Title="{extensions:Translate Library}">
 
-    <TabbedPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
         <ToolbarItem Text="{extensions:Translate AddNew}" Command="{Binding NavigateToAddNewPageCommand}" />
-    </TabbedPage.ToolbarItems>
+    </ContentPage.ToolbarItems>
 
-    <TabbedPage.Children>
-
-        <!--#region Page 1-->
-
-        <pages:LibraryPage Title="{extensions:Translate Library}">
-            <pages:LibraryPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="library_icon.png" />
-                </OnPlatform>
-            </pages:LibraryPage.Icon>
-        </pages:LibraryPage>
-
-        <!--#endregion-->
-
-        <!--#region Page 2-->
-
-        <pages:SettingsPage Title="{extensions:Translate Settings}">
-            <pages:SettingsPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="settings_icon.png" />
-                </OnPlatform>
-            </pages:SettingsPage.Icon>
-        </pages:SettingsPage>
-
-        <!--#endregion-->
-
-    </TabbedPage.Children>
-
-</TabbedPage>
+    <ContentPage.Content>
+        <Grid>
+            <ListView ItemsSource="{Binding MoviesList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell ImageSource="{Binding CoverImage, Mode=TwoWay}"
+                                   Text="{Binding Title}"
+                                   Detail="{Binding Overview}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</pages1:BasePage>
