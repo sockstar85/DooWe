@@ -72,8 +72,6 @@ namespace Diot
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<AddNewPage, AddNewPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<LibraryPage, LibraryPageViewModel>();
-            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 
             #endregion
         }
