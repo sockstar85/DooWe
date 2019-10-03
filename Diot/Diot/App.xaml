@@ -5,8 +5,22 @@
                         xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
                         x:Class="Diot.App">
     <Application.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="DbName">library.db3</x:String>
 
-        <x:String x:Key="DbName">library.db3</x:String>
+            <!--#region Colors-->
 
+            <!--#region Base Page colors-->
+            <Color x:Key="BasePageBackgroundColor">#F0F0F0</Color>
+            <!--#endregion-->
+
+            <!--#region Text and Label colors-->
+            <Color x:Key="PrimaryTextLight">LightGray</Color>
+            <Color x:Key="PrimaryTextDark">DarkGray</Color>
+            <!--#endregion-->
+
+            <!--#endregion-->
+
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

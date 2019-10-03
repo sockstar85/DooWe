@@ -4,7 +4,9 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+    xmlns:controls="clr-namespace:Diot.Views.Controls"
     x:Class="Diot.Views.Pages.MainPage"
+    x:Name="ThisPage"
     Title="{extensions:Translate Library}">
 
     <ContentPage.ToolbarItems>
@@ -14,20 +16,33 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <Grid>
-            <ListView x:Name="MoviesList"
-                ItemsSource="{Binding MoviesList}"
-                SelectedItem="{Binding SelectedMovie, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ImageCell 
-                            ImageSource="{Binding CoverImage, Mode=TwoWay}"
-                            Text="{Binding Title}"
-                            Detail="{Binding Overview}">
-                        </ImageCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+        <ScrollView>
+            <Grid>
+                <controls:ExtendedFlexLayout 
+                    Direction="Row" 
+                    Wrap="Wrap"
+                    JustifyContent="SpaceEvenly" 
+                    ItemsSource="{Binding MoviesList}">
+                    <controls:ExtendedFlexLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Margin="0,10"
+                                         WidthRequest="150">
+                                <Image Source="{Binding CoverImage}"/>
+                                <Label Text="{Binding Title}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       LineBreakMode="WordWrap"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.NavigateToMovieDetailsCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </DataTemplate>
+                    </controls:ExtendedFlexLayout.ItemTemplate>
+                </controls:ExtendedFlexLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </pages:BasePage>

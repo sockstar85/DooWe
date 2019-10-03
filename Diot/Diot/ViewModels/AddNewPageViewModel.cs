@@ -146,7 +146,8 @@ namespace Diot.ViewModels
             if (imgSrc == null)
             {
                 Debug.WriteLine("No cover image found.");
-                CoverImage = null;
+                CoverImage = "library_icon.png";
+                //TODO: Hide cover image
             }
             else
             {
