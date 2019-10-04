@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diot.Views.Controls.NoCoverImageControl"
+             xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+             Padding="2"
+             BackgroundColor="Black">
+  <ContentView.Content>
+      <Grid BackgroundColor="White">
+          <Label Text="{extensions:Translate NoCoverImageFound}" 
+                 HorizontalOptions="Center"
+                 VerticalOptions="Center"
+                 HorizontalTextAlignment="Center"
+                 TextColor="Black"/>
+      </Grid>
+  </ContentView.Content>
+</ContentView>

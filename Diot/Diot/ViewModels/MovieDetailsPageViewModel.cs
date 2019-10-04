@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
 using Diot.Models;
@@ -20,6 +21,14 @@ namespace Diot.ViewModels
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets the delete movie command.
+        /// </summary>
+        public ICommand DeleteMovieCommand => new Command(async () =>
+        {
+            await deleteMovieAndNavigateBack();
+        });
 
         /// <summary>
         ///     Gets or sets the selected movie.
@@ -71,7 +80,7 @@ namespace Diot.ViewModels
 
             parameters.TryGetValue(NavParamKeys.SelectedMovie, out MovieDbModel selectedMovie);
 
-            var imgSrc = await MoviesDbHelper.GetMovieCover(selectedMovie.Poster_Path, 300);
+            var imgSrc = await MoviesDbHelper.GetMovieCover(selectedMovie);
 
             if (imgSrc == null)
             {
@@ -84,6 +93,28 @@ namespace Diot.ViewModels
             };
 
             SelectedMovie = selectedMovie ?? throw new Exception("Selected movie cannot be null.");
+        }
+
+        /// <summary>
+        ///     Deletes the movie and navigate back.
+        /// </summary>
+        private async Task deleteMovieAndNavigateBack()
+        {
+            if (SelectedMovie == null)
+            {
+                Console.WriteLine("Unable to remove title. Movie is null");
+                return;
+            }
+
+            var confirmDelete = await DialogService.DisplayAlertAsync("Delete title?",
+                $"Are you sure you want to remove {SelectedMovie.Title}?",
+                "Yes", "No");
+
+            if (confirmDelete)
+            {
+                Console.WriteLine(DbService.DeleteMovie(SelectedMovie));
+                await NavigationService.GoBackAsync();
+            }
         }
 
         #endregion

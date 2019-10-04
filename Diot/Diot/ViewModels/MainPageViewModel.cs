@@ -107,10 +107,23 @@ namespace Diot.ViewModels
 
             foreach (var movie in MoviesList)
             {
-                var imgSource = await MoviesDbHelper.GetMovieCover(movie.Poster_Path, 300);
+                if (movie == null)
+                {
+                    continue;
+                }
+
+                var imgSource = await MoviesDbHelper.GetMovieCover(movie);
+
                 movie.CoverImage = imgSource == null 
                     ? "library_icon.png"
                     : ImageSource.FromStream(() => new MemoryStream(imgSource));
+
+                //update the movie in the DB with the new byte array
+                if (imgSource != null && movie.CoverImageByteArray != imgSource)
+                {
+                    movie.CoverImageByteArray = imgSource;
+                    DbService.SaveMovie(movie);
+                }
 
                 updatedList.Add(movie);
             }

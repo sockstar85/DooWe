@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -141,9 +142,9 @@ namespace Diot.ViewModels
         {
             Overview = CurrentResult.Overview;
 
-            var imgSrc = await MoviesDbHelper.GetMovieCover(_currentResult.Poster_Path, 400);
+            var imgSrc = await MoviesDbHelper.GetMovieCover(_currentResult);
 
-            if (imgSrc == null)
+            if (imgSrc == null || imgSrc.Length == 0)
             {
                 Debug.WriteLine("No cover image found.");
                 CoverImage = "library_icon.png";
@@ -166,9 +167,36 @@ namespace Diot.ViewModels
                 return;
             }
 
+            formatTitle(CurrentResult);
+
             DbService.SaveMovie(CurrentResult);
 
             await NavigationService.GoBackAsync();
+        }
+
+        /// <summary>
+        ///     Formats the title with the "The" at the end of the title.
+        /// </summary>
+        /// <param name="currentResult">The current result.</param>
+        private void formatTitle(MovieDbModel currentResult)
+        {
+            if (string.IsNullOrWhiteSpace(currentResult?.Title))
+            {
+                return;
+            }
+
+            var stringToMove = "The ";
+
+            if (!currentResult.Title.StartsWith(stringToMove, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
+            var title = currentResult.Title.Remove(0, stringToMove.Length);
+
+            title += $", {stringToMove.Trim()}";
+
+            currentResult.Title = title;
         }
 
         #endregion

@@ -95,5 +95,14 @@ namespace Diot.Resources {
                 return ResourceManager.GetString("Library", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No cover image found.
+        /// </summary>
+        internal static string NoCoverImageFound {
+            get {
+                return ResourceManager.GetString("NoCoverImageFound", resourceCulture);
+            }
+        }
     }
 }

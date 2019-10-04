@@ -129,4 +129,7 @@
   <data name="Library" xml:space="preserve">
     <value>My Library</value>
   </data>
+  <data name="NoCoverImageFound" xml:space="preserve">
+    <value>No cover image found</value>
+  </data>
 </root>

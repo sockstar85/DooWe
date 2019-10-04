@@ -13,7 +13,8 @@
 
                 <Label Text="{Binding SelectedMovie.Overview}"/>
 
-                <Button Text="{extensions:Translate DeleteTitle}" />
+                <Button Text="{extensions:Translate DeleteTitle}" 
+                        Command="{Binding DeleteMovieCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
