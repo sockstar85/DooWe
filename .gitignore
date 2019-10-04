@@ -9,3 +9,6 @@
 /Diot/Diot.Android/bin/Debug
 /Diot/Diot.Android/obj
 /Diot/Diot.iOS/obj/iPhone/Debug
+/Diot/Diot.iOS/bin/iPhone/Debug
+/Diot/Diot.iOS/bin/iPhoneSimulator/Debug
+/Diot/Diot.iOS/obj/iPhoneSimulator/Debug

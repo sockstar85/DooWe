@@ -17,7 +17,6 @@ namespace Diot.ViewModels
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
-        private MovieDbModel _selectedMovie;
 
         #endregion
 
@@ -29,18 +28,17 @@ namespace Diot.ViewModels
         public ICommand NavigateToAddNewPageCommand => new Command(async () => { await navigateToAddNewPage(); });
 
         /// <summary>
+        ///     Gets the  navigate to movie details command.
+        /// </summary>
+        public ICommand NavigateToMovieDetailsCommand => new Command<MovieDbModel>(async (selection) => { await navigateToMovieDetailsPage(selection); });
+
+        /// <summary>
         ///     Gets or sets the movies list.
         /// </summary>
         public List<MovieDbModel> MoviesList
         {
             get => _moviesList;
             set => SetProperty(ref _moviesList, value);
-        }
-
-        public MovieDbModel SelectedMovie
-        {
-            get => _selectedMovie;
-            set => SetProperty(ref _selectedMovie, value, async () => { await navigateToMovieDetailsPage(); });
         }
 
         #endregion
@@ -64,6 +62,8 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToAddNewPage()
         {
+            //TODO: Check for data connectivity first
+
             var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
 
             if (!navigationResult.Success)
@@ -75,20 +75,20 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Navigates to movie details page.
         /// </summary>
-        private async Task navigateToMovieDetailsPage()
+        private async Task navigateToMovieDetailsPage(MovieDbModel selectedMovie)
         {
-            if (SelectedMovie == null)
+            if (selectedMovie == null)
             {
                 return;
             }
 
             var navigationParameters = new NavigationParameters
             {
-                { NavParamKeys.SelectedMovie, SelectedMovie }
+                { NavParamKeys.SelectedMovie, selectedMovie }
             };
 
             //reset the selected movie
-            SelectedMovie = null;
+            selectedMovie = null;
 
             var navigationResults = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
 
@@ -107,8 +107,11 @@ namespace Diot.ViewModels
 
             foreach (var movie in MoviesList)
             {
-                var imgSource = await MoviesDbHelper.GetMovieCover(movie.Poster_Path, 200);
-                movie.CoverImage = imgSource == null ? "" : ImageSource.FromStream(() => new MemoryStream(imgSource));
+                var imgSource = await MoviesDbHelper.GetMovieCover(movie.Poster_Path, 300);
+                movie.CoverImage = imgSource == null 
+                    ? "library_icon.png"
+                    : ImageSource.FromStream(() => new MemoryStream(imgSource));
+
                 updatedList.Add(movie);
             }
 

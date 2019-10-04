@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Diot.Models;
 using Diot.Services;
@@ -48,8 +49,15 @@ namespace Diot.Helpers
                 return null;
             }
 
-            return await new HttpClientService().GetImageByteArrayAsync(
-                MoviesDbApiUrls.GetMoviePosterRequestUrl(posterPath, size));
+            try
+            {
+                return await new HttpClientService().GetImageByteArrayAsync(
+                    MoviesDbApiUrls.GetMoviePosterRequestUrl(posterPath, size));
+            }
+            catch (Exception)
+            {
+                 return null;
+            }
         }
 
         #endregion

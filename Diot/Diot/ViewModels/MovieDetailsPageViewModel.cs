@@ -75,7 +75,8 @@ namespace Diot.ViewModels
 
             if (imgSrc == null)
             {
-                CoverImage = selectedMovie?.CoverImage;
+                CoverImage = selectedMovie?.CoverImage ?? "library_icon.png";
+                //TODO: hide cover image
             }
             else
             {

@@ -38,15 +38,24 @@ namespace Diot
         #endregion
 
         /// <summary>
+        ///     Run the bootstrapper process.
+        /// </summary>
+        public override void Initialize()
+        {
+            InitializeComponent();
+
+            base.Initialize();
+
+            ResourceManager.Init(Container.Resolve<IResourceManager>());
+            TranslateExtension.Init(new ResourceManager());
+        }
+
+
+        /// <summary>
         ///     Called when the PrismApplication has completed it's initialization process.
         /// </summary>
         protected override async void OnInitialized()
         {
-            InitializeComponent();
-
-            ResourceManager.Init(Container.Resolve<IResourceManager>());
-            TranslateExtension.Init(new ResourceManager());
-
             await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }
 
