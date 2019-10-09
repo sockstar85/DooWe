@@ -19,10 +19,10 @@
             <Grid>
                 <!--#region Row/Column Definitions-->
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="60" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -67,11 +67,12 @@
                 <Button Text="Add that one"
                         Grid.Row="3"
                         Grid.Column="0"
-                        Command="{Binding AddNewMovieCommand}" />
+                        Command="{Binding AddNewMovieCommand}"/>
                 <Button Text="Try again"
                         Command="{Binding NextResultCommand}"
                         Grid.Row="3"
-                        Grid.Column="1" />
+                        Grid.Column="1"
+                        Style="{DynamicResource SecondaryButton}" />
 
 
             </Grid>
