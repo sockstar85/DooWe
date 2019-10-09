@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Diot.Interface;
 using Diot.Models;
 using SQLite;
@@ -88,12 +89,26 @@ namespace Diot.Services
         /// <summary>
         ///     Deletes the movie.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        public int DeleteMovie(int id)
+        /// <param name="movie">The movie to delete.</param>
+        public int DeleteMovie(MovieDbModel movie)
         {
-            lock (locker)
+            if (movie == null)
             {
-                return conn.Delete(id);
+                return -1;
+            }
+
+            try
+            {
+                lock (locker)
+                {
+                    return conn.Delete(movie);
+                }
+            }
+            catch (Exception e)
+            {
+                //TODO: handle exception better
+                Console.WriteLine(e.Message);
+                return -1;
             }
         }
 

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage
+    xmlns:pages="clr-namespace:Diot.Views.Pages"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+    x:Class="Diot.Views.Pages.MovieDetailsPage"
+    Title="{Binding SelectedMovie.Title}">
+    <ContentPage.Content>
+        <ScrollView >
+            <StackLayout>
+                <Image Source="{Binding CoverImage}" HeightRequest="300"/>
+
+                <Label Text="{Binding SelectedMovie.Overview}"/>
+
+                <Button Text="{extensions:Translate DeleteTitle}" 
+                        Command="{Binding DeleteMovieCommand}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</pages:BasePage>

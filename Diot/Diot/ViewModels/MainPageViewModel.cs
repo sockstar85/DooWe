@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,6 +28,11 @@ namespace Diot.ViewModels
         public ICommand NavigateToAddNewPageCommand => new Command(async () => { await navigateToAddNewPage(); });
 
         /// <summary>
+        ///     Gets the  navigate to movie details command.
+        /// </summary>
+        public ICommand NavigateToMovieDetailsCommand => new Command<MovieDbModel>(async (selection) => { await navigateToMovieDetailsPage(selection); });
+
+        /// <summary>
         ///     Gets or sets the movies list.
         /// </summary>
         public List<MovieDbModel> MoviesList
@@ -47,7 +53,6 @@ namespace Diot.ViewModels
         public MainPageViewModel(IExtendedNavigation navigationService, IPageDialogService dialogService)
             : base(navigationService, dialogService)
         {
-            Title = "Main Page";
         }
 
         #endregion
@@ -57,7 +62,40 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToAddNewPage()
         {
-            await NavigationService.NavigateAsync(PageNames.AddNewPage);
+            //TODO: Check for data connectivity first
+
+            var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
+
+            if (!navigationResult.Success)
+            {
+                //TODO: handle failed navigation.
+            }
+        }
+
+        /// <summary>
+        ///     Navigates to movie details page.
+        /// </summary>
+        private async Task navigateToMovieDetailsPage(MovieDbModel selectedMovie)
+        {
+            if (selectedMovie == null)
+            {
+                return;
+            }
+
+            var navigationParameters = new NavigationParameters
+            {
+                { NavParamKeys.SelectedMovie, selectedMovie }
+            };
+
+            //reset the selected movie
+            selectedMovie = null;
+
+            var navigationResults = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
+
+            if (!navigationResults.Success)
+            {
+                //TODO: handle failed navigation.
+            }
         }
 
         /// <summary>
@@ -69,8 +107,24 @@ namespace Diot.ViewModels
 
             foreach (var movie in MoviesList)
             {
-                var imgSource = await MoviesDbHelper.GetMovieCover(movie.Poster_Path, 200);
-                movie.CoverImage = imgSource == null ? "" : ImageSource.FromStream(() => new MemoryStream(imgSource));
+                if (movie == null)
+                {
+                    continue;
+                }
+
+                var imgSource = await MoviesDbHelper.GetMovieCover(movie);
+
+                movie.CoverImage = imgSource == null 
+                    ? "library_icon.png"
+                    : ImageSource.FromStream(() => new MemoryStream(imgSource));
+
+                //update the movie in the DB with the new byte array
+                if (imgSource != null && movie.CoverImageByteArray != imgSource)
+                {
+                    movie.CoverImageByteArray = imgSource;
+                    DbService.SaveMovie(movie);
+                }
+
                 updatedList.Add(movie);
             }
 

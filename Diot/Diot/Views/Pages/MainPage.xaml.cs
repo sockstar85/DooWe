@@ -1,4 +1,5 @@
-﻿namespace Diot.Views.Pages
+﻿
+namespace Diot.Views.Pages
 {
     public partial class MainPage
     {

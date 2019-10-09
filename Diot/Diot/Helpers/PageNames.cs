@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Diot.Helpers
+﻿namespace Diot.Helpers
 {
     public static class PageNames
     {
-        public static string MainPage => "MainPage";
-        public static string Page1 => "LibraryPage";
-        public static string Page2 => "SettingsPage";
         public static string AddNewPage => "AddNewPage";
+        public static string MainPage => "MainPage";
+        public static string MovieDetailsPage => "MovieDetailsPage";
         public static string NavigationPage => "NavigationPage";
     }
 }

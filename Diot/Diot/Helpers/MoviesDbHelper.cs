@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Diot.Models;
 using Diot.Services;
@@ -40,16 +41,28 @@ namespace Diot.Helpers
         /// </summary>
         /// <param name="posterPath">The poster path.</param>
         /// <param name="size">The size.</param>
-        public static async Task<byte[]> GetMovieCover(string posterPath, int size)
+        public static async Task<byte[]> GetMovieCover(MovieDbModel movie)
         {
-            if (string.IsNullOrWhiteSpace(posterPath))
+            if (string.IsNullOrWhiteSpace(movie?.Poster_Path))
             {
                 Debug.WriteLine("Empty poster path");
                 return null;
             }
 
-            return await new HttpClientService().GetImageByteArrayAsync(
-                MoviesDbApiUrls.GetMoviePosterRequestUrl(posterPath, size));
+            if (movie.CoverImageByteArray != null && movie.CoverImageByteArray.Length > 0)
+            {
+                return movie.CoverImageByteArray;
+            }
+
+            try
+            {
+                return await new HttpClientService().GetImageByteArrayAsync(
+                    MoviesDbApiUrls.GetMoviePosterRequestUrl(movie.Poster_Path, 400));
+            }
+            catch (Exception)
+            {
+                 return null;
+            }
         }
 
         #endregion

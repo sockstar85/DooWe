@@ -5,56 +5,77 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
-             x:Class="Diot.Views.Pages.AddNewPage"
+    xmlns:converters="clr-namespace:Diot.Views.Converters"
+    xmlns:controls="clr-namespace:Diot.Views.Controls"
+    x:Class="Diot.Views.Pages.AddNewPage"
              Title="{extensions:Translate AddNew}">
+
+    <ContentPage.Resources>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <Grid>
-            <!--#region Row/Column Definitions-->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="60" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <!--#endregion-->
+        <ScrollView>
+            <Grid>
+                <!--#region Row/Column Definitions-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--#endregion-->
 
-            <StackLayout Grid.Row="0"
-                         Grid.Column="0"
-                         Grid.ColumnSpan="2"
-                         Orientation="Horizontal">
-                <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
-                       Placeholder="Movie Title"
-                       HorizontalOptions="FillAndExpand" />
-                <Button Text="Search"
-                        Command="{Binding SearchMovieCommand}"
-                        WidthRequest="100" />
-            </StackLayout>
+                <StackLayout Grid.Row="0"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Orientation="Horizontal">
+                    <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
+                           Placeholder="Movie Title"
+                           HorizontalOptions="FillAndExpand" />
+                    <Button Text="Search"
+                            Command="{Binding SearchMovieCommand}"
+                            WidthRequest="100" />
+                </StackLayout>
 
-            <Image Source="{Binding CoverImage}"
-                   Grid.Row="1"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="2" />
+                <controls:NoCoverImageControl Grid.Row="1"
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="2" 
+                                              WidthRequest="175"
+                                              HeightRequest="300"
+                                              HorizontalOptions="Center"
+                                              IsVisible="False"/>
+                <!--TODO: Update NoCoverImageControl visibility-->
 
-            <ScrollView Grid.Row="2"
+                <Image Source="{Binding CoverImage}"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2" 
+                       WidthRequest="250"
+                       HorizontalOptions="Center"/>
+
+                <ScrollView Grid.Row="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2">
+                    <Label Text="{Binding Overview}" />
+                </ScrollView>
+
+                <Button Text="Add that one"
+                        Grid.Row="3"
                         Grid.Column="0"
-                        Grid.ColumnSpan="2">
-                <Label Text="{Binding Overview}" />
-            </ScrollView>
-
-            <Button Text="Add that one"
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Command="{Binding AddNewMovieCommand}" />
-            <Button Text="Try again"
-                    Command="{Binding NextResultCommand}"
-                    Grid.Row="3"
-                    Grid.Column="1" />
+                        Command="{Binding AddNewMovieCommand}"/>
+                <Button Text="Try again"
+                        Command="{Binding NextResultCommand}"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Style="{DynamicResource SecondaryButton}" />
 
 
-        </Grid>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </pages:BasePage>
