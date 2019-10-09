@@ -10,6 +10,11 @@
 
             <!--#region Colors-->
 
+            <!--#region Misc color-->
+            <Color x:Key="PrimaryColor">#2f3c61</Color>
+            <Color x:Key="SecondaryColor">#50a0a8</Color>
+            <!--#endregion-->
+
             <!--#region Base Page colors-->
             <Color x:Key="BasePageBackgroundColor">#F0F0F0</Color>
             <!--#endregion-->
@@ -19,6 +24,29 @@
             <Color x:Key="PrimaryTextDark">DarkGray</Color>
             <!--#endregion-->
 
+            <!--#endregion-->
+
+            <!--#region Button styles-->
+            <Style TargetType="Button" x:Key="SecondaryButton">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderWidth" Value="1"/>
+                <Setter Property="BorderColor" Value="{StaticResource SecondaryColor}"/>
+                <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="HeightRequest" Value="45"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="PrimaryButton">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="BorderWidth" Value="1"/>
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="HeightRequest" Value="45"/>
+            </Style>
+
+            <!--Style applied to all buttons globally unless style otherwise applied-->
+            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}"/>
             <!--#endregion-->
 
         </ResourceDictionary>
