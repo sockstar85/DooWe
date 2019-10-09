@@ -25,22 +25,11 @@
                     ItemsSource="{Binding MoviesList}">
                     <controls:ExtendedFlexLayout.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Margin="0,10"
-                                         WidthRequest="150">
-                                <Image Source="{Binding CoverImage}" 
-                                       WidthRequest="150"
-                                       HeightRequest="200"/>
-                                <Label Text="{Binding Title}"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"
-                                       HorizontalTextAlignment="Center"
-                                       LineBreakMode="WordWrap"/>
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.NavigateToMovieDetailsCommand}"
-                                        CommandParameter="{Binding .}"/>
-                                </StackLayout.GestureRecognizers>
-                            </StackLayout>
+                            <controls:CoverAndTitleControl
+                                TappedCommand="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.NavigateToMovieDetailsCommand}"
+                                CommandParameter="{Binding .}"
+                                CoverImage="{Binding CoverImage}"
+                                Title="{Binding Title}"/>
                         </DataTemplate>
                     </controls:ExtendedFlexLayout.ItemTemplate>
                 </controls:ExtendedFlexLayout>
