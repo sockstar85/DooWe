@@ -48,10 +48,16 @@ namespace Diot.ViewModels
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MainPageViewModel" /> class.
+        ///     Initializes a new instance of the <see cref="MainPageViewModel"/> class.
         /// </summary>
-        public MainPageViewModel(IExtendedNavigation navigationService, IPageDialogService dialogService)
-            : base(navigationService, dialogService)
+        /// <param name="navigationService">The navigation service.</param>
+        /// <param name="dialogService">The dialog service.</param>
+        /// <param name="loadingPageService">The loading page service.</param>
+        public MainPageViewModel(
+            IExtendedNavigation navigationService, 
+            IPageDialogService dialogService, 
+            ILoadingPageService loadingPageService)
+            : base(navigationService, dialogService, loadingPageService)
         {
         }
 

@@ -1,6 +1,10 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Diot.Droid.Implementations;
+using Diot.Interface;
+using Lottie.Forms.Droid;
+using Plugin.CurrentActivity;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
@@ -21,7 +25,9 @@ namespace Diot.Droid
 
             base.OnCreate(bundle);
 
+            CrossCurrentActivity.Current.Init(this, bundle);
             Forms.Init(this, bundle);
+            AnimationViewRenderer.Init();
             LoadApplication(new App(new AndroidInitializer()));
         }
 
@@ -35,6 +41,7 @@ namespace Diot.Droid
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // Register any platform specific implementations
+            containerRegistry.RegisterSingleton<ILoadingPageService, LoadingPageService>();
         }
 
         #endregion

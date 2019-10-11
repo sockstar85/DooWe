@@ -23,6 +23,7 @@ namespace Diot.ViewModels
         private string _movieTitle;
         private string _overview;
         private MovieDbResultsModel _searchResults;
+        private IResourceManager _resourceManager;
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace Diot.ViewModels
         public MovieDbModel CurrentResult
         {
             get => _currentResult;
-            set => SetProperty(ref _currentResult, value, async () => { await populateViewModel(); });
+            set => SetProperty(ref _currentResult, value);
         }
 
         /// <summary>
@@ -86,13 +87,20 @@ namespace Diot.ViewModels
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AddNewPageViewModel" /> class.
+        ///     Initializes a new instance of the <see cref="AddNewPageViewModel"/> class.
         /// </summary>
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="pageDialogService">The page dialog service.</param>
+        /// <param name="loadingPageService">The loading page service.</param>
+        /// <param name="resourceManager">The resource manager.</param>
+        /// <exception cref="ArgumentNullException">resourceManager</exception>
         public AddNewPageViewModel(IExtendedNavigation navigationService,
-            IPageDialogService pageDialogService) : base(navigationService, pageDialogService)
+            IPageDialogService pageDialogService,
+            ILoadingPageService loadingPageService,
+            IResourceManager resourceManager) 
+            : base(navigationService, pageDialogService, loadingPageService)
         {
+            _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
         }
 
         #endregion
@@ -102,15 +110,23 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task loadNextResult()
         {
+            LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+
             if (_searchResults?.Results == null || !_searchResults.Results.Any() ||
                 _currentResultIndex + 1 >= _searchResults.Results.Count())
             {
                 await DialogService.DisplayAlertAsync("End of results",
                     "There are no other search results found. Try again.", "Ok");
+
+                await LoadingPageService.HideLoadingPageAsync();
                 return;
             }
 
             CurrentResult = _searchResults.Results[++_currentResultIndex];
+
+            await populateViewModel(CurrentResult);
+
+            await LoadingPageService.HideLoadingPageAsync();
         }
 
         /// <summary>
@@ -118,6 +134,8 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task searchMovie()
         {
+            LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+
             var results = await MoviesDbHelper.SearchMovie(MovieTitle);
 
             if (results?.Results != null && results.Results.Any())
@@ -125,6 +143,8 @@ namespace Diot.ViewModels
                 _searchResults = results;
                 CurrentResult = results.Results[0];
                 _currentResultIndex = 0;
+
+                await populateViewModel(CurrentResult);
             }
             else
             {
@@ -133,14 +153,21 @@ namespace Diot.ViewModels
             }
 
             MovieTitle = string.Empty;
+
+            await LoadingPageService.HideLoadingPageAsync();
         }
 
         /// <summary>
         ///     Populates the view model.
         /// </summary>
-        private async Task populateViewModel()
+        private async Task populateViewModel(MovieDbModel currentResult)
         {
-            Overview = CurrentResult.Overview;
+            if (currentResult?.Overview == null)
+            {
+                return;
+            }
+
+            Overview = currentResult.Overview;
 
             var imgSrc = await MoviesDbHelper.GetMovieCover(_currentResult);
 

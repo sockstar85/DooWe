@@ -97,6 +97,15 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No cover image found.
         /// </summary>
         internal static string NoCoverImageFound {

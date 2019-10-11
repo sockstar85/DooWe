@@ -59,9 +59,12 @@ namespace Diot.ViewModels
         /// </summary>
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="dialogService">The dialog service.</param>
-        public MovieDetailsPageViewModel(IExtendedNavigation navigationService, 
-            IPageDialogService dialogService) 
-            : base(navigationService, dialogService)
+        /// <param name="loadingPageService">The loading page service.</param>
+        public MovieDetailsPageViewModel(
+            IExtendedNavigation navigationService, 
+            IPageDialogService dialogService,
+            ILoadingPageService loadingPageService) 
+            : base(navigationService, dialogService, loadingPageService)
         {
         }
 

@@ -7,6 +7,12 @@ using Prism.Services;
 
 namespace Diot.ViewModels
 {
+    /// <summary>
+    ///     The base to all view models.
+    /// </summary>
+    /// <seealso cref="BindableBase" />
+    /// <seealso cref="INavigationAware" />
+    /// <seealso cref="IDestructible" />
     public class ViewModelBase : BindableBase, INavigationAware, IDestructible
     {
         #region  Fields
@@ -18,9 +24,19 @@ namespace Diot.ViewModels
 
         #region Properties
 
+        /// <summary>
+        ///     Gets the navigation service.
+        /// </summary>
         public IExtendedNavigation NavigationService { get; }
+
+        /// <summary>
+        ///     Gets the dialog service.
+        /// </summary>
         public IPageDialogService DialogService { get; }
 
+        /// <summary>
+        ///     Gets or sets the title.
+        /// </summary>
         public string Title
         {
             get => _title;
@@ -31,6 +47,11 @@ namespace Diot.ViewModels
         ///     Gets the database service.
         /// </summary>
         public static DatabaseService DbService => databaseService ?? (databaseService = new DatabaseService());
+
+        /// <summary>
+        ///     Gets the loading page service.
+        /// </summary>
+        public ILoadingPageService LoadingPageService { get; }
 
         #endregion
 
@@ -43,9 +64,13 @@ namespace Diot.ViewModels
         /// </summary>
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="dialogService">The dialog service.</param>
+        /// <param name="loadingPageService">The loading page service.</param>
+        /// <exception cref="ArgumentNullException">dialogService</exception>
         public ViewModelBase(IExtendedNavigation navigationService,
-            IPageDialogService dialogService)
+            IPageDialogService dialogService,
+            ILoadingPageService loadingPageService)
         {
+            LoadingPageService = loadingPageService;
             NavigationService = navigationService;
             DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
