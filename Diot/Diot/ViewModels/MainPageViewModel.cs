@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Models;
 using Prism.Navigation;
 using Prism.Services;
@@ -12,11 +13,12 @@ using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelBase, IMainPageViewModel
     {
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
+        private IDatabaseService _databaseService;
 
         #endregion
 
@@ -56,9 +58,11 @@ namespace Diot.ViewModels
         public MainPageViewModel(
             IExtendedNavigation navigationService, 
             IPageDialogService dialogService, 
-            ILoadingPageService loadingPageService)
+            ILoadingPageService loadingPageService,
+            IDatabaseService databaseService)
             : base(navigationService, dialogService, loadingPageService)
         {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
         }
 
         #endregion
@@ -128,7 +132,7 @@ namespace Diot.ViewModels
                 if (imgSource != null && movie.CoverImageByteArray != imgSource)
                 {
                     movie.CoverImageByteArray = imgSource;
-                    DbService.SaveMovie(movie);
+                    _databaseService.SaveMovie(movie);
                 }
 
                 updatedList.Add(movie);
@@ -143,7 +147,7 @@ namespace Diot.ViewModels
         public override void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
-            MoviesList = DbService.GetAllMovies();
+            MoviesList = _databaseService.GetAllMovies();
 
             Task.Run(async () =>
             {

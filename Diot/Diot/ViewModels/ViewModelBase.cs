@@ -1,5 +1,6 @@
 ﻿using System;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Services;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -13,11 +14,10 @@ namespace Diot.ViewModels
     /// <seealso cref="BindableBase" />
     /// <seealso cref="INavigationAware" />
     /// <seealso cref="IDestructible" />
-    public class ViewModelBase : BindableBase, INavigationAware, IDestructible
+    public class ViewModelBase : BindableBase, IViewModelBase
     {
         #region  Fields
 
-        private static DatabaseService databaseService;
         private string _title;
 
         #endregion
@@ -42,11 +42,6 @@ namespace Diot.ViewModels
             get => _title;
             set => SetProperty(ref _title, value);
         }
-
-        /// <summary>
-        ///     Gets the database service.
-        /// </summary>
-        public static DatabaseService DbService => databaseService ?? (databaseService = new DatabaseService());
 
         /// <summary>
         ///     Gets the loading page service.

@@ -1,12 +1,11 @@
 ﻿using Diot.Interface;
-using Diot.iOS.Implementations;
 using Diot.Views.Controls;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using XFPlatform = Xamarin.Forms.Platform.iOS.Platform;
-using System.Threading.Tasks;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Diot.iOS.Implementations.LoadingPageService))]
 namespace Diot.iOS.Implementations

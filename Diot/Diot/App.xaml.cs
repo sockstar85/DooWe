@@ -1,4 +1,5 @@
 ﻿using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Services;
 using Diot.ViewModels;
 using Diot.Views.Extensions;
@@ -40,7 +41,7 @@ namespace Diot
         /// <summary>
         ///     Run the bootstrapper process.
         /// </summary>
-        public override void Initialize()
+        protected override void Initialize()
         {
             InitializeComponent();
 
@@ -78,10 +79,27 @@ namespace Diot
 
             #region Pages
 
-            containerRegistry.RegisterForNavigation<AddNewPage, AddNewPageViewModel>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<MovieDetailsPage, MovieDetailsPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddNewPage, IAddNewPageViewModel>();
+            containerRegistry.RegisterForNavigation<MainPage, IMainPageViewModel>();
+            containerRegistry.RegisterForNavigation<MovieDetailsPage, IMovieDetailsPageViewModel>();
             containerRegistry.RegisterForNavigation<NavigationPage>();
+
+            #endregion
+
+            #region ViewModels
+
+            containerRegistry.Register<IViewModelBase, ViewModelBase>();
+            containerRegistry.Register<IAddNewPageViewModel, AddNewPageViewModel>();
+            containerRegistry.Register<IMainPageViewModel, MainPageViewModel>();
+            containerRegistry.Register<IMovieDetailsPageViewModel, MovieDetailsPageViewModel>();
+            containerRegistry.Register<ISelectableMovieViewModel, SelectableMovieViewModel>();
+
+            #endregion
+
+            #region Required Types
+
+            containerRegistry.RegisterSingleton<IDatabaseService, DatabaseService>();
+
 
             #endregion
         }

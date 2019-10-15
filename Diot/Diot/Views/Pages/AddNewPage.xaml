@@ -8,6 +8,7 @@
     xmlns:converters="clr-namespace:Diot.Views.Converters"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
     x:Class="Diot.Views.Pages.AddNewPage"
+    x:Name="ThisPage"
     Title="{extensions:Translate AddNew}">
 
     <ContentPage.Resources>
@@ -15,70 +16,51 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
-                        <Grid>
-                            <!--#region Row/Column Definitions-->
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <!--#endregion-->
-
-                            <StackLayout Grid.Row="0"
-                                         Grid.Column="0"
-                                         Grid.ColumnSpan="2"
-                                         Orientation="Horizontal">
-                                <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
-                                       Placeholder="Movie Title"
-                                       HorizontalOptions="FillAndExpand" />
-                                <Button Text="Search"
-                                        Command="{Binding SearchMovieCommand}"
-                                        WidthRequest="100" />
-                            </StackLayout>
-
-                            <controls:NoCoverImageControl Grid.Row="1"
-                                                          Grid.Column="0"
-                                                          Grid.ColumnSpan="2" 
-                                                          WidthRequest="175"
-                                                          HeightRequest="300"
-                                                          HorizontalOptions="Center"
-                                                          IsVisible="False"/>
-                            <!--TODO: Update NoCoverImageControl visibility-->
-
-                            <Image Source="{Binding CoverImage}"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
-                                   Grid.ColumnSpan="2" 
-                                   WidthRequest="250"
-                                   HorizontalOptions="Center"/>
-
-                            <ScrollView Grid.Row="2"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2">
-                                <Label Text="{Binding Overview}" />
-                            </ScrollView>
-
-                            <Button Text="Add that one"
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    Command="{Binding AddNewMovieCommand}"/>
-                            <Button Text="Try again"
-                                    Command="{Binding NextResultCommand}"
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Style="{DynamicResource SecondaryButton}" />
-
-
-                        </Grid>
-                    </ScrollView>
-        </Grid>
         
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
+                       Placeholder="{extensions:Translate MovieTitle}"
+                       Grid.Column="0"
+                       HorizontalOptions="FillAndExpand"/>
+                <Button Text="Search"
+                        Command="{Binding SearchMovieCommand}"
+                        Grid.Column="1"/>
+            </Grid>
+
+            <ScrollView Grid.Row="1">
+                <controls:ExtendedFlexLayout 
+                    Direction="Row" 
+                    Wrap="Wrap"
+                    JustifyContent="SpaceEvenly" 
+                    ItemsSource="{Binding SearchResults}">
+                    <controls:ExtendedFlexLayout.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CoverAndTitleControl
+                                TappedCommand="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.SelectDeselectMovieCommand}"
+                                CommandParameter="{Binding .}"
+                                CoverImage="{Binding Movie.CoverImage}"
+                                Title="{Binding Movie.Title}"
+                                IsSelected="{Binding IsSelected, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </controls:ExtendedFlexLayout.ItemTemplate>
+                </controls:ExtendedFlexLayout>
+            </ScrollView>
+
+            <Button Text="Add that one"
+                    Command="{Binding AddSelectedMoviesCommand}"
+                    Grid.Row="2"
+                    HorizontalOptions="Center"/>
+        </Grid>
     </ContentPage.Content>
 </pages:BasePage>

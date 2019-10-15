@@ -106,6 +106,15 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movie title....
+        /// </summary>
+        internal static string MovieTitle {
+            get {
+                return ResourceManager.GetString("MovieTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No cover image found.
         /// </summary>
         internal static string NoCoverImageFound {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
 using SQLite;
 using Xamarin.Forms;
 
@@ -73,7 +72,6 @@ namespace Diot.Models
         /// The cover image byte array.
         /// </value>
         public byte[] CoverImageByteArray { get; set; }
-
 
         /// <summary>
         ///     Gets or sets the original language.

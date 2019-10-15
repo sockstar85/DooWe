@@ -218,11 +218,14 @@
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
       <Version>3.0.2</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Core">
+      <Version>7.2.0.1367</Version>
+    </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.5.231</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.848062" />
-    <PackageReference Include="Prism.Unity.Forms" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1367" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Diot\Diot.csproj">
