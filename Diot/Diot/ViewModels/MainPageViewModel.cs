@@ -83,13 +83,22 @@ namespace Diot.ViewModels
 
             if (!navigationResult.Success)
             {
-                Console.WriteLine(navigationResult.Exception.Message);
-
-                await _dialogService.DisplayAlertAsync(
-                    _resourceManager.GetString("NavigationError"),
-                    _resourceManager.GetString("NavigationErrorMessage"),
-                    _resourceManager.GetString("Ok"));
+                await handleFailedNavigationAsync(navigationResult.Exception);
             }
+        }
+
+        /// <summary>
+        ///     Handles the failed navigation.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        private async Task handleFailedNavigationAsync(Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+
+            await _dialogService.DisplayAlertAsync(
+                _resourceManager.GetString("NavigationError"),
+                _resourceManager.GetString("NavigationErrorMessage"),
+                _resourceManager.GetString("Ok"));
         }
 
         /// <summary>
@@ -110,11 +119,11 @@ namespace Diot.ViewModels
             //reset the selected movie
             selectedMovie = null;
 
-            var navigationResults = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
+            var navigationResult = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
 
-            if (!navigationResults.Success)
+            if (!navigationResult.Success)
             {
-                //TODO: handle failed navigation.
+                await handleFailedNavigationAsync(navigationResult.Exception);
             }
         }
 

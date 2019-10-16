@@ -11,7 +11,7 @@ using XFPlatform = Xamarin.Forms.Platform.iOS.Platform;
 namespace Diot.iOS.Implementations
 {
     /// <summary>
-    ///     iOS implementation of the loading page service. //TODO: Figure out why the dependency service isn't working on iOS.
+    ///     iOS implementation of the loading page service.
     /// </summary>
     /// <seealso cref="ILoadingPageService" />
     public class LoadingPageService : ILoadingPageService
@@ -99,7 +99,7 @@ namespace Diot.iOS.Implementations
             var renderer = XFPlatform.GetRenderer(bindable);
             if (renderer == null)
             {
-                renderer = XFPlatform.GetRenderer(bindable);
+                renderer = XFPlatform.CreateRenderer(bindable);
                 XFPlatform.SetRenderer(bindable, renderer);
             }
 
