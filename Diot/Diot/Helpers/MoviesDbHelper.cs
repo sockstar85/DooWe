@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Diot.Models;
 using Diot.Services;
@@ -31,6 +32,7 @@ namespace Diot.Helpers
             await Task.Run(() =>
             {
                 retVal = JsonConvert.DeserializeObject<MovieDbResultsModel>(result);
+                retVal.Results = retVal.Results.OrderByDescending(x => x.Popularity).ThenByDescending(x => x.Vote_Count).ToList();
             });
 
             return retVal;
@@ -57,7 +59,7 @@ namespace Diot.Helpers
             try
             {
                 return await new HttpClientService().GetImageByteArrayAsync(
-                    MoviesDbApiUrls.GetMoviePosterRequestUrl(movie.Poster_Path, 400));
+                    MoviesDbApiUrls.GetMoviePosterRequestUrl(movie.Poster_Path, 300));
             }
             catch (Exception)
             {
