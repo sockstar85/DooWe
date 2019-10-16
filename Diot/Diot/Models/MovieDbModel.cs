@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Dynamic;
 using SQLite;
 using Xamarin.Forms;
 
@@ -19,6 +18,7 @@ namespace Diot.Models
         /// <summary>
         ///     Gets or sets the vote count.
         /// </summary>
+        [Ignore]
         public int Vote_Count { get; set; }
 
         /// <summary>
@@ -30,11 +30,13 @@ namespace Diot.Models
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="MovieDbModel" /> is video.
         /// </summary>
+        [Ignore]
         public bool Video { get; set; }
 
         /// <summary>
         ///     Gets or sets the vote average.
         /// </summary>
+        [Ignore]
         public double Vote_Average { get; set; }
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace Diot.Models
         /// <summary>
         ///     Gets or sets the popularity.
         /// </summary>
+        [Ignore]
         public double Popularity { get; set; }
 
         /// <summary>
@@ -69,11 +72,11 @@ namespace Diot.Models
         /// The cover image byte array.
         /// </value>
         public byte[] CoverImageByteArray { get; set; }
-    
 
         /// <summary>
         ///     Gets or sets the original language.
         /// </summary>
+        [Ignore]
         public string Original_Language { get; set; }
 
         /// <summary>
@@ -90,6 +93,7 @@ namespace Diot.Models
         /// <summary>
         ///     Gets or sets the backdrop path.
         /// </summary>
+        [Ignore]
         public string Backdrop_Path { get; set; }
 
         /// <summary>

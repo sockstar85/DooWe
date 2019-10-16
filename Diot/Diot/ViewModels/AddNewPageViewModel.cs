@@ -1,37 +1,34 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Models;
+using DryIoc;
 using Prism.Services;
 using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class AddNewPageViewModel : ViewModelBase
+    public class AddNewPageViewModel : ViewModelBase, IAddNewPageViewModel
     {
         #region  Fields
 
-        private ImageSource _coverImage;
-
-        private MovieDbModel _currentResult;
-        private int _currentResultIndex = -1;
         private string _movieTitle;
-        private string _overview;
-        private MovieDbResultsModel _searchResults;
+        private List<ISelectableMovieViewModel> _searchResults = new List<ISelectableMovieViewModel>();
+        private readonly IResourceManager _resourceManager;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///     Gets the add new movie command.
+        ///     Gets the add selected movies command.
         /// </summary>
-        public ICommand AddNewMovieCommand => new Command(async () => { await addNewMovie(); });
+        public ICommand AddSelectedMoviesCommand => new Command(async () => { await addSelectedMovies(); });
 
         /// <summary>
         ///     Gets the search movie command.
@@ -39,9 +36,9 @@ namespace Diot.ViewModels
         public ICommand SearchMovieCommand => new Command(async () => { await searchMovie(); });
 
         /// <summary>
-        ///     Gets the next result command.
+        ///     Gets the select deselect movie command.
         /// </summary>
-        public ICommand NextResultCommand => new Command(async () => { await loadNextResult(); });
+        public ICommand SelectDeselectMovieCommand => new Command<ISelectableMovieViewModel>((selection) => selectDeselectMovie(selection));
 
         /// <summary>
         ///     Gets or sets the movie title.
@@ -53,31 +50,14 @@ namespace Diot.ViewModels
         }
 
         /// <summary>
-        ///     Gets or sets the cover image.
+        ///     Gets or sets search results
         /// </summary>
-        public ImageSource CoverImage
+        public List<ISelectableMovieViewModel> SearchResults
         {
-            get => _coverImage;
-            set => SetProperty(ref _coverImage, value);
+            get => _searchResults;
+            set => SetProperty(ref _searchResults, value);
         }
 
-        /// <summary>
-        ///     Gets or sets the current result.
-        /// </summary>
-        public MovieDbModel CurrentResult
-        {
-            get => _currentResult;
-            set => SetProperty(ref _currentResult, value, async () => { await populateViewModel(); });
-        }
-
-        /// <summary>
-        ///     Gets or sets the current result overview text.
-        /// </summary>
-        public string Overview
-        {
-            get => _overview;
-            set => SetProperty(ref _overview, value);
-        }
 
         #endregion
 
@@ -86,31 +66,36 @@ namespace Diot.ViewModels
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AddNewPageViewModel" /> class.
+        ///     Initializes a new instance of the <see cref="AddNewPageViewModel"/> class.
         /// </summary>
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="pageDialogService">The page dialog service.</param>
+        /// <param name="loadingPageService">The loading page service.</param>
+        /// <param name="resourceManager">The resource manager.</param>
+        /// <exception cref="ArgumentNullException">resourceManager</exception>
         public AddNewPageViewModel(IExtendedNavigation navigationService,
-            IPageDialogService pageDialogService) : base(navigationService, pageDialogService)
+            IPageDialogService pageDialogService,
+            ILoadingPageService loadingPageService,
+            IResourceManager resourceManager) 
+            : base(navigationService, pageDialogService, loadingPageService)
         {
+            _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
         }
 
         #endregion
 
         /// <summary>
-        ///     Loads the next result.
+        ///     Selects/deselect the movie.
         /// </summary>
-        private async Task loadNextResult()
+        /// <param name="selectedMovie">The selected movie.</param>
+        private void selectDeselectMovie(ISelectableMovieViewModel selectedMovie)
         {
-            if (_searchResults?.Results == null || !_searchResults.Results.Any() ||
-                _currentResultIndex + 1 >= _searchResults.Results.Count())
+            if (selectedMovie == null)
             {
-                await DialogService.DisplayAlertAsync("End of results",
-                    "There are no other search results found. Try again.", "Ok");
                 return;
             }
 
-            CurrentResult = _searchResults.Results[++_currentResultIndex];
+            selectedMovie.IsSelected = !selectedMovie.IsSelected;
         }
 
         /// <summary>
@@ -118,13 +103,13 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task searchMovie()
         {
+            LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+
             var results = await MoviesDbHelper.SearchMovie(MovieTitle);
 
             if (results?.Results != null && results.Results.Any())
             {
-                _searchResults = results;
-                CurrentResult = results.Results[0];
-                _currentResultIndex = 0;
+                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results);
             }
             else
             {
@@ -133,45 +118,29 @@ namespace Diot.ViewModels
             }
 
             MovieTitle = string.Empty;
+
+            await LoadingPageService.HideLoadingPageAsync();
+        }
+
+        private async Task<List<ISelectableMovieViewModel>> convertToSelectableMovieViewModelsAsync(List<MovieDbModel> results)
+        {
+            var retVal = new List<ISelectableMovieViewModel>();
+
+            foreach (var item in results)
+            {
+                retVal.Add(await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item));
+            }
+
+            return retVal;
         }
 
         /// <summary>
-        ///     Populates the view model.
+        ///     Adds the selected movies to the DB and navigates home.
         /// </summary>
-        private async Task populateViewModel()
+        private async Task addSelectedMovies()
         {
-            Overview = CurrentResult.Overview;
-
-            var imgSrc = await MoviesDbHelper.GetMovieCover(_currentResult);
-
-            if (imgSrc == null || imgSrc.Length == 0)
-            {
-                Debug.WriteLine("No cover image found.");
-                CoverImage = "library_icon.png";
-                //TODO: Hide cover image
-            }
-            else
-            {
-                CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
-            };
-        }
-
-        /// <summary>
-        ///     Adds the new movie.
-        /// </summary>
-        private async Task addNewMovie()
-        {
-            if (CurrentResult == null)
-            {
-                await DialogService.DisplayAlertAsync("Enter movie title", "Please search a movie title to add.", "Ok");
-                return;
-            }
-
-            formatTitle(CurrentResult);
-
-            DbService.SaveMovie(CurrentResult);
-
-            await NavigationService.GoBackAsync();
+            //TODO: finish this
+            await Task.Run(() => { });
         }
 
         /// <summary>

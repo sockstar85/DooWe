@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Models;
 using Prism.Navigation;
 using Prism.Services;
@@ -11,12 +12,13 @@ using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class MovieDetailsPageViewModel : ViewModelBase
+    public class MovieDetailsPageViewModel : ViewModelBase, IMovieDetailsPageViewModel
     {
         #region Fields
 
         MovieDbModel _selectedMovie;
         ImageSource _coverImage;
+        private IDatabaseService _databaseService;
 
         #endregion
 
@@ -59,10 +61,15 @@ namespace Diot.ViewModels
         /// </summary>
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="dialogService">The dialog service.</param>
-        public MovieDetailsPageViewModel(IExtendedNavigation navigationService, 
-            IPageDialogService dialogService) 
-            : base(navigationService, dialogService)
+        /// <param name="loadingPageService">The loading page service.</param>
+        public MovieDetailsPageViewModel(
+            IExtendedNavigation navigationService, 
+            IPageDialogService dialogService,
+            ILoadingPageService loadingPageService,
+            IDatabaseService databaseService) 
+            : base(navigationService, dialogService, loadingPageService)
         {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
         }
 
         #endregion
@@ -112,7 +119,7 @@ namespace Diot.ViewModels
 
             if (confirmDelete)
             {
-                Console.WriteLine(DbService.DeleteMovie(SelectedMovie));
+                Console.WriteLine(_databaseService.DeleteMovie(SelectedMovie));
                 await NavigationService.GoBackAsync();
             }
         }

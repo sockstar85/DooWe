@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Models;
 using Prism.Navigation;
 using Prism.Services;
@@ -12,11 +13,14 @@ using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelBase, IMainPageViewModel
     {
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
+        private readonly IDatabaseService _databaseService;
+        private readonly IPageDialogService _dialogService;
+        private readonly IResourceManager _resourceManager;
 
         #endregion
 
@@ -48,11 +52,22 @@ namespace Diot.ViewModels
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MainPageViewModel" /> class.
+        ///     Initializes a new instance of the <see cref="MainPageViewModel"/> class.
         /// </summary>
-        public MainPageViewModel(IExtendedNavigation navigationService, IPageDialogService dialogService)
-            : base(navigationService, dialogService)
+        /// <param name="navigationService">The navigation service.</param>
+        /// <param name="dialogService">The dialog service.</param>
+        /// <param name="loadingPageService">The loading page service.</param>
+        public MainPageViewModel(
+            IExtendedNavigation navigationService, 
+            IPageDialogService dialogService, 
+            ILoadingPageService loadingPageService,
+            IDatabaseService databaseService,
+            IResourceManager resourceManager)
+            : base(navigationService, dialogService, loadingPageService)
         {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
         }
 
         #endregion
@@ -68,8 +83,22 @@ namespace Diot.ViewModels
 
             if (!navigationResult.Success)
             {
-                //TODO: handle failed navigation.
+                await handleFailedNavigationAsync(navigationResult.Exception);
             }
+        }
+
+        /// <summary>
+        ///     Handles the failed navigation.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        private async Task handleFailedNavigationAsync(Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+
+            await _dialogService.DisplayAlertAsync(
+                _resourceManager.GetString("NavigationError"),
+                _resourceManager.GetString("NavigationErrorMessage"),
+                _resourceManager.GetString("Ok"));
         }
 
         /// <summary>
@@ -90,11 +119,11 @@ namespace Diot.ViewModels
             //reset the selected movie
             selectedMovie = null;
 
-            var navigationResults = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
+            var navigationResult = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
 
-            if (!navigationResults.Success)
+            if (!navigationResult.Success)
             {
-                //TODO: handle failed navigation.
+                await handleFailedNavigationAsync(navigationResult.Exception);
             }
         }
 
@@ -122,7 +151,7 @@ namespace Diot.ViewModels
                 if (imgSource != null && movie.CoverImageByteArray != imgSource)
                 {
                     movie.CoverImageByteArray = imgSource;
-                    DbService.SaveMovie(movie);
+                    _databaseService.SaveMovie(movie);
                 }
 
                 updatedList.Add(movie);
@@ -137,7 +166,7 @@ namespace Diot.ViewModels
         public override void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
-            MoviesList = DbService.GetAllMovies();
+            MoviesList = _databaseService.GetAllMovies();
 
             Task.Run(async () =>
             {

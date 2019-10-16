@@ -120,6 +120,9 @@
   <data name="AddNew" xml:space="preserve">
     <value>Add New</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="DeleteTitle" xml:space="preserve">
     <value>Delete Title</value>
   </data>
@@ -129,7 +132,22 @@
   <data name="Library" xml:space="preserve">
     <value>My Library</value>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="MovieTitle" xml:space="preserve">
+    <value>Movie title...</value>
+  </data>
+  <data name="NavigationError" xml:space="preserve">
+    <value>Navigation error</value>
+  </data>
+  <data name="NavigationErrorMessage" xml:space="preserve">
+    <value>Uhh... Something went wrong. Try again.</value>
+  </data>
   <data name="NoCoverImageFound" xml:space="preserve">
     <value>No cover image found</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
 </root>

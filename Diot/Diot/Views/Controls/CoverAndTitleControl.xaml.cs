@@ -1,7 +1,11 @@
 ﻿using Diot.Models;
 using System.Windows.Input;
+using Diot.Interface;
+using Diot.Interface.ViewModels;
+using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Diot.ViewModels;
 
 namespace Diot.Views.Controls
 {
@@ -13,6 +17,8 @@ namespace Diot.Views.Controls
 	public partial class CoverAndTitleControl
 	{
         #region Fields
+
+        IResourceManager _resourceManager => ResourceManager.Instance;
 
         #endregion
 
@@ -30,9 +36,9 @@ namespace Diot.Views.Controls
         /// <summary>
         ///     Gets or sets the tapped command parameter.
         /// </summary>
-        public MovieDbModel CommandParameter
+        public ISelectableMovieViewModel CommandParameter
         {
-	        get => (MovieDbModel) GetValue(CommandParameterProperty);
+	        get => (SelectableMovieViewModel) GetValue(CommandParameterProperty);
 	        set => SetValue(CommandParameterProperty, value);
 	    }
 
@@ -54,6 +60,24 @@ namespace Diot.Views.Controls
 	        set => SetValue(TitleProperty, value);
 	    }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is selected.
+        /// </summary>
+        public bool IsSelected
+	    {
+	        get => (bool) GetValue(IsSelectedProperty);
+	        set => SetValue(IsSelectedProperty, value);
+	    }
+
+        /// <summary>
+        ///     Gets or sets the color which will fill the background of a VisualElement.
+        /// </summary>
+        public new Color BackgroundColor
+	    {
+	        get => (Color) GetValue(BackgroundColorProperty);
+	        set => SetValue(BackgroundColorProperty, value);
+	    }
+
         #endregion
 
         #region Methods
@@ -72,12 +96,36 @@ namespace Diot.Views.Controls
 
         #endregion
 
+        /// <summary>
+        ///     The bindable property for <see cref="BackgroundProperty"/>.
+        /// </summary>
+        public new static readonly BindableProperty BackgroundColorProperty =
+	        BindableProperty.Create(
+	            nameof(BackgroundColor),
+	            typeof(Color),
+                typeof(CoverAndTitleControl),
+	            default(Color),
+	            propertyChanged: (bindable, oldValue, newValue) => 
+	                ((CoverAndTitleControl)bindable).updateIsSelected());
+
         #region Bindable Properties
 
-	    /// <summary>
-	    ///     The bindable property for <see cref="Title"/>.
-	    /// </summary>
-	    public static readonly BindableProperty TitleProperty =
+        /// <summary>
+        ///     The bindable property for <see cref="IsSelected"/>.
+        /// </summary>
+        public static readonly BindableProperty IsSelectedProperty =
+            BindableProperty.Create(
+                nameof(IsSelected),
+                typeof(bool),
+                typeof(CoverAndTitleControl),
+                default(bool),
+                propertyChanged: (bindable, oldValue, newValue) =>
+                    ((CoverAndTitleControl)bindable).updateIsSelected());
+        
+        /// <summary>
+        ///     The bindable property for <see cref="Title"/>.
+        /// </summary>
+        public static readonly BindableProperty TitleProperty =
 	        BindableProperty.Create(
 	            nameof(Title),
 	            typeof(string),
@@ -116,7 +164,7 @@ namespace Diot.Views.Controls
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create(
                 nameof(CommandParameter),
-                typeof(MovieDbModel),
+                typeof(SelectableMovieViewModel),
                 typeof(CoverAndTitleControl),
                 null,
                 propertyChanged: (bindable, oldValue, newValue) =>
@@ -159,6 +207,14 @@ namespace Diot.Views.Controls
 	    {
 	        TapGestureRecognizer.Command = TappedCommand;
 	    }
+
+        /// <summary>
+        ///     Updates selected border.
+        /// </summary>
+        private void updateIsSelected()
+        {
+            OuterContainer.BackgroundColor = IsSelected ? (Color)_resourceManager.GetResource("SelectionColor") : BackgroundColor;
+        }
 
         #endregion
     }

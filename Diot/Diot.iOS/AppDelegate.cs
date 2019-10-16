@@ -1,9 +1,11 @@
-﻿using Foundation;
+﻿using Diot.Interface;
+using Foundation;
 using Prism;
 using Prism.Ioc;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using Diot.iOS.Implementations;
 
 namespace Diot.iOS
 {
@@ -26,7 +28,6 @@ namespace Diot.iOS
         {
             Forms.Init();
             LoadApplication(new App(new iOSInitializer()));
-
             return base.FinishedLaunching(app, options);
         }
 
@@ -40,6 +41,7 @@ namespace Diot.iOS
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // Register any platform specific implementations
+            containerRegistry.RegisterSingleton<ILoadingPageService, LoadingPageService>();
         }
 
         #endregion

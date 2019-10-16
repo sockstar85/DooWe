@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Diot.Interface;
 using Diot.Models;
 using SQLite;
@@ -11,7 +9,7 @@ using Xamarin.Forms;
 
 namespace Diot.Services
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         #region  Fields
 

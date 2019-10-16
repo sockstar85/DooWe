@@ -70,6 +70,15 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Title.
         /// </summary>
         internal static string DeleteTitle {
@@ -97,11 +106,56 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movie title....
+        /// </summary>
+        internal static string MovieTitle {
+            get {
+                return ResourceManager.GetString("MovieTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Navigation error.
+        /// </summary>
+        internal static string NavigationError {
+            get {
+                return ResourceManager.GetString("NavigationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uhh... Something went wrong. Try again..
+        /// </summary>
+        internal static string NavigationErrorMessage {
+            get {
+                return ResourceManager.GetString("NavigationErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No cover image found.
         /// </summary>
         internal static string NoCoverImageFound {
             get {
                 return ResourceManager.GetString("NoCoverImageFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
     }

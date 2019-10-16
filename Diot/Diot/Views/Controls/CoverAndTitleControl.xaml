@@ -1,12 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
-<ContentView 
+<Grid 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
-    x:Class="Diot.Views.Controls.CoverAndTitleControl">
-    <StackLayout Margin="0,10"
-                 WidthRequest="150">
+    x:Class="Diot.Views.Controls.CoverAndTitleControl"
+    x:Name="OuterContainer"
+    Margin="0,10"
+    WidthRequest="150"
+    Padding="5">
+    <StackLayout BackgroundColor="{DynamicResource BasePageBackgroundColor}"
+                 x:Name="InnerContainer">
         <Image x:Name="CoverImg" 
                WidthRequest="150"
                HeightRequest="200"
@@ -23,4 +27,4 @@
             <TapGestureRecognizer x:Name="TapGestureRecognizer"/>
         </StackLayout.GestureRecognizers>
     </StackLayout>
-</ContentView>
+</Grid>
