@@ -4,7 +4,9 @@ using Diot.Services;
 using Diot.ViewModels;
 using Diot.Views.Extensions;
 using Diot.Views.Pages;
+using DryIoc;
 using Prism;
+using Prism.DryIoc;
 using Prism.Ioc;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,6 +17,15 @@ namespace Diot
 {
     public partial class App
     {
+        #region Properties
+
+        /// <summary>
+        ///     Gets the application container.
+        /// </summary>
+        public static IContainer AppContainer { get; private set; }
+
+        #endregion
+
         #region Methods
 
         #region Constructors
@@ -41,7 +52,7 @@ namespace Diot
         /// <summary>
         ///     Run the bootstrapper process.
         /// </summary>
-        protected override void Initialize()
+        public override void Initialize()
         {
             InitializeComponent();
 
@@ -100,8 +111,9 @@ namespace Diot
 
             containerRegistry.RegisterSingleton<IDatabaseService, DatabaseService>();
 
-
             #endregion
+
+            AppContainer = containerRegistry.GetContainer();
         }
 
         #endregion

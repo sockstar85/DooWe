@@ -18,7 +18,9 @@ namespace Diot.ViewModels
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
-        private IDatabaseService _databaseService;
+        private readonly IDatabaseService _databaseService;
+        private readonly IPageDialogService _dialogService;
+        private readonly IResourceManager _resourceManager;
 
         #endregion
 
@@ -59,10 +61,13 @@ namespace Diot.ViewModels
             IExtendedNavigation navigationService, 
             IPageDialogService dialogService, 
             ILoadingPageService loadingPageService,
-            IDatabaseService databaseService)
+            IDatabaseService databaseService,
+            IResourceManager resourceManager)
             : base(navigationService, dialogService, loadingPageService)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
         }
 
         #endregion
@@ -78,7 +83,12 @@ namespace Diot.ViewModels
 
             if (!navigationResult.Success)
             {
-                //TODO: handle failed navigation.
+                Console.WriteLine(navigationResult.Exception.Message);
+
+                await _dialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("NavigationError"),
+                    _resourceManager.GetString("NavigationErrorMessage"),
+                    _resourceManager.GetString("Ok"));
             }
         }
 

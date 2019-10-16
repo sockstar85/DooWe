@@ -7,6 +7,7 @@ using Diot.Helpers;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Models;
+using DryIoc;
 using Prism.Services;
 using Xamarin.Forms;
 
@@ -18,8 +19,7 @@ namespace Diot.ViewModels
 
         private string _movieTitle;
         private List<ISelectableMovieViewModel> _searchResults = new List<ISelectableMovieViewModel>();
-        private IResourceManager _resourceManager;
-        private IDependencyService _dependencyService;
+        private readonly IResourceManager _resourceManager;
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Gets the select deselect movie command.
         /// </summary>
-        public ICommand SelectDeselectMovieCommand => new Command((x) => selectDeselectMovie((SelectableMovieViewModel)x));
+        public ICommand SelectDeselectMovieCommand => new Command<ISelectableMovieViewModel>((selection) => selectDeselectMovie(selection));
 
         /// <summary>
         ///     Gets or sets the movie title.
@@ -76,14 +76,10 @@ namespace Diot.ViewModels
         public AddNewPageViewModel(IExtendedNavigation navigationService,
             IPageDialogService pageDialogService,
             ILoadingPageService loadingPageService,
-            IResourceManager resourceManager,
-            IDependencyService dependencyService,
-            ISelectableMovieViewModel test) 
+            IResourceManager resourceManager) 
             : base(navigationService, pageDialogService, loadingPageService)
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
-            _dependencyService = dependencyService ?? throw new ArgumentNullException(nameof(dependencyService));
-            var testVm = test;
         }
 
         #endregion
@@ -132,11 +128,7 @@ namespace Diot.ViewModels
 
             foreach (var item in results)
             {
-                ISelectableMovieViewModel viewModel = _dependencyService.Get<ISelectableMovieViewModel>();
-
-                var test = await _dependencyService.Get<ISelectableMovieViewModel>().InitWithAsync(item); //TODO find out why dependency service isn't working
-
-                retVal.Add(test);
+                retVal.Add(await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item));
             }
 
             return retVal;

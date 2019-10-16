@@ -1,10 +1,11 @@
 ﻿using Diot.Models;
-using System;
 using System.Windows.Input;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Diot.ViewModels;
 
 namespace Diot.Views.Controls
 {
@@ -35,9 +36,9 @@ namespace Diot.Views.Controls
         /// <summary>
         ///     Gets or sets the tapped command parameter.
         /// </summary>
-        public MovieDbModel CommandParameter
+        public ISelectableMovieViewModel CommandParameter
         {
-	        get => (MovieDbModel) GetValue(CommandParameterProperty);
+	        get => (SelectableMovieViewModel) GetValue(CommandParameterProperty);
 	        set => SetValue(CommandParameterProperty, value);
 	    }
 
@@ -163,7 +164,7 @@ namespace Diot.Views.Controls
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create(
                 nameof(CommandParameter),
-                typeof(MovieDbModel),
+                typeof(SelectableMovieViewModel),
                 typeof(CoverAndTitleControl),
                 null,
                 propertyChanged: (bindable, oldValue, newValue) =>
