@@ -213,7 +213,7 @@ namespace Diot.Views.Controls
         /// </summary>
         private void updateIsSelected()
         {
-            OuterContainer.BackgroundColor = IsSelected ? (Color)_resourceManager.GetResource("SelectionColor") : BackgroundColor;
+            SelectedIcon.IsVisible = IsSelected;
         }
 
         #endregion

@@ -20,6 +20,17 @@ namespace Diot.iOS.Implementations
 
         private UIView _nativeView;
         private bool _isInitialized;
+        private LoadingIndicatorPage _currentPage;
+
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is showing.
+        /// </summary>
+        public bool IsShowing { get; private set; }
 
         #endregion
 
@@ -55,13 +66,17 @@ namespace Diot.iOS.Implementations
         public void ShowLoadingPage(string loadingPageText, int delay = 0, [CallerMemberName] string callerName = null)
         {
             // check if the user has set the page or not
-            if (!_isInitialized)
+            if (!_isInitialized && (_currentPage == null || _currentPage.PageText == loadingPageText))
             {
-                initLoadingPage(new LoadingIndicatorPage(loadingPageText)); // set the default page
+                _currentPage = new LoadingIndicatorPage(loadingPageText);
+
+                initLoadingPage(_currentPage); // set the default page
             }
 
             // showing the native loading page
             UIApplication.SharedApplication.KeyWindow.AddSubview(_nativeView);
+
+            IsShowing = true;
         }
 
         /// <summary>
@@ -78,6 +93,25 @@ namespace Diot.iOS.Implementations
 
             // Hide the page
             _nativeView.RemoveFromSuperview();
+
+            UpdateText(string.Empty);
+
+            IsShowing = false;
+        }
+
+        /// <summary>
+        ///     Updates the text on the loading page.
+        /// </summary>
+        /// <param name="loadingPageText">The loading page text.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void UpdateText(string loadingPageText)
+        {
+            if (_currentPage == null)
+            {
+                return;
+            }
+
+            _currentPage.PageText = loadingPageText;
         }
 
         #endregion

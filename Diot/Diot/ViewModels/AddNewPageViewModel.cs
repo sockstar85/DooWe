@@ -103,18 +103,20 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task searchMovie()
         {
-            LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle));
 
             var results = await MoviesDbHelper.SearchMovie(MovieTitle);
 
             if (results?.Results != null && results.Results.Any())
             {
-                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results);
+                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results); //TODO initialize with interface
             }
             else
             {
-                await DialogService.DisplayAlertAsync("No search results",
-                    $"No results found for \"{MovieTitle}\" found.", "Ok");
+                await DialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("NoSearchResults"),
+                    string.Format(_resourceManager.GetString("NoSearchResultsMessage"), MovieTitle),
+                    _resourceManager.GetString("Ok"));
             }
 
             MovieTitle = string.Empty;
@@ -126,7 +128,9 @@ namespace Diot.ViewModels
         {
             var retVal = new List<ISelectableMovieViewModel>();
 
-            foreach (var item in results)
+            LoadingPageService.UpdateText(string.Format(_resourceManager.GetString("PossibleMatchesText"), results.Count));
+
+            foreach(var item in results)
             {
                 retVal.Add(await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item));
             }

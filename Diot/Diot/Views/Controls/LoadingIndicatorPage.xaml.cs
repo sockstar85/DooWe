@@ -1,4 +1,8 @@
-﻿using Xamarin.Forms.Xaml;
+﻿using System;
+using Diot.Interface;
+using Diot.Services;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Diot.Views.Controls
 {
@@ -9,6 +13,41 @@ namespace Diot.Views.Controls
     [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoadingIndicatorPage
 	{
+        #region Fields
+
+        private static IResourceManager _resourceManager => ResourceManager.Instance;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the page text.
+        /// </summary>
+        public string PageText
+	    {
+	        get => (string) GetValue(PageTextProperty);
+	        set => SetValue(PageTextProperty, value);
+	    }
+
+        #endregion
+
+        #region Bindable Properties
+
+        /// <summary>
+        ///     Bindable property for <see cref="PageTextProperty"/>.
+        /// </summary>
+        public static readonly BindableProperty PageTextProperty =
+            BindableProperty.Create(
+                nameof(PageText),
+                typeof(string),
+                typeof(LoadingIndicatorPage),
+                _resourceManager.GetString("Loading"),
+                propertyChanged: (bindable, oldValue, newValue) =>
+                    ((LoadingIndicatorPage)bindable).updatePageText());
+        
+        #endregion
+
         #region Methods
 
         #region Constructors
@@ -49,6 +88,15 @@ namespace Diot.Views.Controls
 
             base.OnDisappearing();
 	    }
+
+        /// <summary>
+        ///     Updates the page text.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void updatePageText()
+        {
+            LoadingPageText.Text = PageText;
+        }
 
         #endregion
     }

@@ -81,11 +81,13 @@
     <Compile Include="Implementations\DatabaseController.cs" />
     <Compile Include="Implementations\LoadingPageService.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\IconLabelRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\movie_animation.json" />
+    <AndroidAsset Include="Assets\ElegantIcons.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
