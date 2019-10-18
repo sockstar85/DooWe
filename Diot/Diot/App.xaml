@@ -8,6 +8,13 @@
         <ResourceDictionary>
             <x:String x:Key="DbName">library.db3</x:String>
 
+            <!--#region Fonts-->
+            <OnPlatform x:Key="IconFont" 
+                        x:TypeArguments="x:String" 
+                        Android="ElegantIcons.tff#Elegant Fonts" 
+                        iOS="ElegantIcons"/>
+            <!--#endregion-->
+
             <!--#region Colors-->
 
             <!--#region Misc color-->

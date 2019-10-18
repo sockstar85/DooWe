@@ -8,6 +8,15 @@ namespace Diot.Interface
     /// </summary>
     public interface ILoadingPageService
     {
+        #region Properties
+
+        /// <summary>
+        ///     Gets a value indicating whether this instance is showing.
+        /// </summary>
+        bool IsShowing { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -24,6 +33,12 @@ namespace Diot.Interface
         /// <param name="delay">The delay.</param>
         /// <param name="callername">The callername.</param>
         Task HideLoadingPageAsync(int delay = 0, [CallerMemberName] string callername = null);
+
+        /// <summary>
+        ///     Updates the text on the loading page.
+        /// </summary>
+        /// <param name="loadingPageText">The loading page text.</param>
+        void UpdateText(string loadingPageText);
 
         #endregion
     }

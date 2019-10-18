@@ -147,7 +147,19 @@
   <data name="NoCoverImageFound" xml:space="preserve">
     <value>No cover image found</value>
   </data>
+  <data name="NoSearchResults" xml:space="preserve">
+    <value>No search results</value>
+  </data>
+  <data name="NoSearchResultsMessage" xml:space="preserve">
+    <value>No results found for "{0}" found.</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="PossibleMatchesText" xml:space="preserve">
+    <value>Found {0} possible matches. Getting details on each...</value>
+  </data>
+  <data name="SearchingMovie" xml:space="preserve">
+    <value>Searching for {0}...</value>
   </data>
 </root>

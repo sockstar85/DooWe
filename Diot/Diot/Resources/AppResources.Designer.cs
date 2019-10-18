@@ -151,11 +151,47 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No search results.
+        /// </summary>
+        internal static string NoSearchResults {
+            get {
+                return ResourceManager.GetString("NoSearchResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No results found for &quot;{0}&quot; found..
+        /// </summary>
+        internal static string NoSearchResultsMessage {
+            get {
+                return ResourceManager.GetString("NoSearchResultsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         internal static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found {0} possible matches. Getting details on each....
+        /// </summary>
+        internal static string PossibleMatchesText {
+            get {
+                return ResourceManager.GetString("PossibleMatchesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching for {0}....
+        /// </summary>
+        internal static string SearchingMovie {
+            get {
+                return ResourceManager.GetString("SearchingMovie", resourceCulture);
             }
         }
     }
