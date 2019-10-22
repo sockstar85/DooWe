@@ -20,7 +20,6 @@
             <!--#region Misc color-->
             <Color x:Key="PrimaryColor">#2f3c61</Color>
             <Color x:Key="SecondaryColor">#50a0a8</Color>
-            <Color x:Key="SelectionColor">Red</Color>
             <!--#endregion-->
 
             <!--#region Base Page colors-->
@@ -29,7 +28,13 @@
 
             <!--#region Text and Label colors-->
             <Color x:Key="PrimaryTextLight">LightGray</Color>
-            <Color x:Key="PrimaryTextDark">DarkGray</Color>
+            <Color x:Key="PrimaryTextDark">#121212</Color>
+            <!--#endregion-->
+
+            <!--#region Selected icon-->
+            <Color x:Key="SelectedIconColor">#268021</Color>
+            <Color x:Key="SelectedIconAccentColor">White</Color>
+
             <!--#endregion-->
 
             <!--#endregion-->

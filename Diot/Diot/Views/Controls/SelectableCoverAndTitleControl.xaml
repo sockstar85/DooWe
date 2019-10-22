@@ -10,11 +10,9 @@
     <Grid.Resources>
         <ResourceDictionary>
             <Style TargetType="controls:IconLabel">
-                <Setter Property="FontSize" Value="30"/>
-                <Setter Property="HorizontalOptions" Value="End"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="IsVisible" Value="False"/>
-                <Setter Property="Margin" Value="14,7"/>
+                <Setter Property="FontSize" Value="40"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
         </ResourceDictionary>
     </Grid.Resources>
@@ -29,10 +27,10 @@
                                           WidthRequest="150"
                                           HeightRequest="200"/>
             <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check_solid}"
-                                TextColor="Green"
+                                TextColor="{DynamicResource SelectedIconColor}"
                                 x:Name="SelectedIconSolid"/>
             <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check}"
-                                TextColor="White"
+                                TextColor="{DynamicResource SelectedIconAccentColor}"
                                 x:Name="SelectedIcon"/>
         </Grid>
         <Label x:Name="TitleLbl"

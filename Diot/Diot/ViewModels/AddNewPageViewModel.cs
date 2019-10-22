@@ -136,7 +136,10 @@ namespace Diot.ViewModels
 
             foreach(var item in results)
             {
-                retVal.Add(await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item));
+                var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item);
+                formatTitle(movie);
+
+                retVal.Add(movie);
             }
 
             return retVal;
@@ -147,7 +150,7 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task addSelectedMovies()
         {
-            LoadingPageService.ShowLoadingPage("AddingMovies");
+            LoadingPageService.ShowLoadingPage(_resourceManager.GetString("AddingMovies"));
 
             var selectedMovies = SearchResults?.Where(x => x.IsSelected).ToList() ?? new List<ISelectableMovieViewModel>();
 
@@ -155,7 +158,10 @@ namespace Diot.ViewModels
             {
                 formatTitle(movie);
 
-                _databaseService.SaveMovie(movie);
+                await Task.Run(() =>
+                {
+                    return _databaseService.SaveMovie(movie);
+                });
             }
 
             await NavigationService.GoBackAsync();
@@ -166,26 +172,26 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Formats the title with the "The" at the end of the title.
         /// </summary>
-        /// <param name="currentResult">The current result.</param>
-        private void formatTitle(ISelectableMovieViewModel currentResult)
+        /// <param name="selection">The selected movie.</param>
+        private void formatTitle(ISelectableMovieViewModel selection)
         {
-            if (string.IsNullOrWhiteSpace(currentResult?.Title))
+            if (string.IsNullOrWhiteSpace(selection?.Movie?.Title))
             {
                 return;
             }
 
             var stringToMove = "The ";
 
-            if (!currentResult.Title.StartsWith(stringToMove, StringComparison.InvariantCultureIgnoreCase))
+            if (!selection.Movie.Title.StartsWith(stringToMove, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            var title = currentResult.Title.Remove(0, stringToMove.Length);
+            var title = selection.Movie.Title.Remove(0, stringToMove.Length);
 
             title += $", {stringToMove.Trim()}";
 
-            currentResult.Title = title;
+            selection.Movie.Title = title;
         }
 
         #endregion

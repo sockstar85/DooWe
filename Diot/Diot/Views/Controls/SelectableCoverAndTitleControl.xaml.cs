@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
@@ -6,6 +7,7 @@ using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Diot.ViewModels;
+using System.Collections.Generic;
 
 namespace Diot.Views.Controls
 {
@@ -20,6 +22,9 @@ namespace Diot.Views.Controls
 
         private IResourceManager _resourceManager => ResourceManager.Instance;
 	    private ISelectableMovieViewModel _movieObject;
+        private double _coverImgScale;
+        private double _selectedIconSolidScale;
+        private double _selectedIconScale;
 
         #endregion
 
@@ -91,6 +96,14 @@ namespace Diot.Views.Controls
         public SelectableCoverAndTitleControl ()
 		{
 			InitializeComponent ();
+
+		    _coverImgScale = CoverImg.Scale;
+		    _selectedIconSolidScale = SelectedIconSolid.Scale;
+		    _selectedIconScale = SelectedIcon.Scale;
+
+            //Initialize the selected icon to show unselected.
+		    SelectedIconSolid.ScaleTo(0, 0);
+		    SelectedIcon.ScaleTo(0, 0);
 		}
 
         #endregion
@@ -221,8 +234,34 @@ namespace Diot.Views.Controls
         /// </summary>
         private void updateIsSelected()
         {
-            SelectedIconSolid.IsVisible = IsSelected;
-            SelectedIcon.IsVisible = IsSelected;
+            uint length = 200;
+
+            Task.Run(async () =>
+            {
+
+#pragma warning disable CS4014 //Disabling for animations
+
+                CoverImg.FadeTo(0.75, length/2);
+                await CoverImg.ScaleTo(_coverImgScale * 0.90, length/2, Easing.CubicOut);
+                CoverImg.FadeTo(1, length);
+                CoverImg.ScaleTo(_coverImgScale, length, Easing.SpringOut);
+
+                if (IsSelected)
+                {
+                    await SelectedIconSolid.ScaleTo(0, 0);
+                    await SelectedIcon.ScaleTo(0, 0);
+
+                    SelectedIconSolid.ScaleTo(_selectedIconSolidScale, length/2, Easing.SpringOut);
+                    await SelectedIcon.ScaleTo(_selectedIconScale, length/2, Easing.SpringOut);
+                }
+                else
+                {
+                    SelectedIconSolid.ScaleTo(0, length/2, Easing.SpringIn);
+                    await SelectedIcon.ScaleTo(0, length/2, Easing.SpringIn);
+                }
+#pragma warning restore CS4014
+
+            });
         }
 
         #endregion
