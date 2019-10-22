@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,8 +19,9 @@ namespace Diot.ViewModels
         #region  Fields
 
         private string _movieTitle;
-        private List<ISelectableMovieViewModel> _searchResults = new List<ISelectableMovieViewModel>();
+        private ObservableCollection<ISelectableMovieViewModel> _searchResults = new ObservableCollection<ISelectableMovieViewModel>();
         private readonly IResourceManager _resourceManager;
+        private readonly IDatabaseService _databaseService;
 
         #endregion
 
@@ -52,7 +54,7 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Gets or sets search results
         /// </summary>
-        public List<ISelectableMovieViewModel> SearchResults
+        public ObservableCollection<ISelectableMovieViewModel> SearchResults
         {
             get => _searchResults;
             set => SetProperty(ref _searchResults, value);
@@ -72,14 +74,16 @@ namespace Diot.ViewModels
         /// <param name="pageDialogService">The page dialog service.</param>
         /// <param name="loadingPageService">The loading page service.</param>
         /// <param name="resourceManager">The resource manager.</param>
-        /// <exception cref="ArgumentNullException">resourceManager</exception>
+        /// <param name="databaseService">The database service.</param>
         public AddNewPageViewModel(IExtendedNavigation navigationService,
             IPageDialogService pageDialogService,
             ILoadingPageService loadingPageService,
-            IResourceManager resourceManager) 
+            IResourceManager resourceManager,
+            IDatabaseService databaseService) 
             : base(navigationService, pageDialogService, loadingPageService)
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
         }
 
         #endregion
@@ -109,7 +113,7 @@ namespace Diot.ViewModels
 
             if (results?.Results != null && results.Results.Any())
             {
-                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results); //TODO initialize with interface
+                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results);
             }
             else
             {
@@ -124,11 +128,11 @@ namespace Diot.ViewModels
             await LoadingPageService.HideLoadingPageAsync();
         }
 
-        private async Task<List<ISelectableMovieViewModel>> convertToSelectableMovieViewModelsAsync(List<MovieDbModel> results)
+        private async Task<ObservableCollection<ISelectableMovieViewModel>> convertToSelectableMovieViewModelsAsync(List<MovieDbModel> results)
         {
-            var retVal = new List<ISelectableMovieViewModel>();
+            var retVal = new ObservableCollection<ISelectableMovieViewModel>();
 
-            LoadingPageService.UpdateText(string.Format(_resourceManager.GetString("PossibleMatchesText"), results.Count));
+            LoadingPageService.UpdateText(_resourceManager.GetString("PossibleMatchesText"));
 
             foreach(var item in results)
             {
@@ -143,15 +147,27 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task addSelectedMovies()
         {
-            //TODO: finish this
-            await Task.Run(() => { });
+            LoadingPageService.ShowLoadingPage("AddingMovies");
+
+            var selectedMovies = SearchResults?.Where(x => x.IsSelected).ToList() ?? new List<ISelectableMovieViewModel>();
+
+            foreach (var movie in selectedMovies)
+            {
+                formatTitle(movie);
+
+                _databaseService.SaveMovie(movie);
+            }
+
+            await NavigationService.GoBackAsync();
+
+            await LoadingPageService.HideLoadingPageAsync();
         }
 
         /// <summary>
         ///     Formats the title with the "The" at the end of the title.
         /// </summary>
         /// <param name="currentResult">The current result.</param>
-        private void formatTitle(MovieDbModel currentResult)
+        private void formatTitle(ISelectableMovieViewModel currentResult)
         {
             if (string.IsNullOrWhiteSpace(currentResult?.Title))
             {

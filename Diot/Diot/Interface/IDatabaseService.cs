@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Diot.Interface.ViewModels;
 using Diot.Models;
 
 namespace Diot.Interface
@@ -15,7 +16,14 @@ namespace Diot.Interface
         /// <summary>
         ///     Saves the movie.
         /// </summary>
+        /// <param name="movie">The movie.</param>
         int SaveMovie(MovieDbModel movie);
+
+        /// <summary>
+        ///     Saves the movie.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        int SaveMovie(ISelectableMovieViewModel movie);
 
         /// <summary>
         ///     Deletes the movie.

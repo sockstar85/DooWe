@@ -5,9 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
     xmlns:helpers="clr-namespace:Diot.Helpers"
-    x:Class="Diot.Views.Controls.CoverAndTitleControl"
-    WidthRequest="150"
-    Margin="0,0,0,15">
+    x:Class="Diot.Views.Controls.SelectableCoverAndTitleControl"
+    WidthRequest="150">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <Style TargetType="controls:IconLabel">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="IsVisible" Value="False"/>
+                <Setter Property="Margin" Value="14,7"/>
+            </Style>
+        </ResourceDictionary>
+    </Grid.Resources>
     <StackLayout BackgroundColor="{DynamicResource BasePageBackgroundColor}"
                  x:Name="InnerContainer">
         <Grid>
@@ -18,13 +28,12 @@
             <controls:NoCoverImageControl x:Name="NoCoverImageControl"
                                           WidthRequest="150"
                                           HeightRequest="200"/>
-            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check}"
-                                FontSize="30" 
+            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check_solid}"
                                 TextColor="Green"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                x:Name="SelectedIcon"
-                                IsVisible="False"/>
+                                x:Name="SelectedIconSolid"/>
+            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check}"
+                                TextColor="White"
+                                x:Name="SelectedIcon"/>
         </Grid>
         <Label x:Name="TitleLbl"
                HorizontalOptions="Center"

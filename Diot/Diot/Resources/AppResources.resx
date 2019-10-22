@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddingMovies" xml:space="preserve">
+    <value>Saving your selections...</value>
+  </data>
   <data name="AddNew" xml:space="preserve">
     <value>Add New</value>
   </data>
@@ -157,9 +160,12 @@
     <value>Ok</value>
   </data>
   <data name="PossibleMatchesText" xml:space="preserve">
-    <value>Found {0} possible matches. Getting details on each...</value>
+    <value>Found possible matches. Getting details on each...</value>
   </data>
   <data name="SearchingMovie" xml:space="preserve">
     <value>Searching for {0}...</value>
+  </data>
+  <data name="AddSelectedMovies" xml:space="preserve">
+    <value>Add selected movies</value>
   </data>
 </root>

@@ -1,22 +1,25 @@
-﻿using Diot.Models;
+﻿using System;
 using System.Windows.Input;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Diot.ViewModels;
 
 namespace Diot.Views.Controls
 {
     /// <summary>
     ///     Control that displays the cover image 
     /// </summary>
-    /// <seealso cref="Xamarin.Forms.ContentView" />
+    /// <seealso cref="ContentView" />
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CoverAndTitleControl
+	public partial class SelectableCoverAndTitleControl
 	{
         #region Fields
 
-        IResourceManager _resourceManager => ResourceManager.Instance;
+        private IResourceManager _resourceManager => ResourceManager.Instance;
+	    private ISelectableMovieViewModel _movieObject;
 
         #endregion
 
@@ -34,9 +37,9 @@ namespace Diot.Views.Controls
         /// <summary>
         ///     Gets or sets the tapped command parameter.
         /// </summary>
-        public MovieDbModel CommandParameter
+        public ISelectableMovieViewModel CommandParameter
         {
-	        get => (MovieDbModel) GetValue(CommandParameterProperty);
+	        get => (SelectableMovieViewModel) GetValue(CommandParameterProperty);
 	        set => SetValue(CommandParameterProperty, value);
 	    }
 
@@ -83,9 +86,9 @@ namespace Diot.Views.Controls
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CoverAndTitleControl"/> class.
+        ///     Initializes a new instance of the <see cref="SelectableCoverAndTitleControl"/> class.
         /// </summary>
-        public CoverAndTitleControl ()
+        public SelectableCoverAndTitleControl ()
 		{
 			InitializeComponent ();
 		}
@@ -101,10 +104,10 @@ namespace Diot.Views.Controls
 	        BindableProperty.Create(
 	            nameof(BackgroundColor),
 	            typeof(Color),
-                typeof(CoverAndTitleControl),
+                typeof(SelectableCoverAndTitleControl),
 	            default(Color),
 	            propertyChanged: (bindable, oldValue, newValue) => 
-	                ((CoverAndTitleControl)bindable).updateIsSelected());
+	                ((SelectableCoverAndTitleControl)bindable).updateIsSelected());
 
         #region Bindable Properties
 
@@ -115,10 +118,10 @@ namespace Diot.Views.Controls
             BindableProperty.Create(
                 nameof(IsSelected),
                 typeof(bool),
-                typeof(CoverAndTitleControl),
+                typeof(SelectableCoverAndTitleControl),
                 default(bool),
                 propertyChanged: (bindable, oldValue, newValue) =>
-                    ((CoverAndTitleControl)bindable).updateIsSelected());
+                    ((SelectableCoverAndTitleControl)bindable).updateIsSelected());
         
         /// <summary>
         ///     The bindable property for <see cref="Title"/>.
@@ -127,10 +130,10 @@ namespace Diot.Views.Controls
 	        BindableProperty.Create(
 	            nameof(Title),
 	            typeof(string),
-	            typeof(CoverAndTitleControl),
+	            typeof(SelectableCoverAndTitleControl),
 	            default(string),
 	            propertyChanged: (bindable, oldValue, newValue) =>
-	                ((CoverAndTitleControl)bindable).updateTitle());
+	                ((SelectableCoverAndTitleControl)bindable).updateTitle());
 
         /// <summary>
         ///     The bindable property for <see cref="CoverImage"/>.
@@ -139,10 +142,10 @@ namespace Diot.Views.Controls
 	        BindableProperty.Create(
 	            nameof(CoverImage),
 	            typeof(ImageSource),
-	            typeof(CoverAndTitleControl),
+	            typeof(SelectableCoverAndTitleControl),
 	            default(ImageSource),
 	            propertyChanged: (bindable, oldValue, newValue) =>
-	                ((CoverAndTitleControl)bindable).updateCoverImage());
+	                ((SelectableCoverAndTitleControl)bindable).updateCoverImage());
 
         /// <summary>
         ///     The bindable property for <see cref="TappedCommand"/>.
@@ -151,10 +154,10 @@ namespace Diot.Views.Controls
             BindableProperty.Create(
                 nameof(TappedCommand), 
                 typeof(ICommand), 
-                typeof(CoverAndTitleControl),
+                typeof(SelectableCoverAndTitleControl),
                 default(ICommand),
                 propertyChanged: (bindable, oldValue, newValue) =>
-                    ((CoverAndTitleControl)bindable).updateTappedCommand());
+                    ((SelectableCoverAndTitleControl)bindable).updateTappedCommand());
 
         /// <summary>
         ///     The bindable property for <see cref="CommandParameter"/>.
@@ -162,11 +165,11 @@ namespace Diot.Views.Controls
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create(
                 nameof(CommandParameter),
-                typeof(MovieDbModel),
-                typeof(CoverAndTitleControl),
+                typeof(SelectableMovieViewModel),
+                typeof(SelectableCoverAndTitleControl),
                 null,
                 propertyChanged: (bindable, oldValue, newValue) =>
-                    ((CoverAndTitleControl)bindable).updateTappedCommandParameterProperty());
+                    ((SelectableCoverAndTitleControl)bindable).updateTappedCommandParameterProperty());
 
         #endregion
 
@@ -196,7 +199,13 @@ namespace Diot.Views.Controls
         private void updateTappedCommandParameterProperty()
 	    {
 	        TapGestureRecognizer.CommandParameter = CommandParameter;
-	    }
+	        _movieObject = CommandParameter;
+
+	        if (_movieObject?.Movie?.CoverImageByteArray == null || _movieObject.Movie.CoverImageByteArray.Length == 0)
+	        {
+	            Console.WriteLine("Well, I think we have an empty image");
+	        }
+        }
 
         /// <summary>
         ///     Updates the tap gesture recognizer command.
@@ -204,6 +213,7 @@ namespace Diot.Views.Controls
         private void updateTappedCommand()
 	    {
 	        TapGestureRecognizer.Command = TappedCommand;
+            updateCoverImage();
 	    }
 
         /// <summary>
@@ -211,6 +221,7 @@ namespace Diot.Views.Controls
         /// </summary>
         private void updateIsSelected()
         {
+            SelectedIconSolid.IsVisible = IsSelected;
             SelectedIcon.IsVisible = IsSelected;
         }
 

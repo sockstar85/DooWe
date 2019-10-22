@@ -1,5 +1,6 @@
 ﻿using Prism.Navigation;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Diot.Interface.ViewModels
@@ -31,7 +32,7 @@ namespace Diot.Interface.ViewModels
         /// <summary>
         ///     Gets or sets the search results.
         /// </summary>
-        List<ISelectableMovieViewModel> SearchResults { get; set; }
+        ObservableCollection<ISelectableMovieViewModel> SearchResults { get; set; }
 
         #endregion
     }

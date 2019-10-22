@@ -21,7 +21,8 @@
         {
             #region Properties
 
-            public const string selected_check = "\uE052";
+            public const string selected_check_solid = "\uE052";
+            public const string selected_check = "\u0052";
 
             #endregion
         }
