@@ -1,9 +1,11 @@
-﻿using Diot.Models;
+﻿using System;
+using Diot.Models;
 using System.Windows.Input;
 using Diot.Interface;
 using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Threading.Tasks;
 
 namespace Diot.Views.Controls
 {
@@ -17,6 +19,7 @@ namespace Diot.Views.Controls
         #region Fields
 
         IResourceManager _resourceManager => ResourceManager.Instance;
+	    private readonly double _coverImgScale;
 
         #endregion
 
@@ -88,6 +91,7 @@ namespace Diot.Views.Controls
         public CoverAndTitleControl ()
 		{
 			InitializeComponent ();
+		    _coverImgScale = CoverImg.Scale;
 		}
 
         #endregion
@@ -212,6 +216,34 @@ namespace Diot.Views.Controls
         private void updateIsSelected()
         {
             SelectedIcon.IsVisible = IsSelected;
+        }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        ///     Handles the OnTapped event of the TapGestureRecognizer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+	    {
+	        uint length = 200;
+
+	        Task.Run(async () =>
+	        {
+
+#pragma warning disable CS4014 //Disabling for animations
+
+	            CoverImg.FadeTo(0.75, length / 2);
+	            await CoverImg.ScaleTo(_coverImgScale * 0.90, length / 2, Easing.CubicOut);
+	            CoverImg.FadeTo(1, length);
+	            CoverImg.ScaleTo(_coverImgScale, length, Easing.SpringOut);
+
+#pragma warning restore CS4014
+
+	        });
         }
 
         #endregion

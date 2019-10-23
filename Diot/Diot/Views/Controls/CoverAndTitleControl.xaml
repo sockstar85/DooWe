@@ -32,7 +32,7 @@
                HorizontalTextAlignment="Center"
                LineBreakMode="WordWrap"/>
         <StackLayout.GestureRecognizers>
-            <TapGestureRecognizer x:Name="TapGestureRecognizer"/>
+            <TapGestureRecognizer x:Name="TapGestureRecognizer" Tapped="TapGestureRecognizer_OnTapped"/>
         </StackLayout.GestureRecognizers>
     </StackLayout>
 </Grid>
