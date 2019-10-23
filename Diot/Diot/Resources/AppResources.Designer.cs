@@ -115,6 +115,24 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Looks like something went wrong. Please try again..
+        /// </summary>
+        internal static string GenericErrorMessage {
+            get {
+                return ResourceManager.GetString("GenericErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oops... something went wrong.
+        /// </summary>
+        internal static string GenericErrorTitle {
+            get {
+                return ResourceManager.GetString("GenericErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to My Library.
         /// </summary>
         internal static string Library {
@@ -165,6 +183,24 @@ namespace Diot.Resources {
         internal static string NoCoverImageFound {
             get {
                 return ResourceManager.GetString("NoCoverImageFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No network connection.
+        /// </summary>
+        internal static string NoNetworkConnection {
+            get {
+                return ResourceManager.GetString("NoNetworkConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching for a movie requires an internet connection. Please try again..
+        /// </summary>
+        internal static string NoNetworkConnectionMessage {
+            get {
+                return ResourceManager.GetString("NoNetworkConnectionMessage", resourceCulture);
             }
         }
         

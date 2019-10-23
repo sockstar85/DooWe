@@ -7,6 +7,7 @@ using Diot.Helpers;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Models;
+using Plugin.Connectivity;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
@@ -77,7 +78,16 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToAddNewPage()
         {
-            //TODO: Check for data connectivity first
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await _dialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("NoNetworkConnection"), 
+                    _resourceManager.GetString("NoNetworkConnectionMessage"),
+                    _resourceManager.GetString("Ok"));
+
+                return;
+            }
+
 
             var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
 
@@ -161,17 +171,26 @@ namespace Diot.ViewModels
         }
 
         /// <summary>
-        ///     Called when [navigating to].
+        ///     Called when navigating to.
         /// </summary>
-        public override void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatingTo(INavigationParameters parameters)
         {
             base.OnNavigatingTo(parameters);
-            MoviesList = _databaseService.GetAllMovies();
 
-            Task.Run(async () =>
+            try
             {
+                MoviesList = _databaseService.GetAllMovies();
+
                 await getCoverImagesAsync();
-            });
+            }
+            catch (Exception)
+            {
+                await _dialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("GenericErrorTitle"),
+                    _resourceManager.GetString("GenericErrorMessage"),
+                    _resourceManager.GetString("Ok"));
+            }
+            
         }
 
         #endregion

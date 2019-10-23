@@ -168,4 +168,16 @@
   <data name="AddSelectedMovies" xml:space="preserve">
     <value>Add selected movies</value>
   </data>
+  <data name="GenericErrorMessage" xml:space="preserve">
+    <value>Looks like something went wrong. Please try again.</value>
+  </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+    <value>Oops... something went wrong</value>
+  </data>
+  <data name="NoNetworkConnection" xml:space="preserve">
+    <value>No network connection</value>
+  </data>
+  <data name="NoNetworkConnectionMessage" xml:space="preserve">
+    <value>Searching for a movie requires an internet connection. Please try again.</value>
+  </data>
 </root>

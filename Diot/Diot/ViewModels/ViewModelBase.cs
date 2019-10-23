@@ -1,7 +1,6 @@
 ﻿using System;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
-using Diot.Services;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services;
