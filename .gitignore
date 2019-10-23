@@ -12,3 +12,6 @@
 /Diot/Diot.iOS/bin/iPhone/Debug
 /Diot/Diot.iOS/bin/iPhoneSimulator/Debug
 /Diot/Diot.iOS/obj/iPhoneSimulator/Debug
+/Diot/Diot.Android/bin/Release
+/Diot/Diot/bin/Release/netstandard2.0
+/Diot/Diot.iOS/obj/iPhone/Release

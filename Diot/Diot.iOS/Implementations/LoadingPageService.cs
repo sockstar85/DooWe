@@ -66,7 +66,7 @@ namespace Diot.iOS.Implementations
         public void ShowLoadingPage(string loadingPageText, int delay = 0, [CallerMemberName] string callerName = null)
         {
             // check if the user has set the page or not
-            if (!_isInitialized && (_currentPage == null || _currentPage.PageText == loadingPageText))
+            if (!_isInitialized || _currentPage == null || _currentPage.PageText != loadingPageText)
             {
                 _currentPage = new LoadingIndicatorPage(loadingPageText);
 

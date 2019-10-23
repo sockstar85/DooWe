@@ -46,18 +46,18 @@
                     ItemsSource="{Binding SearchResults}">
                     <controls:ExtendedFlexLayout.ItemTemplate>
                         <DataTemplate>
-                            <controls:CoverAndTitleControl
+                            <controls:SelectableCoverAndTitleControl
                                 TappedCommand="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.SelectDeselectMovieCommand}"
                                 CommandParameter="{Binding .}"
-                                CoverImage="{Binding Movie.CoverImage}"
                                 Title="{Binding Movie.Title}"
+                                CoverImage="{Binding Movie.CoverImage}"
                                 IsSelected="{Binding IsSelected, Mode=TwoWay}"/>
                         </DataTemplate>
                     </controls:ExtendedFlexLayout.ItemTemplate>
                 </controls:ExtendedFlexLayout>
             </ScrollView>
 
-            <Button Text="Add that one"
+            <Button Text="{extensions:Translate AddSelectedMovies}"
                     Command="{Binding AddSelectedMoviesCommand}"
                     Grid.Row="2"/>
         </Grid>

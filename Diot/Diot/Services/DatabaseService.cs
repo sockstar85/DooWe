@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Diot.Interface;
+using Diot.Interface.ViewModels;
 using Diot.Models;
 using SQLite;
 using Xamarin.Forms;
@@ -60,6 +61,11 @@ namespace Diot.Services
         /// <param name="movie">The movie.</param>
         public int SaveMovie(MovieDbModel movie)
         {
+            if (movie == null)
+            {
+                return -1;
+            }
+
             lock (locker)
             {
                 var movieExists = false;
@@ -82,6 +88,15 @@ namespace Diot.Services
                 conn.Update(movie);
                 return movie.Id;
             }
+        }
+
+        /// <summary>
+        ///     Saves the movie.
+        /// </summary>
+        /// <param name="movie">The movie.</param>
+        public int SaveMovie(ISelectableMovieViewModel viewModel)
+        {
+            return SaveMovie(viewModel?.Movie);
         }
 
         /// <summary>

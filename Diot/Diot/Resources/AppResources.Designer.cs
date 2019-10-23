@@ -61,11 +61,29 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saving your selections....
+        /// </summary>
+        internal static string AddingMovies {
+            get {
+                return ResourceManager.GetString("AddingMovies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New.
         /// </summary>
         internal static string AddNew {
             get {
                 return ResourceManager.GetString("AddNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add selected movies.
+        /// </summary>
+        internal static string AddSelectedMovies {
+            get {
+                return ResourceManager.GetString("AddSelectedMovies", resourceCulture);
             }
         }
         
@@ -178,7 +196,7 @@ namespace Diot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Found {0} possible matches. Getting details on each....
+        ///   Looks up a localized string similar to Found possible matches. Getting details on each....
         /// </summary>
         internal static string PossibleMatchesText {
             get {
