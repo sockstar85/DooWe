@@ -7,7 +7,6 @@ using Diot.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Diot.ViewModels;
-using System.Collections.Generic;
 
 namespace Diot.Views.Controls
 {
@@ -22,9 +21,9 @@ namespace Diot.Views.Controls
 
         private IResourceManager _resourceManager => ResourceManager.Instance;
 	    private ISelectableMovieViewModel _movieObject;
-        private double _coverImgScale;
-        private double _selectedIconSolidScale;
-        private double _selectedIconScale;
+        private readonly double _coverImgScale;
+        private readonly double _selectedIconSolidScale;
+        private readonly double _selectedIconScale;
 
         #endregion
 
