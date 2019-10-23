@@ -229,6 +229,11 @@ namespace Diot.Views.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
 	    {
+	        if (!IsEnabled)
+	        {
+	            return;
+	        }
+
 	        uint length = 200;
 
 	        Task.Run(async () =>
