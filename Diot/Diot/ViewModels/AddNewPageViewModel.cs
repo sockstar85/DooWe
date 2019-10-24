@@ -9,6 +9,7 @@ using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Models;
 using DryIoc;
+using Plugin.Connectivity;
 using Prism.Services;
 using Xamarin.Forms;
 
@@ -22,6 +23,7 @@ namespace Diot.ViewModels
         private ObservableCollection<ISelectableMovieViewModel> _searchResults = new ObservableCollection<ISelectableMovieViewModel>();
         private readonly IResourceManager _resourceManager;
         private readonly IDatabaseService _databaseService;
+        private readonly IPageDialogService _dialogService;
 
         #endregion
 
@@ -84,6 +86,7 @@ namespace Diot.ViewModels
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+            _dialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
         }
 
         #endregion
@@ -107,9 +110,32 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task searchMovie()
         {
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                await _dialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("NoNetworkConnection"),
+                    _resourceManager.GetString("NoNetworkConnectionMessage"),
+                    _resourceManager.GetString("Ok"));
+
+                return;
+            }
+
             LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle));
 
-            var results = await MoviesDbHelper.SearchMovie(MovieTitle);
+            MovieDbResultsModel results = null;
+
+            try
+            {
+                results = await MoviesDbHelper.SearchMovie(MovieTitle);
+            }
+            catch (Exception)
+            {
+                await _dialogService.DisplayAlertAsync(
+                    _resourceManager.GetString("GenericErrorTitle"),
+                    _resourceManager.GetString("GenericErrorMessage"),
+                    _resourceManager.GetString("Ok"));
+                return;
+            }
 
             if (results?.Results != null && results.Results.Any())
             {

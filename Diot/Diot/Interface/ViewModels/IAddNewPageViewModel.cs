@@ -1,11 +1,10 @@
-﻿using Prism.Navigation;
-using System.Collections.Generic;
+﻿
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Diot.Interface.ViewModels
 {
-    public interface IAddNewPageViewModel : INavigationAware, IDestructible
+    public interface IAddNewPageViewModel : IViewModelBase
     {
         #region Properties
 
