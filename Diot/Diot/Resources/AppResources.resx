@@ -180,4 +180,10 @@
   <data name="NoNetworkConnectionMessage" xml:space="preserve">
     <value>Searching for a movie requires an internet connection. Please try again.</value>
   </data>
+  <data name="EnterCustomFormat" xml:space="preserve">
+    <value>Enter custom format...</value>
+  </data>
+  <data name="FormatSelectionInstructions" xml:space="preserve">
+    <value>Select owned formats for\n{0}</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Diot.Droid.Implementations;
 using Diot.Interface;
@@ -25,10 +26,26 @@ namespace Diot.Droid
 
             base.OnCreate(bundle);
 
+            Rg.Plugins.Popup.Popup.Init(this, bundle);
             CrossCurrentActivity.Current.Init(this, bundle);
             Forms.Init(this, bundle);
             AnimationViewRenderer.Init();
             LoadApplication(new App(new AndroidInitializer()));
+        }
+
+        /// <summary>
+        ///     Called when back pressed.
+        /// </summary>
+        public override void OnBackPressed()
+        {
+            if (Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed))
+            {
+                //Do nothing. Popup pages should have a way to close themselves.
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
         }
 
         #endregion
