@@ -205,6 +205,33 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No movies.
+        /// </summary>
+        internal static string NoMovies {
+            get {
+                return ResourceManager.GetString("NoMovies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tap &quot;.
+        /// </summary>
+        internal static string NoMoviesInstructions1 {
+            get {
+                return ResourceManager.GetString("NoMoviesInstructions1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot; in the toolbar to add a movie.
+        /// </summary>
+        internal static string NoMoviesInstructions2 {
+            get {
+                return ResourceManager.GetString("NoMoviesInstructions2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No network connection.
         /// </summary>
         internal static string NoNetworkConnection {
