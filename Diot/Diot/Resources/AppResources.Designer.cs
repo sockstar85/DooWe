@@ -115,6 +115,24 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter custom format....
+        /// </summary>
+        internal static string EnterCustomFormat {
+            get {
+                return ResourceManager.GetString("EnterCustomFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select owned formats for\n{0}.
+        /// </summary>
+        internal static string FormatSelectionInstructions {
+            get {
+                return ResourceManager.GetString("FormatSelectionInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Looks like something went wrong. Please try again..
         /// </summary>
         internal static string GenericErrorMessage {

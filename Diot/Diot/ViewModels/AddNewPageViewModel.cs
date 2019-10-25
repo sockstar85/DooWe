@@ -8,9 +8,11 @@ using Diot.Helpers;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Models;
+using Diot.Views.Pages;
 using DryIoc;
 using Plugin.Connectivity;
 using Prism.Services;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace Diot.ViewModels
@@ -42,7 +44,7 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Gets the select deselect movie command.
         /// </summary>
-        public ICommand SelectDeselectMovieCommand => new Command<ISelectableMovieViewModel>((selection) => selectDeselectMovie(selection));
+        public ICommand SelectDeselectMovieCommand => new Command<ISelectableMovieViewModel>(async (selection) => await selectDeselectMovieAsync(selection));
 
         /// <summary>
         ///     Gets or sets the movie title.
@@ -95,7 +97,7 @@ namespace Diot.ViewModels
         ///     Selects/deselect the movie.
         /// </summary>
         /// <param name="selectedMovie">The selected movie.</param>
-        private void selectDeselectMovie(ISelectableMovieViewModel selectedMovie)
+        private async Task selectDeselectMovieAsync(ISelectableMovieViewModel selectedMovie)
         {
             if (selectedMovie == null)
             {
@@ -103,6 +105,11 @@ namespace Diot.ViewModels
             }
 
             selectedMovie.IsSelected = !selectedMovie.IsSelected;
+
+            if (selectedMovie.IsSelected)
+            {
+                await PopupNavigation.Instance.PushAsync(new FormatSelectionPopupPage(selectedMovie));
+            }
         }
 
         /// <summary>
@@ -120,7 +127,7 @@ namespace Diot.ViewModels
                 return;
             }
 
-            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle));
+            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle.Trim()));
 
             MovieDbResultsModel results = null;
 
