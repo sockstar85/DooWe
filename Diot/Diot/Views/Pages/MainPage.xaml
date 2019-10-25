@@ -18,11 +18,30 @@
     <ContentPage.Content>
         <ScrollView>
             <Grid>
+                <StackLayout HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             x:Name="NoMoviesContainer"
+                             IsVisible="{Binding HasNoMovies}">
+                    <Label Text="{extensions:Translate NoMovies}" 
+                           FontAttributes="Bold" 
+                           FontSize="25"
+                           HorizontalTextAlignment="Center"/>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{extensions:Translate NoMoviesInstructions1}"/>
+                                <Span Text="{extensions:Translate AddNew}" 
+                                      FontAttributes="Bold"/>
+                                <Span Text="{extensions:Translate NoMoviesInstructions2}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
                 <controls:ExtendedFlexLayout 
-                    Direction="Row" 
-                    Wrap="Wrap"
-                    JustifyContent="SpaceEvenly" 
-                    ItemsSource="{Binding MoviesList}">
+                        Direction="Row" 
+                        Wrap="Wrap"
+                        JustifyContent="SpaceEvenly" 
+                        ItemsSource="{Binding MoviesList}">
                     <controls:ExtendedFlexLayout.ItemTemplate>
                         <DataTemplate>
                             <controls:CoverAndTitleControl

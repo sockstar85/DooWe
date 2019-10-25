@@ -23,6 +23,11 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         List<MovieDbModel> MoviesList { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance has no movies.
+        /// </summary>
+        bool HasNoMovies { get; set; }
+
         #endregion
     }
 }

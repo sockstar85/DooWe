@@ -186,4 +186,13 @@
   <data name="FormatSelectionInstructions" xml:space="preserve">
     <value>Select owned formats for\n{0}</value>
   </data>
+  <data name="NoMovies" xml:space="preserve">
+    <value>No movies</value>
+  </data>
+  <data name="NoMoviesInstructions1" xml:space="preserve">
+    <value>Tap "</value>
+  </data>
+  <data name="NoMoviesInstructions2" xml:space="preserve">
+    <value>" in the toolbar to add a movie</value>
+  </data>
 </root>

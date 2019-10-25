@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
@@ -19,6 +20,7 @@ namespace Diot.ViewModels
         #region Fields
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
+        private bool _hasNoMovies;
         private readonly IDatabaseService _databaseService;
         private readonly IPageDialogService _dialogService;
         private readonly IResourceManager _resourceManager;
@@ -43,7 +45,16 @@ namespace Diot.ViewModels
         public List<MovieDbModel> MoviesList
         {
             get => _moviesList;
-            set => SetProperty(ref _moviesList, value);
+            set => SetProperty(ref _moviesList, value, updateNoMoviesInstructionVisibility);
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance has no movies.
+        /// </summary>
+        public bool HasNoMovies
+        {
+            get => _hasNoMovies;
+            set => SetProperty(ref _hasNoMovies, value);
         }
 
         #endregion
@@ -190,7 +201,14 @@ namespace Diot.ViewModels
                     _resourceManager.GetString("GenericErrorMessage"),
                     _resourceManager.GetString("Ok"));
             }
-            
+        }
+
+        /// <summary>
+        ///     Updates the no movies instruction visibility.
+        /// </summary>
+        private void updateNoMoviesInstructionVisibility()
+        {
+            HasNoMovies = MoviesList == null || !MoviesList.Any();
         }
 
         #endregion
