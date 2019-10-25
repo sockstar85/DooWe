@@ -26,7 +26,7 @@
                  Margin="10"
                  Padding="20">
 
-        <Label x:Name="Title"
+        <Label x:Name="Instructions"
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand"
                HorizontalTextAlignment="Center"/>
@@ -79,9 +79,10 @@
                 Padding="5"/>
         </Grid>
 
-        <Entry x:Name="OtherComment" 
-               IsVisible="{Binding Source={x:Reference Other}, Path=IsSelected}}"
-               Placeholder="{extensions:Translate EnterCustomFormat}"/>
+        <controls:ExpandingEntry x:Name="OtherComment" 
+                                 IsExpanded="{Binding Source={x:Reference Other}, Path=IsSelected}"
+                                 Placeholder="{extensions:Translate EnterCustomFormat}"
+                                 IsVisible="False"/>
 
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="End"

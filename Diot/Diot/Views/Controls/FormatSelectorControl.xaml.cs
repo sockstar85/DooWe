@@ -40,7 +40,8 @@ namespace Diot.Views.Controls
 	            typeof(ImageSource),
 	            typeof(FormatSelectorControl),
 	            default(ImageSource),
-	            propertyChanged: (bindable, oldValue, newValue) =>
+	            propertyChanged: 
+	            (bindable, oldValue, newValue) =>
 	                ((FormatSelectorControl)bindable).updateImage());
 
         /// <summary>
@@ -52,7 +53,8 @@ namespace Diot.Views.Controls
 	            typeof(bool),
 	            typeof(FormatSelectorControl),
 	            default(bool),
-	            propertyChanged: (bindable, oldValue, newValue) =>
+	            propertyChanged:
+	            (bindable, oldValue, newValue) =>
 	                ((FormatSelectorControl)bindable).updateIsSelected());
 
         #endregion
@@ -76,7 +78,7 @@ namespace Diot.Views.Controls
 	    /// </summary>
 	    private void updateIsSelected()
 	    {
-	        Opacity = IsSelected ? 1 : 0.3;
+            Control.FadeTo(IsSelected ? 1 : 0.3, easing: Easing.SinInOut);
 	    }
 
 	    /// <summary>

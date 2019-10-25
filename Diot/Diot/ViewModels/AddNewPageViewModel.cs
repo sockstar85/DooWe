@@ -127,7 +127,7 @@ namespace Diot.ViewModels
                 return;
             }
 
-            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle));
+            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle.Trim()));
 
             MovieDbResultsModel results = null;
 

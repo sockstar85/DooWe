@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Services;
+using Diot.Views.Controls;
 using Rg.Plugins.Popup.Services;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Diot.Views.Pages
@@ -46,13 +49,14 @@ namespace Diot.Views.Pages
         /// </summary>
         private void initPage()
         {
-            Title.Text = string.Format(_resourceManager.GetString("FormatSelectionInstructions"), _selectedMovie.Movie.Title);
+            Instructions.Text = string.Format(_resourceManager.GetString("FormatSelectionInstructions"), _selectedMovie.Movie.Title);
             Bluray.IsSelected = _selectedMovie.Movie.IsOnBluray;
             Dvd.IsSelected = _selectedMovie.Movie.IsOnDvd;
             Vudu.IsSelected = _selectedMovie.Movie.IsOnVudu;
             MoviesAnywhere.IsSelected = _selectedMovie.Movie.IsOnMoviesAnywhere;
             Amazon.IsSelected = _selectedMovie.Movie.IsOnAmazon;
             Other.IsSelected = _selectedMovie.Movie.IsOnOther;
+            OtherComment.Text = _selectedMovie.Movie.IsOnOther ? _selectedMovie.Movie.OtherComment : string.Empty;
         }
 
         #endregion
