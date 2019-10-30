@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diot.Views.Controls.FormatDetailsControl"
+             xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+             Orientation="Horizontal">
+    <StackLayout Orientation="Horizontal">
+        <StackLayout.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Image">
+                    <Setter Property="IsVisible" Value="False"/>
+                    <Setter Property="Aspect" Value="AspectFit"/>
+                    <Setter Property="HeightRequest" Value="40"/>
+                    <Setter Property="VerticalOptions" Value="Center"/>
+                </Style>
+            </ResourceDictionary>
+        </StackLayout.Resources>
+
+        <Image x:Name="BlurayImg"
+               Source="bluray.png"/>
+		<Image x:Name="DvdImg"
+               Source="dvd.png"/>
+		<Image x:Name="VuduImg"
+               Source="vudu.png"/>
+		<Image x:Name="MoviesAnywhereImg"
+               Source="movies_anywhere.png"/>
+		<Image x:Name="AmazonImg"
+               Source="amazon.png"/>
+		<Image x:Name="PlexImg"
+               Source="plex.png"/>
+        <Label x:Name="OtherLabel"
+               IsVisible="False"
+               VerticalOptions="Center"
+               HorizontalTextAlignment="Center">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span FontAttributes="Bold" 
+                          Text="{extensions:Translate OtherColon}"
+                          FontSize="10"/>
+                    <Span x:Name="OtherFormatSpan"
+                          FontSize="10"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </StackLayout>
+</ScrollView>
