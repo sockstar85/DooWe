@@ -26,10 +26,10 @@
             <controls:NoCoverImageControl x:Name="NoCoverImageControl"
                                           WidthRequest="150"
                                           HeightRequest="200"/>
-            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check_solid}"
+            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_selectedCheckSolid}"
                                 TextColor="{DynamicResource SelectedIconColor}"
                                 x:Name="SelectedIconSolid"/>
-            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.selected_check}"
+            <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_selectedCheck}"
                                 TextColor="{DynamicResource SelectedIconAccentColor}"
                                 x:Name="SelectedIcon"/>
         </Grid>

@@ -7,6 +7,7 @@
      xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
     xmlns:converters="clr-namespace:Diot.Views.Converters"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
+	xmlns:helpers="clr-namespace:Diot.Helpers"
     x:Class="Diot.Views.Pages.AddNewPage"
     x:Name="ThisPage"
     Title="{extensions:Translate AddNew}">
@@ -27,13 +28,13 @@
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
                        Placeholder="{extensions:Translate MovieTitle}"
                        Grid.Column="0"
                        HorizontalOptions="FillAndExpand"/>
-                <Button Text="Search"
+				<controls:IconButton Text="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
                         Command="{Binding SearchMovieCommand}"
                         Grid.Column="1"/>
             </Grid>

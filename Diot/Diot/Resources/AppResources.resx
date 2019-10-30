@@ -216,4 +216,10 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="SearchByTitle" xml:space="preserve">
+    <value>Search by title...</value>
+  </data>
+  <data name="MovieDetails" xml:space="preserve">
+    <value>Movie Details</value>
+  </data>
 </root>

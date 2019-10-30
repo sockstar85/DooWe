@@ -29,8 +29,11 @@
         {
             #region Properties
 
-            public const string selected_check_solid = "\uE052";
-            public const string selected_check = "\u0052";
+            public const string ico_selectedCheckSolid = "\uE052";
+            public const string ico_selectedCheck = "\u0052";
+			public const string ico_add = "\u004C";
+			public const string ico_edit = "\u006A";
+			public const string ico_search = "\u0055";
 
             #endregion
         }
