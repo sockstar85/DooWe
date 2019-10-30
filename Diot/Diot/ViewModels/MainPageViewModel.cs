@@ -21,7 +21,9 @@ namespace Diot.ViewModels
 
         private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
         private bool _hasNoMovies;
-        private readonly IDatabaseService _databaseService;
+		private string _titleSearch;
+		private List<MovieDbModel> _sortedMoviesList = new List<MovieDbModel>();
+		private readonly IDatabaseService _databaseService;
         private readonly IPageDialogService _dialogService;
         private readonly IResourceManager _resourceManager;
 
@@ -39,37 +41,60 @@ namespace Diot.ViewModels
         /// </summary>
         public ICommand NavigateToMovieDetailsCommand => new Command<MovieDbModel>(async (selection) => { await navigateToMovieDetailsPage(selection); });
 
-        /// <summary>
-        ///     Gets or sets the movies list.
-        /// </summary>
-        public List<MovieDbModel> MoviesList
+		/// <summary>
+		///		Gets the search command.
+		/// </summary>
+		public ICommand SearchCommand => new Command(filterMoviesList);
+		
+		/// <summary>
+		///     Gets or sets the movies list.
+		/// </summary>
+		public List<MovieDbModel> MoviesList
         {
             get => _moviesList;
-            set => SetProperty(ref _moviesList, value, updateNoMoviesInstructionVisibility);
+            set => SetProperty(ref _moviesList, value);
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance has no movies.
-        /// </summary>
-        public bool HasNoMovies
+		/// <summary>
+		///     Gets or sets the sorted movies list.
+		/// </summary>
+		public List<MovieDbModel> SortedMoviesList
+		{
+			get => _sortedMoviesList;
+			set => SetProperty(ref _sortedMoviesList, value, updateNoMoviesInstructionVisibility);
+		}
+
+		/// <summary>
+		///     Gets or sets a value indicating whether this instance has no movies.
+		/// </summary>
+		public bool HasNoMovies
         {
             get => _hasNoMovies;
             set => SetProperty(ref _hasNoMovies, value);
         }
 
-        #endregion
+		/// <summary>
+		///		Gets or sets the title search criteria.
+		/// </summary>
+		public string TitleSearch
+		{
+			get => _titleSearch;
+			set => SetProperty(ref _titleSearch, value, filterMoviesList);
+		}
 
-        #region Methods
+		#endregion
 
-        #region Constructors
+		#region Methods
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MainPageViewModel"/> class.
-        /// </summary>
-        /// <param name="navigationService">The navigation service.</param>
-        /// <param name="dialogService">The dialog service.</param>
-        /// <param name="loadingPageService">The loading page service.</param>
-        public MainPageViewModel(
+		#region Constructors
+
+		/// <summary>
+		///     Initializes a new instance of the <see cref="MainPageViewModel"/> class.
+		/// </summary>
+		/// <param name="navigationService">The navigation service.</param>
+		/// <param name="dialogService">The dialog service.</param>
+		/// <param name="loadingPageService">The loading page service.</param>
+		public MainPageViewModel(
             IExtendedNavigation navigationService, 
             IPageDialogService dialogService, 
             ILoadingPageService loadingPageService,
@@ -179,6 +204,7 @@ namespace Diot.ViewModels
             }
 
             MoviesList = updatedList;
+			SortedMoviesList = updatedList;
         }
 
         /// <summary>
@@ -211,6 +237,24 @@ namespace Diot.ViewModels
             HasNoMovies = MoviesList == null || !MoviesList.Any();
         }
 
-        #endregion
-    }
+		/// <summary>
+		///		Filters the movies list.
+		/// </summary>
+		private void filterMoviesList()
+		{
+			var criteria = TitleSearch?.Trim().ToLower();
+
+			if (MoviesList == null || !MoviesList.Any() || string.IsNullOrWhiteSpace(criteria))
+			{
+				SortedMoviesList = MoviesList;
+			}
+			else
+			{
+				var sorted = MoviesList.Where(x => x.Title.ToLower().Contains(criteria)).ToList();
+				SortedMoviesList = sorted;
+			}
+		}
+
+		#endregion
+	}
 }

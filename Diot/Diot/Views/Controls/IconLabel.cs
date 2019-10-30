@@ -5,7 +5,7 @@ namespace Diot.Views.Controls
     /// <summary>
     ///     Control that extends <see cref="Label"/> and adds properties that make more sense for setting an icon.
     /// </summary>
-    /// <seealso cref="Xamarin.Forms.Label" />
+    /// <seealso cref="Label" />
     public class IconLabel : Label
     {
         #region Properties

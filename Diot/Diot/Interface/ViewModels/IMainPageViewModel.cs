@@ -18,15 +18,30 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         ICommand NavigateToMovieDetailsCommand { get; }
 
+		/// <summary>
+		///		Gets the search command.
+		/// </summary>
+		ICommand SearchCommand { get; }
+
+		/// <summary>
+		///		Gets or sets the title search criteria.
+		/// </summary>
+		string TitleSearch { get; set; }
+
         /// <summary>
         ///     Gets or sets the movies list.
         /// </summary>
         List<MovieDbModel> MoviesList { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance has no movies.
-        /// </summary>
-        bool HasNoMovies { get; set; }
+		/// <summary>
+		///     Gets or sets the sorted movies list.
+		/// </summary>
+		List<MovieDbModel> SortedMoviesList { get; set; }
+
+		/// <summary>
+		///     Gets or sets a value indicating whether this instance has no movies.
+		/// </summary>
+		bool HasNoMovies { get; set; }
 
         #endregion
     }
