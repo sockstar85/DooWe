@@ -6,9 +6,12 @@ using Diot.Helpers;
 using Diot.Interface;
 using Diot.Interface.ViewModels;
 using Diot.Models;
+using Diot.Views.Pages;
 using Prism.Navigation;
 using Prism.Services;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
+using DryIoc;
 
 namespace Diot.ViewModels
 {
@@ -19,15 +22,16 @@ namespace Diot.ViewModels
         MovieDbModel _selectedMovie;
         ImageSource _coverImage;
         private IDatabaseService _databaseService;
+		private readonly IResourceManager _resourceManager;
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        /// <summary>
-        ///     Gets the delete movie command.
-        /// </summary>
-        public ICommand DeleteMovieCommand => new Command(async () =>
+		/// <summary>
+		///     Gets the delete movie command.
+		/// </summary>
+		public ICommand DeleteMovieCommand => new Command(async () =>
         {
             await deleteMovieAndNavigateBack();
         });
@@ -50,26 +54,48 @@ namespace Diot.ViewModels
             set => SetProperty(ref _coverImage, value);
         }
 
-        #endregion
+		/// <summary>
+		///		Gets the edit movie command.
+		/// </summary>
+		public ICommand EditMovieCommand => new Command(async () =>
+		{
+			await displayFormatSelectionPopup();
+		});
 
-        #region Methods
+		/// <summary>
+		///		Gets or sets the refresh formats command.
+		/// </summary>
+		public ICommand RefreshFormatsCommand => new Command(refreshMovieFormats);
+		
+		#endregion
 
-        #region Constructors
+		#region Methods
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MovieDetailsPageViewModel"/> class.
-        /// </summary>
-        /// <param name="navigationService">The navigation service.</param>
-        /// <param name="dialogService">The dialog service.</param>
-        /// <param name="loadingPageService">The loading page service.</param>
-        public MovieDetailsPageViewModel(
+		#region Constructors
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MovieDetailsPageViewModel"/> class.
+		/// </summary>
+		/// <param name="navigationService">The navigation service.</param>
+		/// <param name="dialogService">The dialog service.</param>
+		/// <param name="loadingPageService">The loading page service.</param>
+		/// <param name="databaseService">The database service.</param>
+		/// <param name="resourceManger">The resource manger.</param>
+		/// <exception cref="ArgumentNullException">
+		/// databaseService
+		/// or
+		/// resourceManger
+		/// </exception>
+		public MovieDetailsPageViewModel(
             IExtendedNavigation navigationService, 
             IPageDialogService dialogService,
             ILoadingPageService loadingPageService,
-            IDatabaseService databaseService) 
+            IDatabaseService databaseService,
+			IResourceManager resourceManger) 
             : base(navigationService, dialogService, loadingPageService)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+			_resourceManager = resourceManger ?? throw new ArgumentNullException(nameof(resourceManger));
         }
 
         #endregion
@@ -113,9 +139,11 @@ namespace Diot.ViewModels
                 return;
             }
 
-            var confirmDelete = await DialogService.DisplayAlertAsync("Delete title?",
-                $"Are you sure you want to remove {SelectedMovie.Title}?",
-                "Yes", "No");
+            var confirmDelete = await DialogService.DisplayAlertAsync(
+				_resourceManager.GetString("DeleteConfirmationTitle"),
+                string.Format(_resourceManager.GetString("DeleteConfirmationMessage"), SelectedMovie.Title),
+                _resourceManager.GetString("Yes"), 
+				_resourceManager.GetString("No"));
 
             if (confirmDelete)
             {
@@ -124,6 +152,37 @@ namespace Diot.ViewModels
             }
         }
 
-        #endregion
-    }
+		/// <summary>
+		///		Displays the format selection popup.
+		/// </summary>
+		private async Task displayFormatSelectionPopup()
+		{
+			var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(SelectedMovie);
+			var formatSelectionPopup = new FormatSelectionPopupPage(movie)
+			{
+				RefreshCommand = RefreshFormatsCommand
+			};
+
+			await PopupNavigation.Instance.PushAsync(formatSelectionPopup);
+		}
+
+		/// <summary>
+		///		Refreshes the movie formats.
+		/// </summary>
+		private void refreshMovieFormats(object obj)
+		{
+			MovieDbModel movie = obj as MovieDbModel;
+
+			if (movie == null)
+			{
+				return;
+			}
+
+			//force a property changed
+			SelectedMovie = new MovieDbModel();
+			SelectedMovie = movie;
+		}
+
+		#endregion
+	}
 }

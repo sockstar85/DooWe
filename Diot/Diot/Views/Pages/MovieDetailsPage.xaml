@@ -4,18 +4,51 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
-    x:Class="Diot.Views.Pages.MovieDetailsPage"
-    Title="{Binding SelectedMovie.Title}">
+    xmlns:controls="clr-namespace:Diot.Views.Controls"
+    x:Class="Diot.Views.Pages.MovieDetailsPage">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem
+			Text="{extensions:Translate Edit}"
+			Command="{Binding EditMovieCommand}"/>
+		<ToolbarItem Text="{extensions:Translate Delete}"
+					 Command="{Binding DeleteMovieCommand}"/>
+
+	</ContentPage.ToolbarItems>
+	
     <ContentPage.Content>
-        <ScrollView >
-            <StackLayout>
-                <Image Source="{Binding CoverImage}" HeightRequest="300"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                <Label Text="{Binding SelectedMovie.Overview}"/>
+            <ScrollView Grid.Row="0">
+                <StackLayout>
+                    <Label Text="{Binding SelectedMovie.Title}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           FontSize="30"
+                           FontAttributes="Bold"/>
+                    <Image Source="{Binding CoverImage}" HeightRequest="300"
+                           Margin="0,15"/>
 
-                <Button Text="{extensions:Translate DeleteTitle}" 
-                        Command="{Binding DeleteMovieCommand}"/>
-            </StackLayout>
-        </ScrollView>
+					<controls:FormatDetailsControl 
+                        BindingContext="{Binding SelectedMovie}"
+                        IsOnBluray="{Binding IsOnBluray}"
+                        IsOnDvd="{Binding IsOnDvd}"
+                        IsOnVudu="{Binding IsOnVudu}"
+                        IsOnMoviesAnywhere="{Binding IsOnMoviesAnywhere}"
+                        IsOnAmazon="{Binding IsOnAmazon}"
+                        IsOnPlex="{Binding IsOnPlex}"
+                        IsOnOther="{Binding IsOnOther}"
+                        OtherFormat="{Binding OtherComment}"
+                        HorizontalOptions="Center"/>
+
+					<Label Text="{Binding SelectedMovie.Overview}"/>                    
+
+                </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </pages:BasePage>

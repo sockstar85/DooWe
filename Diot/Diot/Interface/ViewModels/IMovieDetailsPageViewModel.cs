@@ -6,7 +6,17 @@ namespace Diot.Interface.ViewModels
 {
     public interface IMovieDetailsPageViewModel : IViewModelBase
     {
-        #region Properties
+		#region Properties
+
+		/// <summary>
+		///		Gets the refresh formats command.
+		/// </summary>
+		ICommand RefreshFormatsCommand { get; }
+
+		/// <summary>
+		///		Gets the edit movie command.
+		/// </summary>
+		ICommand EditMovieCommand { get; }
 
         /// <summary>
         ///     Gets the delete movie command.
