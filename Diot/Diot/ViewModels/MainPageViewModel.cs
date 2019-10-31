@@ -214,6 +214,8 @@ namespace Diot.ViewModels
         {
             base.OnNavigatingTo(parameters);
 
+			TitleSearch = string.Empty;
+
             try
             {
                 MoviesList = _databaseService.GetAllMovies();
