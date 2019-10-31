@@ -30,10 +30,9 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Entry Text="{Binding MovieTitle, Mode=TwoWay}"
+                <controls:BorderedEntry Text="{Binding MovieTitle, Mode=TwoWay}"
                        Placeholder="{extensions:Translate MovieTitle}"
-                       Grid.Column="0"
-                       HorizontalOptions="FillAndExpand"/>
+                       Grid.Column="0"/>
 				<controls:IconButton Text="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
                         Command="{Binding SearchMovieCommand}"
                         Grid.Column="1"/>

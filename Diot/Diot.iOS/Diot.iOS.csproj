@@ -97,6 +97,8 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Effects\EffectGroupName.cs" />
+    <Compile Include="Effects\Entries\EntryNoUnderlineEffect.cs" />
     <Compile Include="Implementations\DatabaseController.cs" />
     <Compile Include="Implementations\LoadingPageService.cs" />
     <Compile Include="Main.cs" />

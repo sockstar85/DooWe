@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:entries="clr-namespace:Diot.Views.Effects.Entry"
+	  mc:Ignorable="d"
+      x:Class="Diot.Views.Controls.BorderedEntry"
+	  HorizontalOptions="FillAndExpand">
+	<Grid>
+		<BoxView BackgroundColor="{DynamicResource PrimaryColor}"
+				 x:Name="OuterBoxView"
+				 CornerRadius="5"/>
+		<BoxView BackgroundColor="White"
+				 x:Name="InnerBoxView"
+				 Margin="1"
+				 CornerRadius="4"/>
+		<Entry HeightRequest="45"
+			   x:Name="ControlEntry">
+			<Entry.Margin>
+				<OnPlatform x:TypeArguments="Thickness">
+					<On Platform="iOS" Value="5,0"/>
+					<On Platform="Android" Value="0"/>
+				</OnPlatform>
+			</Entry.Margin>
+			<Entry.Effects>
+				<entries:EntryNoUnderlineEffect/>
+			</Entry.Effects>
+		</Entry>
+	</Grid>
+</ContentView>
