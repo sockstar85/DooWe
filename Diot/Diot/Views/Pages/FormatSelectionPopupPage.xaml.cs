@@ -30,10 +30,45 @@ namespace Diot.Views.Pages
 			get => (ICommand)GetValue(RefreshCommandProperty);
 			set => SetValue(RefreshCommandProperty, value);
 		}
+		
+		/// <summary>
+		///		Gets or sets the accept command.
+		/// </summary>
+		public ICommand AcceptCommand
+		{
+			get => (ICommand)GetValue(AcceptCommandProperty);
+			set => SetValue(AcceptCommandProperty, value);
+		}
 
+		/// <summary>
+		///		Gets or sets the cancel command.
+		/// </summary>
+		public ICommand CancelCommand
+		{
+			get => (ICommand)GetValue(CancelCommandProperty);
+			set => SetValue(CancelCommandProperty, value);
+		}
 		#endregion
 
 		#region Bindable Properties
+
+		/// <summary>
+		///		The bindable property for <see cref="AcceptCommand"/>.
+		/// </summary>
+		public static readonly BindableProperty AcceptCommandProperty =
+			BindableProperty.Create(
+				nameof(AcceptCommand),
+				typeof(ICommand),
+				typeof(FormatSelectionPopupPage));
+
+		/// <summary>
+		///		The bindable property for <see cref="CancelCommand"/>.
+		/// </summary>
+		public static readonly BindableProperty CancelCommandProperty =
+			BindableProperty.Create(
+				nameof(CancelCommand),
+				typeof(ICommand),
+				typeof(FormatSelectionPopupPage));
 
 		/// <summary>
 		///		The bindable property for <see cref="RefreshCommand"/>.
@@ -60,7 +95,7 @@ namespace Diot.Views.Pages
 
             if (string.IsNullOrWhiteSpace(selectedMovie?.Movie?.Title))
             {
-                ClosePopup();
+                closePopup();
             }
 
             _selectedMovie = selectedMovie;
@@ -95,7 +130,7 @@ namespace Diot.Views.Pages
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void ClosePopup(object sender = null, EventArgs e = null)
+        private void closePopup()
         {
             PopupNavigation.Instance.PopAsync();
         }
@@ -105,7 +140,7 @@ namespace Diot.Views.Pages
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void AcceptTapped(object sender, EventArgs e)
+        private void acceptTapped(object sender, EventArgs e)
         {
 
             _selectedMovie.Movie.IsOnBluray = Bluray.IsSelected;
@@ -121,9 +156,21 @@ namespace Diot.Views.Pages
                 _selectedMovie.Movie.OtherComment = OtherComment.Text;
             }
 
-			RefreshCommand?.Execute(_selectedMovie.Movie);
-            ClosePopup();
+			AcceptCommand?.Execute(_selectedMovie);
+            closePopup();
         }
+
+
+		/// <summary>
+		///		Called when the Cancel button is tapped on the popup.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void cancelTapped(object sender, EventArgs e)
+		{
+			CancelCommand?.Execute(_selectedMovie);
+			closePopup();
+		}
 
         #endregion
     }

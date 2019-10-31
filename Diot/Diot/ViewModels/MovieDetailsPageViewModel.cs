@@ -160,7 +160,7 @@ namespace Diot.ViewModels
 			var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(SelectedMovie);
 			var formatSelectionPopup = new FormatSelectionPopupPage(movie)
 			{
-				RefreshCommand = RefreshFormatsCommand
+				AcceptCommand = RefreshFormatsCommand
 			};
 
 			await PopupNavigation.Instance.PushAsync(formatSelectionPopup);
@@ -171,7 +171,8 @@ namespace Diot.ViewModels
 		/// </summary>
 		private void refreshMovieFormats(object obj)
 		{
-			MovieDbModel movie = obj as MovieDbModel;
+			ISelectableMovieViewModel selectableMovie = obj as ISelectableMovieViewModel;
+			var movie = selectableMovie?.Movie;
 
 			if (movie == null)
 			{
@@ -181,6 +182,9 @@ namespace Diot.ViewModels
 			//force a property changed
 			SelectedMovie = new MovieDbModel();
 			SelectedMovie = movie;
+
+			//save changes to DB
+			_databaseService.SaveMovie(movie);
 		}
 
 		#endregion

@@ -85,48 +85,24 @@ namespace Diot.Views.Controls
 
         #endregion
 
-        #region Methods
+		#region Bindable Properties
 
-        #region Constructors
+		/// <summary>
+		///     The bindable property for <see cref="BackgroundProperty"/>.
+		/// </summary>
+		public new static readonly BindableProperty BackgroundColorProperty =
+			BindableProperty.Create(
+				nameof(BackgroundColor),
+				typeof(Color),
+				typeof(SelectableCoverAndTitleControl),
+				default(Color),
+				propertyChanged: (bindable, oldValue, newValue) =>
+					((SelectableCoverAndTitleControl)bindable).updateIsSelected());
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="SelectableCoverAndTitleControl"/> class.
-        /// </summary>
-        public SelectableCoverAndTitleControl ()
-		{
-			InitializeComponent ();
-
-		    _coverImgScale = CoverImg.Scale;
-		    _selectedIconSolidScale = SelectedIconSolid.Scale;
-		    _selectedIconScale = SelectedIcon.Scale;
-
-            //Initialize the selected icon to show unselected.
-		    SelectedIconSolid.ScaleTo(0, 0);
-		    SelectedIcon.ScaleTo(0, 0);
-		}
-
-        #endregion
-
-        #endregion
-
-        /// <summary>
-        ///     The bindable property for <see cref="BackgroundProperty"/>.
-        /// </summary>
-        public new static readonly BindableProperty BackgroundColorProperty =
-	        BindableProperty.Create(
-	            nameof(BackgroundColor),
-	            typeof(Color),
-                typeof(SelectableCoverAndTitleControl),
-	            default(Color),
-	            propertyChanged: (bindable, oldValue, newValue) => 
-	                ((SelectableCoverAndTitleControl)bindable).updateIsSelected());
-
-        #region Bindable Properties
-
-        /// <summary>
-        ///     The bindable property for <see cref="IsSelected"/>.
-        /// </summary>
-        public static readonly BindableProperty IsSelectedProperty =
+		/// <summary>
+		///     The bindable property for <see cref="IsSelected"/>.
+		/// </summary>
+		public static readonly BindableProperty IsSelectedProperty =
             BindableProperty.Create(
                 nameof(IsSelected),
                 typeof(bool),
@@ -186,6 +162,26 @@ namespace Diot.Views.Controls
         #endregion
 
         #region Methods
+
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SelectableCoverAndTitleControl"/> class.
+        /// </summary>
+        public SelectableCoverAndTitleControl ()
+		{
+			InitializeComponent ();
+
+		    _coverImgScale = CoverImg.Scale;
+		    _selectedIconSolidScale = SelectedIconSolid.Scale;
+		    _selectedIconScale = SelectedIcon.Scale;
+
+            //Initialize the selected icon to show unselected.
+		    SelectedIconSolid.ScaleTo(0, 0);
+		    SelectedIcon.ScaleTo(0, 0);
+		}
+
+		#endregion
 
         /// <summary>
         ///     Updates the title.

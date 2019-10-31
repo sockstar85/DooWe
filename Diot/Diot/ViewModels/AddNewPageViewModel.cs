@@ -108,14 +108,34 @@ namespace Diot.ViewModels
 
             if (selectedMovie.IsSelected)
             {
-                await PopupNavigation.Instance.PushAsync(new FormatSelectionPopupPage(selectedMovie));
+				var popup = new FormatSelectionPopupPage(selectedMovie)
+				{
+					CancelCommand = new Command(() => { cancelSelection(selectedMovie); })
+				};
+
+				await PopupNavigation.Instance.PushAsync(popup);
             }
         }
 
-        /// <summary>
-        ///     Searches for the current movie title.
-        /// </summary>
-        private async Task searchMovie()
+
+		/// <summary>
+		///		Cancels the selection.
+		/// </summary>
+		/// <param name="movie">The movie.</param>
+		private void cancelSelection(ISelectableMovieViewModel movie)
+		{
+			if (movie == null)
+			{
+				return;
+			}
+
+			movie.IsSelected = false;
+		}
+
+		/// <summary>
+		///     Searches for the current movie title.
+		/// </summary>
+		private async Task searchMovie()
         {
             if (!CrossConnectivity.Current.IsConnected)
             {
@@ -127,7 +147,7 @@ namespace Diot.ViewModels
                 return;
             }
 
-            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle.Trim()));
+            LoadingPageService.ShowLoadingPage(string.Format(_resourceManager.GetString("SearchingMovie"), MovieTitle?.Trim()));
 
             MovieDbResultsModel results = null;
 
