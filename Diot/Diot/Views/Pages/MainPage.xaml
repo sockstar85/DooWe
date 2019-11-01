@@ -10,7 +10,7 @@
 	x:Class="Diot.Views.Pages.MainPage"
     x:Name="ThisPage"
     Title="{extensions:Translate Library}"
-	Padding="15,5,15,15">
+	Padding="15,15,15,15">
 
 	<ContentPage.Resources>
 		<ResourceDictionary>
@@ -25,12 +25,17 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-		<StackLayout Spacing="15">
+		<Grid RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-			<!--#region Search area-->
+            <!--#region Search area-->
 			<StackLayout Orientation="Horizontal"
 						 Spacing="5"
-						 IsVisible="{Binding HasNoMovies, Converter={x:StaticResource InverseBoolConverter}}">
+						 IsVisible="{Binding HasNoMovies, Converter={x:StaticResource InverseBoolConverter}}"
+                         Grid.Row="0">
 				<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
 									VerticalOptions="Center"
 									FontSize="24"/>
@@ -38,12 +43,14 @@
 										x:Name="TitleSearchEntry"
 										HorizontalOptions="FillAndExpand"
 										Margin="0,0,2,0"
-										Placeholder="{extensions:Translate SearchByTitle}"/>
+										Placeholder="{extensions:Translate SearchByTitle}"
+                                        VerticalOptions="Center"/>
 			</StackLayout>
 			<!--#endregion-->
 			
 			<!--#region Libary view-->
-			<ScrollView VerticalOptions="FillAndExpand">
+			<ScrollView VerticalOptions="FillAndExpand"
+                        Grid.Row="1">
 				<Grid>
 				
 					<!--#region Has no movies labels-->
@@ -89,6 +96,6 @@
 			</ScrollView>
 			<!--#endregion-->
 			
-		</StackLayout>
+		</Grid>
 	</ContentPage.Content>
 </pages:BasePage>
