@@ -17,16 +17,16 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         bool IsSelected { get; set; }
 
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        /// <summary>
-        ///     Initializes the view model with a <see cref="MovieDbModel"/>.
-        /// </summary>
-        /// <param name="movie">The movie.</param>
-        /// <returns>Intialized view model.</returns>
-        Task<ISelectableMovieViewModel> InitWithAsync(MovieDbModel movie);
+		/// <summary>
+		///		Initializes the view model.
+		/// </summary>
+		/// <param name="dataService">The data service.</param>
+		/// <param name="movie">The movie.</param>
+		Task<ISelectableMovieViewModel> InitWithAsync(IHttpClientService dataService, MovieDbModel movie);
 
         #endregion
     }

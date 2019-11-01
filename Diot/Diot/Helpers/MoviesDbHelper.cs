@@ -2,29 +2,35 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Diot.Interface;
 using Diot.Models;
-using Diot.Services;
 using Newtonsoft.Json;
+using DryIoc;
 
 namespace Diot.Helpers
 {
     public static class MoviesDbHelper
     {
-        #region Methods
+		#region Methods
 
-        /// <summary>
-        ///     Searches for a movie.
-        /// </summary>
-        /// <param name="movieTitle">The movie title.</param>
-        public static async Task<MovieDbResultsModel> SearchMovie(string movieTitle)
-        {
+		/// <summary>
+		///     Searches for a movie.
+		/// </summary>
+		/// <param name="movieTitle">The movie title.</param>
+		public static async Task<MovieDbResultsModel> SearchMovie(IHttpClientService dataService, string movieTitle)
+		{
+			if (dataService == null)
+			{
+				dataService = App.AppContainer.Resolve<IHttpClientService>();
+			}
+
             if (string.IsNullOrWhiteSpace(movieTitle))
             {
                 Debug.WriteLine($"Unknown movie title: \"{movieTitle}\"");
                 return null;
             }
 
-            var result = await new HttpClientService().GetStringAsync(
+            var result = await dataService.GetStringAsync(
                 MoviesDbApiUrls.GetSearchMovieRequestUrl(movieTitle));
 
             MovieDbResultsModel retVal = null;
@@ -43,9 +49,14 @@ namespace Diot.Helpers
         /// </summary>
         /// <param name="posterPath">The poster path.</param>
         /// <param name="size">The size.</param>
-        public static async Task<byte[]> GetMovieCover(MovieDbModel movie)
+        public static async Task<byte[]> GetMovieCover(IHttpClientService dataService, MovieDbModel movie)
         {
-            if (string.IsNullOrWhiteSpace(movie?.Poster_Path))
+			if (dataService == null)
+			{
+				dataService = App.AppContainer.Resolve<IHttpClientService>();
+			}
+
+			if (string.IsNullOrWhiteSpace(movie?.Poster_Path))
             {
                 Debug.WriteLine("Empty poster path");
                 return null;
@@ -58,7 +69,7 @@ namespace Diot.Helpers
 
             try
             {
-                return await new HttpClientService().GetImageByteArrayAsync(
+                return await dataService.GetImageByteArrayAsync(
                     MoviesDbApiUrls.GetMoviePosterRequestUrl(movie.Poster_Path, 300));
             }
             catch (Exception)
