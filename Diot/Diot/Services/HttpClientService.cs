@@ -1,12 +1,13 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Diot.Interface;
 using Newtonsoft.Json.Linq;
 
 namespace Diot.Services
 {
-    public class HttpClientService
-    {
+    public class HttpClientService : IHttpClientService
+	{
         #region  Fields
 
         private readonly HttpClient client;
@@ -22,7 +23,7 @@ namespace Diot.Services
         /// </summary>
         public HttpClientService()
         {
-            client = new HttpClient {MaxResponseContentBufferSize = 256000};
+			client = new HttpClient();// {MaxResponseContentBufferSize = 256000};
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 

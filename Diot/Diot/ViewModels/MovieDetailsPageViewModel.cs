@@ -23,6 +23,7 @@ namespace Diot.ViewModels
         ImageSource _coverImage;
         private IDatabaseService _databaseService;
 		private readonly IResourceManager _resourceManager;
+		private readonly IHttpClientService _dataService;
 
 		#endregion
 
@@ -91,11 +92,13 @@ namespace Diot.ViewModels
             IPageDialogService dialogService,
             ILoadingPageService loadingPageService,
             IDatabaseService databaseService,
-			IResourceManager resourceManger) 
+			IResourceManager resourceManger,
+			IHttpClientService dataService) 
             : base(navigationService, dialogService, loadingPageService)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
 			_resourceManager = resourceManger ?? throw new ArgumentNullException(nameof(resourceManger));
+			_dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
 
         #endregion
@@ -113,7 +116,7 @@ namespace Diot.ViewModels
 
             parameters.TryGetValue(NavParamKeys.SelectedMovie, out MovieDbModel selectedMovie);
 
-            var imgSrc = await MoviesDbHelper.GetMovieCover(selectedMovie);
+            var imgSrc = await MoviesDbHelper.GetMovieCover(_dataService, selectedMovie);
 
             if (imgSrc == null)
             {
@@ -157,7 +160,7 @@ namespace Diot.ViewModels
 		/// </summary>
 		private async Task displayFormatSelectionPopup()
 		{
-			var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(SelectedMovie);
+			var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(_dataService, SelectedMovie);
 			var formatSelectionPopup = new FormatSelectionPopupPage(movie)
 			{
 				AcceptCommand = RefreshFormatsCommand

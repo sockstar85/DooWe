@@ -64,13 +64,17 @@ namespace Diot.ViewModels
         /// <summary>
         ///     Initializes the view model from a <see cref="MovieDbModel"/>.
         /// </summary>
-        public async Task<ISelectableMovieViewModel> InitWithAsync(MovieDbModel movie)
+        public async Task<ISelectableMovieViewModel> InitWithAsync(IHttpClientService dataService, MovieDbModel movie)
         {
-            var imgSrc = await MoviesDbHelper.GetMovieCover(movie);
-            movie.CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
-            movie.CoverImageByteArray = imgSrc;
-            Movie = movie;
+            var imgSrc = await MoviesDbHelper.GetMovieCover(dataService, movie);
 
+			if (imgSrc != null)
+			{
+				movie.CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
+				movie.CoverImageByteArray = imgSrc;
+			}
+
+            Movie = movie;
             return this;
         }
 

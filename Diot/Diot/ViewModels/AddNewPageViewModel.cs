@@ -26,15 +26,16 @@ namespace Diot.ViewModels
         private readonly IResourceManager _resourceManager;
         private readonly IDatabaseService _databaseService;
         private readonly IPageDialogService _dialogService;
+		private readonly IHttpClientService _dataService;
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        /// <summary>
-        ///     Gets the add selected movies command.
-        /// </summary>
-        public ICommand AddSelectedMoviesCommand => new Command(async () => { await addSelectedMovies(); });
+		/// <summary>
+		///     Gets the add selected movies command.
+		/// </summary>
+		public ICommand AddSelectedMoviesCommand => new Command(async () => { await addSelectedMovies(); });
 
         /// <summary>
         ///     Gets the search movie command.
@@ -83,12 +84,14 @@ namespace Diot.ViewModels
             IPageDialogService pageDialogService,
             ILoadingPageService loadingPageService,
             IResourceManager resourceManager,
-            IDatabaseService databaseService) 
+            IDatabaseService databaseService,
+			IHttpClientService dataService) 
             : base(navigationService, pageDialogService, loadingPageService)
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
             _dialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
+			_dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
 
         #endregion
@@ -136,7 +139,7 @@ namespace Diot.ViewModels
 		///     Searches for the current movie title.
 		/// </summary>
 		private async Task searchMovie()
-        {
+        {			
             if (!CrossConnectivity.Current.IsConnected)
             {
                 await _dialogService.DisplayAlertAsync(
@@ -153,7 +156,7 @@ namespace Diot.ViewModels
 
             try
             {
-                results = await MoviesDbHelper.SearchMovie(MovieTitle);
+                results = await MoviesDbHelper.SearchMovie(_dataService, MovieTitle);
             }
             catch (Exception)
             {
@@ -166,7 +169,7 @@ namespace Diot.ViewModels
 
             if (results?.Results != null && results.Results.Any())
             {
-                SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results);
+				SearchResults = await convertToSelectableMovieViewModelsAsync(results.Results);
             }
             else
             {
@@ -189,7 +192,13 @@ namespace Diot.ViewModels
 
             foreach(var item in results)
             {
-                var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(item);
+				//If there isn't a poster path in the api DB it's likely not one we want.
+				if (string.IsNullOrWhiteSpace(item.Poster_Path))
+				{
+					continue;
+				}
+
+                var movie = await App.AppContainer.Resolve<ISelectableMovieViewModel>().InitWithAsync(_dataService, item);
                 formatTitle(movie);
 
                 retVal.Add(movie);

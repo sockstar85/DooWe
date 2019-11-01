@@ -110,6 +110,7 @@ namespace Diot
             #region Required Types
 
             containerRegistry.RegisterSingleton<IDatabaseService, DatabaseService>();
+			containerRegistry.RegisterSingleton<IHttpClientService, HttpClientService>();
 
             #endregion
 

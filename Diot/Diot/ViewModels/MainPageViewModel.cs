@@ -26,15 +26,16 @@ namespace Diot.ViewModels
 		private readonly IDatabaseService _databaseService;
         private readonly IPageDialogService _dialogService;
         private readonly IResourceManager _resourceManager;
+		private readonly IHttpClientService _dataService;
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        /// <summary>
-        ///     Gets the navigate to add new page command.
-        /// </summary>
-        public ICommand NavigateToAddNewPageCommand => new Command(async () => { await navigateToAddNewPage(); });
+		/// <summary>
+		///     Gets the navigate to add new page command.
+		/// </summary>
+		public ICommand NavigateToAddNewPageCommand => new Command(async () => { await navigateToAddNewPage(); });
 
         /// <summary>
         ///     Gets the  navigate to movie details command.
@@ -99,12 +100,14 @@ namespace Diot.ViewModels
             IPageDialogService dialogService, 
             ILoadingPageService loadingPageService,
             IDatabaseService databaseService,
-            IResourceManager resourceManager)
+            IResourceManager resourceManager,
+			IHttpClientService dataService)
             : base(navigationService, dialogService, loadingPageService)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
+			_dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
 
         #endregion
@@ -187,7 +190,7 @@ namespace Diot.ViewModels
                     continue;
                 }
 
-                var imgSource = await MoviesDbHelper.GetMovieCover(movie);
+                var imgSource = await MoviesDbHelper.GetMovieCover(_dataService, movie);
 
                 movie.CoverImage = imgSource == null 
                     ? "library_icon.png"
