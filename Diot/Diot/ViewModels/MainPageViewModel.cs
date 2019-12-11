@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase, IMainPageViewModel
+    public class MainPageViewModel : NavigatableViewModel, IMainPageViewModel
     {
         #region Fields
 
@@ -210,27 +210,40 @@ namespace Diot.ViewModels
 			SortedMoviesList = updatedList;
         }
 
-        /// <summary>
-        ///     Called when navigating to.
-        /// </summary>
-        public override async void OnNavigatingTo(INavigationParameters parameters)
-        {
-            base.OnNavigatingTo(parameters);
+		/// <summary>
+		///		Initializes the view model asynchronously.
+		/// </summary>
+		/// <param name="parameters">The parameters.</param>
+		public override async Task InitializeAsync(INavigationParameters parameters)
+		{
+			await base.InitializeAsync(parameters);
 
-            try
-            {
-                MoviesList = _databaseService.GetAllMovies();
+			try
+			{
+				MoviesList = _databaseService.GetAllMovies();
 
-                await getCoverImagesAsync();
-            }
-            catch (Exception)
-            {
-                await _dialogService.DisplayAlertAsync(
-                    _resourceManager.GetString("GenericErrorTitle"),
-                    _resourceManager.GetString("GenericErrorMessage"),
-                    _resourceManager.GetString("Ok"));
-            }
-        }
+				await getCoverImagesAsync();
+			}
+			catch (Exception)
+			{
+				await _dialogService.DisplayAlertAsync(
+					_resourceManager.GetString("GenericErrorTitle"),
+					_resourceManager.GetString("GenericErrorMessage"),
+					_resourceManager.GetString("Ok"));
+			}
+		}
+
+		/// <summary>
+		///		Called when the implementer has been navigated to.
+		/// </summary>
+		/// <param name="parameters">The navigation parameters.</param>
+		public override async void OnNavigatedTo(INavigationParameters parameters)
+		{
+			if (parameters.GetNavigationMode() == NavigationMode.Back)
+			{
+				await InitializeAsync(parameters);
+			}
+		}
 
         /// <summary>
         ///     Updates the no movies instruction visibility.
