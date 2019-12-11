@@ -15,7 +15,7 @@ using DryIoc;
 
 namespace Diot.ViewModels
 {
-    public class MovieDetailsPageViewModel : ViewModelBase, IMovieDetailsPageViewModel
+    public class MovieDetailsPageViewModel : NavigatableViewModel, IMovieDetailsPageViewModel
     {
         #region Fields
 
@@ -101,35 +101,36 @@ namespace Diot.ViewModels
 			_dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
 
-        #endregion
+		#endregion
 
-        /// <summary>
-        ///     Called when navigating to.
-        /// </summary>
-        /// <param name="parameters">The navigation parameters.</param>
-        public override async void OnNavigatingTo(INavigationParameters parameters)
-        {
-            if (parameters == null)
-            {
-                throw new Exception("Navigation parameter cannot be null.");
-            }
+		/// <summary>
+		///		Initializes the view model asynchronously.
+		/// </summary>
+		/// <param name="parameters">The parameters.</param>
+		/// <exception cref="Exception">
+		public override async Task InitializeAsync(INavigationParameters parameters)
+		{
+			if (parameters == null)
+			{
+				throw new Exception("Navigation parameter cannot be null.");
+			}
 
-            parameters.TryGetValue(NavParamKeys.SelectedMovie, out MovieDbModel selectedMovie);
+			parameters.TryGetValue(NavParamKeys.SelectedMovie, out MovieDbModel selectedMovie);
 
-            var imgSrc = await MoviesDbHelper.GetMovieCover(_dataService, selectedMovie);
+			var imgSrc = await MoviesDbHelper.GetMovieCover(_dataService, selectedMovie);
 
-            if (imgSrc == null)
-            {
-                CoverImage = selectedMovie?.CoverImage ?? "library_icon.png";
-                //TODO: hide cover image
-            }
-            else
-            {
-                CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
-            };
+			if (imgSrc == null)
+			{
+				CoverImage = selectedMovie?.CoverImage ?? "library_icon.png";
+				//TODO: hide cover image
+			}
+			else
+			{
+				CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
+			};
 
-            SelectedMovie = selectedMovie ?? throw new Exception("Selected movie cannot be null.");
-        }
+			SelectedMovie = selectedMovie ?? throw new ArgumentNullException("Selected movie cannot be null.");
+		}
 
         /// <summary>
         ///     Deletes the movie and navigate back.

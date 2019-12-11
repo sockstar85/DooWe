@@ -51,13 +51,7 @@ namespace Diot.ViewModels
         /// <param name="navigationService">The navigation service.</param>
         /// <param name="dialogService">The dialog service.</param>
         /// <param name="loadingPageService">The loading page service.</param>
-        public SelectableMovieViewModel(
-            IExtendedNavigation navigationService,
-            IPageDialogService dialogService, 
-            ILoadingPageService loadingPageService) 
-            : base(navigationService, 
-                dialogService, 
-                loadingPageService)
+        public SelectableMovieViewModel() : base()
         {
         }
 

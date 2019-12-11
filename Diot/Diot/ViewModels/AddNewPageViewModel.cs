@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace Diot.ViewModels
 {
-    public class AddNewPageViewModel : ViewModelBase, IAddNewPageViewModel
+    public class AddNewPageViewModel : NavigatableViewModel, IAddNewPageViewModel
     {
         #region  Fields
 

@@ -156,6 +156,12 @@ namespace Diot.Models
         /// </summary>
         public string OtherComment { get; set; }
 
+		[Ignore]
+		/// <summary>
+		///		Gets or sets the movie credits.
+		/// </summary>
+		public MovieCreditsModel Credits { get; set; }
+
         #endregion
     }
 }

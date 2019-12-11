@@ -52,7 +52,7 @@ namespace Diot
         /// <summary>
         ///     Run the bootstrapper process.
         /// </summary>
-        public override void Initialize()
+        protected override void Initialize()
         {
             InitializeComponent();
 
