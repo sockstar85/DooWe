@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.Manager;
 using Diot.Interface.ViewModels;
 using Diot.Models;
 using Diot.Views.Pages;
 using DryIoc;
-using Plugin.Connectivity;
 using Prism.Services;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
@@ -85,8 +85,9 @@ namespace Diot.ViewModels
             ILoadingPageService loadingPageService,
             IResourceManager resourceManager,
             IDatabaseService databaseService,
-			IHttpClientService dataService) 
-            : base(navigationService, pageDialogService, loadingPageService)
+			IHttpClientService dataService,
+			IConnectivityManager connectivityManager) 
+            : base(navigationService, pageDialogService, loadingPageService, connectivityManager)
         {
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
@@ -140,7 +141,7 @@ namespace Diot.ViewModels
 		/// </summary>
 		private async Task searchMovie()
         {			
-            if (!CrossConnectivity.Current.IsConnected)
+            if (!HasNetworkConnection)
             {
                 await _dialogService.DisplayAlertAsync(
                     _resourceManager.GetString("NoNetworkConnection"),
@@ -156,7 +157,7 @@ namespace Diot.ViewModels
 
             try
             {
-                results = await MoviesDbHelper.SearchMovie(_dataService, MovieTitle);
+                results = await MoviesDbHelper.SearchMovieAsync(_dataService, MovieTitle);
             }
             catch (Exception)
             {

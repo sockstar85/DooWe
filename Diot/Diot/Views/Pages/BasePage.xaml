@@ -4,11 +4,4 @@
              x:Class="Diot.Views.Pages.BasePage"
              Padding="20"
              BackgroundColor="{DynamicResource BasePageBackgroundColor}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextDark}"/>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 </ContentPage>

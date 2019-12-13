@@ -23,6 +23,11 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         ICommand DeleteMovieCommand { get; }
 
+		/// <summary>
+		///		Gets the navigate back command.
+		/// </summary>
+		ICommand NavigateBackCommand { get; }
+
         /// <summary>
         ///     Gets or sets the selected movie.
         /// </summary>
@@ -33,6 +38,26 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         ImageSource CoverImage { get; set; }
 
-        #endregion
-    }
+		/// <summary>
+		///     Gets or sets the backdrop image.
+		/// </summary>
+		ImageSource BackdropImage { get; set; }
+
+		/// <summary>
+		///		Gets or sets a value indicating whether found backdrop image.
+		/// </summary>
+		bool FoundBackdropImage { get; set; }
+
+		/// <summary>
+		///		Gets or sets the starring text.
+		/// </summary>
+		string StarringText { get; set; }
+
+		/// <summary>
+		///		Gets or sets the director text.
+		/// </summary>
+		string DirectorText { get; set; }
+
+		#endregion
+	}
 }

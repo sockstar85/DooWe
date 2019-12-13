@@ -1,5 +1,7 @@
 ﻿using Diot.Interface;
+using Diot.Interface.Manager;
 using Diot.Interface.ViewModels;
+using Diot.Managers;
 using Diot.Services;
 using Diot.ViewModels;
 using Diot.Views.Extensions;
@@ -111,7 +113,7 @@ namespace Diot
 
             containerRegistry.RegisterSingleton<IDatabaseService, DatabaseService>();
 			containerRegistry.RegisterSingleton<IHttpClientService, HttpClientService>();
-
+			containerRegistry.RegisterSingleton<IConnectivityManager, ConnectivityManager>();
             #endregion
 
             AppContainer = containerRegistry.GetContainer();

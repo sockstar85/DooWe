@@ -60,7 +60,7 @@ namespace Diot.ViewModels
         /// </summary>
         public async Task<ISelectableMovieViewModel> InitWithAsync(IHttpClientService dataService, MovieDbModel movie)
         {
-            var imgSrc = await MoviesDbHelper.GetMovieCover(dataService, movie);
+            var imgSrc = await MoviesDbHelper.GetMovieCoverAsync(dataService, movie);
 
 			if (imgSrc != null)
 			{

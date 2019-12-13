@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Diot.Interface.Manager;
+using Prism.Navigation;
 using Prism.Services;
 
 namespace Diot.Interface.ViewModels
@@ -26,6 +27,12 @@ namespace Diot.Interface.ViewModels
 		///     Gets the loading page service.
 		/// </summary>
 		ILoadingPageService LoadingPageService { get; }
+
+		/// <summary>
+		///		Gets or sets a value indicating whether there is a network connection.
+		/// </summary>> if this instance has network connection; otherwise, <c>false</c>.
+		/// </value>
+		bool HasNetworkConnection { get; set; }
 
 		#endregion
 	}

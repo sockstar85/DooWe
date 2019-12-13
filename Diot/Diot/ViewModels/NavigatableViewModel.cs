@@ -1,4 +1,5 @@
 ﻿using Diot.Interface;
+using Diot.Interface.Manager;
 using Diot.Interface.ViewModels;
 using Prism.AppModel;
 using Prism.Navigation;
@@ -10,6 +11,12 @@ namespace Diot.ViewModels
 {
 	public abstract class NavigatableViewModel : ViewModelBase, INavigatableViewModel, IApplicationLifecycleAware
 	{
+		#region Fields
+
+		private bool _hasNetworkConnection = true;
+
+		#endregion
+
 		#region Properties
 
 		/// <summary>
@@ -32,6 +39,20 @@ namespace Diot.ViewModels
 		/// </summary>
 		public ILoadingPageService LoadingPageService { get; }
 
+		/// <summary>
+		///		Gets or sets a value indicating whether there is a network connection.
+		/// </summary>
+		public bool HasNetworkConnection
+		{
+			get => _hasNetworkConnection;
+			set => SetProperty(ref _hasNetworkConnection, value);
+		}
+
+		/// <summary>
+		///		Gets the connectivity manager.
+		/// </summary>
+		protected IConnectivityManager ConnectivityManager { get; }
+
 		#endregion
 
 		#region Methods
@@ -53,12 +74,16 @@ namespace Diot.ViewModels
 		/// </exception>
 		public NavigatableViewModel(IExtendedNavigation navigationService,
 			IPageDialogService pageDialogService,
-			ILoadingPageService loadingPageService) 
+			ILoadingPageService loadingPageService,
+			IConnectivityManager connectivityManager) 
 			: base()
 		{
 			LoadingPageService = loadingPageService ?? throw new ArgumentNullException(nameof(loadingPageService));
 			NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 			DialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
+			ConnectivityManager = connectivityManager ?? throw new ArgumentNullException(nameof(connectivityManager));
+
+			_hasNetworkConnection = ConnectivityManager.HasNetworkConnection;
 		}
 
 		#endregion

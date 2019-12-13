@@ -12,8 +12,8 @@
             <!--#region Fonts-->
             <OnPlatform x:Key="IconFont" 
                         x:TypeArguments="x:String" 
-                        Android="ElegantIcons.tff#Elegant Fonts" 
-                        iOS="ElegantIcons"/>
+                        Android="MaterialIcons-Regular.tff#Material Fonts" 
+                        iOS="MaterialIcons-Regular"/>
             <!--#endregion-->
 
             <!--#region Colors-->
@@ -24,11 +24,11 @@
             <!--#endregion-->
 
             <!--#region Base Page colors-->
-            <Color x:Key="BasePageBackgroundColor">#F0F0F0</Color>
+            <Color x:Key="BasePageBackgroundColor">#1C1C1C</Color>
             <!--#endregion-->
 
             <!--#region Text and Label colors-->
-            <Color x:Key="PrimaryTextLight">LightGray</Color>
+			<Color x:Key="PrimaryTextLight">#DEDEDE</Color>
             <Color x:Key="PrimaryTextDark">#121212</Color>
             <!--#endregion-->
 
@@ -85,6 +85,10 @@
 			<!--Style applied to all icon buttons globally unless style otherwise applied-->
 			<Style TargetType="controls:IconButton" BasedOn="{StaticResource PrimaryIconButton}"/>
 			<!--#endregion-->
+
+			<Style TargetType="Label">
+				<Setter Property="TextColor" Value="{DynamicResource PrimaryTextLight}"/>
+            </Style>
 
 		</ResourceDictionary>
     </Application.Resources>

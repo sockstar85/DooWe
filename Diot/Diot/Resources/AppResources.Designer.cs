@@ -142,6 +142,15 @@ namespace Diot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Director.
+        /// </summary>
+        internal static string Director {
+            get {
+                return ResourceManager.GetString("Director", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
@@ -201,6 +210,15 @@ namespace Diot.Resources {
         internal static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading movie details....
+        /// </summary>
+        internal static string LoadingMovieDetails {
+            get {
+                return ResourceManager.GetString("LoadingMovieDetails", resourceCulture);
             }
         }
         
@@ -363,6 +381,15 @@ namespace Diot.Resources {
         internal static string SearchingMovie {
             get {
                 return ResourceManager.GetString("SearchingMovie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starring.
+        /// </summary>
+        internal static string Starring {
+            get {
+                return ResourceManager.GetString("Starring", resourceCulture);
             }
         }
         

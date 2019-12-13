@@ -10,7 +10,7 @@
         /// <summary>
         ///     The icons font file (for Android).
         /// </summary>
-        public const string IconsFontFile = "ElegantIcons.ttf";
+        public const string IconsFontFile = "MaterialIcons-Regular.ttf";
 
         /// <summary>
         ///     Gets or sets the icons font family title (for iOS).
@@ -18,7 +18,7 @@
         /// <value>
         /// The icons font family title.
         /// </value>
-        public const string IconsFontFamilyTitle = "ElegantIcons";
+        public const string IconsFontFamilyTitle = "MaterialIcons-Regular";
 
         #endregion
 
@@ -29,13 +29,16 @@
         {
             #region Properties
 
-            public const string ico_selectedCheckSolid = "\uE052";
-            public const string ico_selectedCheck = "\u0052";
-			public const string ico_add = "\u004C";
-			public const string ico_edit = "\u006A";
-			public const string ico_search = "\u0055";
+            public const string ico_selectedCheckSolid = "\uE3A6";
+            public const string ico_selectedCheck = "\uE5CA";
+			public const string ico_add = "\uE145";
+			public const string ico_edit = "\uE150";
+			public const string ico_search = "\uE8B6";
+			public const string ico_trash = "\uE872";
+			public const string ico_backArrow = "\uE5C4";
+			public const string ico_backArrow_iOS = "\uE408";
 
-            #endregion
-        }
+			#endregion
+		}
     }
 }

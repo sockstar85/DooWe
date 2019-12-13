@@ -26,6 +26,7 @@ namespace Diot.Droid
 
             base.OnCreate(bundle);
 
+			Xamarin.Essentials.Platform.Init(this, bundle);
             Rg.Plugins.Popup.Popup.Init(this, bundle);
             CrossCurrentActivity.Current.Init(this, bundle);
             Forms.Init(this, bundle);
@@ -48,8 +49,18 @@ namespace Diot.Droid
             }
         }
 
-        #endregion
-    }
+		/// <summary>
+		///		This allows Xamarin.Essentials to know about permission request results.
+		/// </summary>
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+		{
+			Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+			base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+
+		#endregion
+	}
 
     public class AndroidInitializer : IPlatformInitializer
     {
