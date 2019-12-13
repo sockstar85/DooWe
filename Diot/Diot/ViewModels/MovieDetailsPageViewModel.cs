@@ -12,6 +12,9 @@ using Prism.Services;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 using DryIoc;
+using Diot.Interface.Manager;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Diot.ViewModels
 {
@@ -19,9 +22,13 @@ namespace Diot.ViewModels
     {
         #region Fields
 
-        MovieDbModel _selectedMovie;
-        ImageSource _coverImage;
+        private MovieDbModel _selectedMovie;
+        private ImageSource _coverImage;
         private IDatabaseService _databaseService;
+		private ImageSource _backdropImage;
+		private bool _foundBackdropImage;
+		private string _starringText;
+		private string _directorText;
 		private readonly IResourceManager _resourceManager;
 		private readonly IHttpClientService _dataService;
 
@@ -67,7 +74,51 @@ namespace Diot.ViewModels
 		///		Gets or sets the refresh formats command.
 		/// </summary>
 		public ICommand RefreshFormatsCommand => new Command(refreshMovieFormats);
-		
+
+		/// <summary>
+		///		Gets the navigate back command.
+		/// </summary>
+		public ICommand NavigateBackCommand => new Command(async () =>
+		{
+			await NavigationService.GoBackAsync();
+		});
+
+		/// <summary>
+		///		Gets or sets the backdrop image.
+		/// </summary>
+		public ImageSource BackdropImage 
+		{ 
+			get => _backdropImage; 
+			set => SetProperty(ref _backdropImage, value); 
+		}
+
+		/// <summary>
+		///		Gets or sets a value indicating whether found backdrop image.
+		/// </summary>
+		public bool FoundBackdropImage 
+		{
+			get => _foundBackdropImage; 
+			set => SetProperty(ref _foundBackdropImage, value); 
+		}
+
+		/// <summary>
+		///		Gets or sets the starring text.
+		/// </summary>
+		public string StarringText
+		{
+			get => _starringText;
+			set => SetProperty(ref _starringText, value);
+		}
+
+		/// <summary>
+		/// Gets or sets the director text.
+		/// </summary>
+		public string DirectorText
+		{
+			get => _directorText;
+			set => SetProperty(ref _directorText, value);
+		}
+
 		#endregion
 
 		#region Methods
@@ -93,8 +144,10 @@ namespace Diot.ViewModels
             ILoadingPageService loadingPageService,
             IDatabaseService databaseService,
 			IResourceManager resourceManger,
-			IHttpClientService dataService) 
-            : base(navigationService, dialogService, loadingPageService)
+			IHttpClientService dataService,
+			IConnectivityManager connectivityManager) 
+            : base(navigationService, dialogService, loadingPageService,
+				  connectivityManager)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
 			_resourceManager = resourceManger ?? throw new ArgumentNullException(nameof(resourceManger));
@@ -117,25 +170,96 @@ namespace Diot.ViewModels
 
 			parameters.TryGetValue(NavParamKeys.SelectedMovie, out MovieDbModel selectedMovie);
 
-			var imgSrc = await MoviesDbHelper.GetMovieCover(_dataService, selectedMovie);
+			SelectedMovie = selectedMovie ?? throw new ArgumentNullException("Selected movie cannot be null.");
+
+			if (HasNetworkConnection)
+			{
+				try
+				{
+					SelectedMovie = await MoviesDbHelper.GetMovieDetailsAsync(_dataService, selectedMovie.Id);
+					var imgSource = await MoviesDbHelper.GetMovieBackgroundAsync(_dataService, selectedMovie);
+					BackdropImage = ImageSource.FromStream(() => new MemoryStream(imgSource));
+					FoundBackdropImage = true;
+					StarringText = getStarringText(SelectedMovie.Credits.Cast);
+					DirectorText = getDirectorText(SelectedMovie.Credits.Crew);
+
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					CoverImage = await getCoverImageFromCacheAsync(selectedMovie);
+				}
+			}
+			else
+			{
+				CoverImage = await getCoverImageFromCacheAsync(selectedMovie);
+			}
+		}
+
+		/// <summary>
+		///		Gets the director text.
+		/// </summary>
+		/// <param name="crew">The crew.</param>
+		private string getDirectorText(IList<CrewModel> crew)
+		{
+			var director = crew?.FirstOrDefault(x => x.Job.ToLower() == "director");			
+
+			if (director == null)
+			{
+				return null;
+			}
+
+			return $"{_resourceManager.GetString("Director")}: {director.Name}";
+		}
+
+		/// <summary>
+		///		Gets the starring text.
+		/// </summary>
+		/// <param name="cast">The cast.</param>
+		private string getStarringText(IList<CastModel> cast)
+		{
+			if (cast == null || cast.Count == 0)
+			{
+				return null;
+			}
+
+			var retVal = $"{_resourceManager.GetString("Starring")}: ";
+
+			//just display the first 5 cast members
+			for (var i = 0; i < 5 && i < cast.Count; i++)
+			{
+				var castMember = cast[i];
+
+				if (i > 0)
+				{
+					retVal += ", ";
+				}
+
+				retVal += castMember.Name;
+			}
+
+			return retVal;
+		}
+
+		private async Task<ImageSource> getCoverImageFromCacheAsync(MovieDbModel selectedMovie)
+		{
+			var imgSrc = await MoviesDbHelper.GetMovieCoverAsync(_dataService, selectedMovie);
 
 			if (imgSrc == null)
 			{
-				CoverImage = selectedMovie?.CoverImage ?? "library_icon.png";
+				return selectedMovie?.CoverImage ?? "library_icon.png";
 				//TODO: hide cover image
 			}
 			else
 			{
-				CoverImage = ImageSource.FromStream(() => new MemoryStream(imgSrc));
+				return ImageSource.FromStream(() => new MemoryStream(imgSrc));
 			};
-
-			SelectedMovie = selectedMovie ?? throw new ArgumentNullException("Selected movie cannot be null.");
 		}
 
-        /// <summary>
-        ///     Deletes the movie and navigate back.
-        /// </summary>
-        private async Task deleteMovieAndNavigateBack()
+		/// <summary>
+		///     Deletes the movie and navigate back.
+		/// </summary>
+		private async Task deleteMovieAndNavigateBack()
         {
             if (SelectedMovie == null)
             {

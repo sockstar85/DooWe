@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Diot.Helpers;
 using Diot.Interface;
+using Diot.Interface.Manager;
 using Diot.Interface.ViewModels;
 using Diot.Models;
-using Plugin.Connectivity;
 using Prism.Navigation;
 using Prism.Services;
 using Xamarin.Forms;
@@ -101,8 +101,9 @@ namespace Diot.ViewModels
             ILoadingPageService loadingPageService,
             IDatabaseService databaseService,
             IResourceManager resourceManager,
-			IHttpClientService dataService)
-            : base(navigationService, dialogService, loadingPageService)
+			IHttpClientService dataService,
+			IConnectivityManager connectivityManager)
+            : base(navigationService, dialogService, loadingPageService, connectivityManager)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
@@ -117,7 +118,7 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToAddNewPage()
         {
-            if (!CrossConnectivity.Current.IsConnected)
+            if (!HasNetworkConnection)
             {
                 await _dialogService.DisplayAlertAsync(
                     _resourceManager.GetString("NoNetworkConnection"), 
@@ -126,7 +127,6 @@ namespace Diot.ViewModels
 
                 return;
             }
-
 
             var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
 
@@ -155,6 +155,8 @@ namespace Diot.ViewModels
         /// </summary>
         private async Task navigateToMovieDetailsPage(MovieDbModel selectedMovie)
         {
+			LoadingPageService.ShowLoadingPage(_resourceManager.GetString("LoadingMovieDetails"));
+
             if (selectedMovie == null)
             {
                 return;
@@ -169,6 +171,8 @@ namespace Diot.ViewModels
             selectedMovie = null;
 
             var navigationResult = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
+
+			await LoadingPageService.HideLoadingPageAsync();
 
             if (!navigationResult.Success)
             {
@@ -190,7 +194,7 @@ namespace Diot.ViewModels
                     continue;
                 }
 
-                var imgSource = await MoviesDbHelper.GetMovieCover(_dataService, movie);
+                var imgSource = await MoviesDbHelper.GetMovieCoverAsync(_dataService, movie);
 
                 movie.CoverImage = imgSource == null 
                     ? "library_icon.png"

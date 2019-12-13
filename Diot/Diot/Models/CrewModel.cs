@@ -11,5 +11,10 @@
 		///		Gets or sets the job.
 		/// </summary>
 		public string Job { get; set; }
+
+		/// <summary>
+		///		Gets or sets the name.
+		/// </summary>
+		public string Name { get; set; }
 	}
 }

@@ -4,35 +4,49 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
+    xmlns:helpers="clr-namespace:Diot.Helpers"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
-    x:Class="Diot.Views.Pages.MovieDetailsPage"
-	Title="{extensions:Translate MovieDetails}">
+	xmlns:converters="clr-namespace:Diot.Views.Converters"
+	x:Class="Diot.Views.Pages.MovieDetailsPage"
+	Title="{extensions:Translate MovieDetails}"
+	NavigationPage.HasNavigationBar="False"
+	Padding="0"	>
+	<NavigationPage.TitleView>
+		<StackLayout Orientation="Horizontal" BackgroundColor="Orange">
+			<Label  Text="Test"/>
+		</StackLayout>
+	</NavigationPage.TitleView>
 
-	<ContentPage.ToolbarItems>
-		<ToolbarItem
-			IconImageSource="edit"
-			Command="{Binding EditMovieCommand}"/>
-		<ToolbarItem IconImageSource="delete"
-					 Command="{Binding DeleteMovieCommand}"/>
-
-	</ContentPage.ToolbarItems>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <ScrollView>
+			<Grid>
+                <StackLayout
+					Padding="20">
 
-            <ScrollView Grid.Row="0">
-                <StackLayout>
-                    <Label Text="{Binding SelectedMovie.Title}"
-                           HorizontalOptions="Center"
+					<Image Source="{Binding BackdropImage}"
+						   HorizontalOptions="FillAndExpand"
+						   Aspect="AspectFill"
+						   HeightRequest="300"
+						   Margin="-20,-20,-20, 0"
+						   IsVisible="{Binding FoundBackdropImage}"/>
+
+					<Image Source="{Binding CoverImage}"
+						   HorizontalOptions="FillAndExpand"
+						   HeightRequest="300"
+						   IsVisible="{Binding FoundBackdropImage, Converter={x:StaticResource InverseBoolConverter}}"/>
+
+					<Label Text="{Binding SelectedMovie.Title}"
+                           HorizontalOptions="Start"
                            HorizontalTextAlignment="Center"
                            FontSize="30"
-                           FontAttributes="Bold"/>
-                    <Image Source="{Binding CoverImage}" HeightRequest="300"
-                           Margin="0,15"/>
+                           FontAttributes="Bold"
+						   IsVisible="{Binding HasNetworkConnection}"/>                    
 
 					<controls:FormatDetailsControl 
                         BindingContext="{Binding SelectedMovie}"
@@ -44,12 +58,65 @@
                         IsOnPlex="{Binding IsOnPlex}"
                         IsOnOther="{Binding IsOnOther}"
                         OtherFormat="{Binding OtherComment}"
-                        HorizontalOptions="Center"/>
+                        HorizontalOptions="Center" />
 
-					<Label Text="{Binding SelectedMovie.Overview}"/>                    
+					<Label Text="{Binding SelectedMovie.Overview}"
+						   FontSize="18"
+						   LineHeight="1.2"/>
 
-                </StackLayout>
-            </ScrollView>
-        </Grid>
+					<Label Text="{Binding StarringText}"
+						   Margin="0,15,0,0"/>
+
+					<Label Text="{Binding DirectorText}"/>
+
+				</StackLayout>
+
+				<!--TODO: Move this into a control-->
+				<Grid Padding="15">
+
+					<controls:IconLabel TextColor="White">
+						<controls:IconLabel.IconCode>
+							<OnPlatform x:TypeArguments="x:String">
+								<On Platform="iOS" Value="{x:Static helpers:AppConsts+IconFontCodes.ico_backArrow_iOS}"/>
+								<On Platform="Android" Value="{x:Static helpers:AppConsts+IconFontCodes.ico_backArrow}"/>
+							</OnPlatform>
+						</controls:IconLabel.IconCode>
+					<controls:IconLabel.FontSize>
+							<OnPlatform x:TypeArguments="x:Double">
+								<On Platform="iOS" Value="40"/>
+								<On Platform="Android" Value="30"/>
+							</OnPlatform>
+					</controls:IconLabel.FontSize>
+
+								<controls:IconLabel.GestureRecognizers>
+							<TapGestureRecognizer Command="{Binding NavigateBackCommand}"/>
+						</controls:IconLabel.GestureRecognizers>
+					
+					</controls:IconLabel>
+				
+					<StackLayout Orientation="Horizontal" 
+								 HorizontalOptions="End"
+								 Spacing="15">
+						<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_edit}"
+											FontSize="25" 
+											TextColor="White">
+							<controls:IconLabel.GestureRecognizers>
+								<TapGestureRecognizer Command="{Binding EditMovieCommand}"/>
+							</controls:IconLabel.GestureRecognizers>
+						</controls:IconLabel>
+
+						<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_trash}" 
+											FontSize="25" 
+											TextColor="White">
+							<controls:IconLabel.GestureRecognizers>
+								<TapGestureRecognizer Command="{Binding DeleteMovieCommand}"/> 
+							</controls:IconLabel.GestureRecognizers>
+						</controls:IconLabel>
+					</StackLayout>
+				
+				</Grid>
+			</Grid>
+
+		</ScrollView>
     </ContentPage.Content>
 </pages:BasePage>

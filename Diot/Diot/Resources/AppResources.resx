@@ -222,4 +222,13 @@
   <data name="MovieDetails" xml:space="preserve">
     <value>Movie Details</value>
   </data>
+  <data name="LoadingMovieDetails" xml:space="preserve">
+    <value>Loading movie details...</value>
+  </data>
+  <data name="Director" xml:space="preserve">
+    <value>Director</value>
+  </data>
+  <data name="Starring" xml:space="preserve">
+    <value>Starring</value>
+  </data>
 </root>

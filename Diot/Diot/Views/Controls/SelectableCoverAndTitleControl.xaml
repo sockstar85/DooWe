@@ -31,7 +31,8 @@
                                 x:Name="SelectedIconSolid"/>
             <controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_selectedCheck}"
                                 TextColor="{DynamicResource SelectedIconAccentColor}"
-                                x:Name="SelectedIcon"/>
+                                x:Name="SelectedIcon"
+								FontSize="30"/>
         </Grid>
         <Label x:Name="TitleLbl"
                HorizontalOptions="Center"
