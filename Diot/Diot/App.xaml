@@ -30,7 +30,15 @@
             <!--#region Text and Label colors-->
 			<Color x:Key="PrimaryTextLight">#DEDEDE</Color>
             <Color x:Key="PrimaryTextDark">#121212</Color>
+			<Color x:Key="SearchPlaceholderTextColor">#666666</Color>
+			<Color x:Key="SearchTextColor">#BABABA</Color>
             <!--#endregion-->
+			
+			<!--#region Search Bar styles-->
+
+			<Color x:Key="SearchBarBackgroundColor">#2E2E2E</Color>
+			
+			<!--#endregion-->
 
             <!--#region Selected icon-->
             <Color x:Key="SelectedIconColor">#268021</Color>
@@ -40,7 +48,16 @@
 
             <!--#endregion-->
 
-            <!--#region Button styles-->
+			<!--#region Toolbar styles-->
+			
+			<Style TargetType="NavigationPage">
+				<Setter Property="BarBackgroundColor" Value="{StaticResource BasePageBackgroundColor}"/>
+				<Setter Property="BarTextColor" Value="White"/>
+			</Style>
+			
+			<!--#endregion-->
+
+			<!--#region Button styles-->
             <Style TargetType="Button" x:Key="SecondaryButton">
                 <Setter Property="BackgroundColor" Value="White"/>
                 <Setter Property="BorderWidth" Value="1"/>

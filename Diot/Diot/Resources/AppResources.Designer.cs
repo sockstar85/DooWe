@@ -295,7 +295,7 @@ namespace Diot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot; in the toolbar to add a movie.
+        ///   Looks up a localized string similar to &quot; add a movie.
         /// </summary>
         internal static string NoMoviesInstructions2 {
             get {

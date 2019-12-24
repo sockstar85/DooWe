@@ -48,7 +48,7 @@ namespace Diot.Helpers
                 size = 800;
             }
 
-            return $"https://image.tmdb.org/t/p/w{size}/{imagePath}";
+			return $"https://image.tmdb.org/t/p/w{size}/{imagePath}";
         }
 
 		/// <summary>

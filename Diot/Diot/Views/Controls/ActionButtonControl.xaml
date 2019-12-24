@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:controls="clr-namespace:Diot.Views.Controls"	  
+	  xmlns:helpers="clr-namespace:Diot.Helpers"
+	  mc:Ignorable="d"
+      x:Class="Diot.Views.Controls.ActionButtonControl"	  
+	  WidthRequest="65"
+	  HeightRequest="65"
+	  x:Name="OuterContainer">
+	
+	<BoxView x:Name="CircularBackground"
+			 BackgroundColor="{DynamicResource SecondaryColor}"
+			 CornerRadius="32.5"/>
+
+	<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_add}"
+						HorizontalOptions="Center"
+						VerticalOptions="Center"
+						FontSize="45"
+						TextColor="White"
+						x:Name="Icon"/>
+</Grid>

@@ -31,6 +31,7 @@ namespace Diot.ViewModels
 		private string _directorText;
 		private readonly IResourceManager _resourceManager;
 		private readonly IHttpClientService _dataService;
+		private bool _shouldRefreshOnNavigatingBack;
 
 		#endregion
 
@@ -52,11 +53,11 @@ namespace Diot.ViewModels
             get => _selectedMovie;
             set => SetProperty(ref _selectedMovie, value);
         }
-
-        /// <summary>
-        ///     Gets or sets the cover image.
-        /// </summary>
-        public ImageSource CoverImage
+		
+		/// <summary>
+		///     Gets or sets the cover image.
+		/// </summary>
+		public ImageSource CoverImage
         {
             get => _coverImage;
             set => SetProperty(ref _coverImage, value);
@@ -78,10 +79,7 @@ namespace Diot.ViewModels
 		/// <summary>
 		///		Gets the navigate back command.
 		/// </summary>
-		public ICommand NavigateBackCommand => new Command(async () =>
-		{
-			await NavigationService.GoBackAsync();
-		});
+		public ICommand NavigateBackCommand => new Command(async () => await navigateBackAsync());		
 
 		/// <summary>
 		///		Gets or sets the backdrop image.
@@ -172,16 +170,18 @@ namespace Diot.ViewModels
 
 			SelectedMovie = selectedMovie ?? throw new ArgumentNullException("Selected movie cannot be null.");
 
+			FoundBackdropImage = false;
+
 			if (HasNetworkConnection)
 			{
 				try
 				{
-					SelectedMovie = await MoviesDbHelper.GetMovieDetailsAsync(_dataService, selectedMovie.Id);
+					var selectedMovieDetails = await MoviesDbHelper.GetMovieDetailsAsync(_dataService, selectedMovie.Id);
 					var imgSource = await MoviesDbHelper.GetMovieBackgroundAsync(_dataService, selectedMovie);
 					BackdropImage = ImageSource.FromStream(() => new MemoryStream(imgSource));
-					FoundBackdropImage = true;
-					StarringText = getStarringText(SelectedMovie.Credits.Cast);
-					DirectorText = getDirectorText(SelectedMovie.Credits.Crew);
+					FoundBackdropImage = imgSource != null && imgSource.Length > 0;
+					StarringText = getStarringText(selectedMovieDetails.Credits.Cast);
+					DirectorText = getDirectorText(selectedMovieDetails.Credits.Crew);
 
 				}
 				catch (Exception e)
@@ -190,7 +190,8 @@ namespace Diot.ViewModels
 					CoverImage = await getCoverImageFromCacheAsync(selectedMovie);
 				}
 			}
-			else
+
+			if(!FoundBackdropImage)
 			{
 				CoverImage = await getCoverImageFromCacheAsync(selectedMovie);
 			}
@@ -276,7 +277,10 @@ namespace Diot.ViewModels
             if (confirmDelete)
             {
                 Console.WriteLine(_databaseService.DeleteMovie(SelectedMovie));
-                await NavigationService.GoBackAsync();
+				await NavigationService.GoBackAsync(new NavigationParameters
+					{
+						{ NavParamKeys.ShouldRefreshPage, true }
+					});
             }
         }
 
@@ -310,9 +314,25 @@ namespace Diot.ViewModels
 			//force a property changed
 			SelectedMovie = new MovieDbModel();
 			SelectedMovie = movie;
-
+			
 			//save changes to DB
 			_databaseService.SaveMovie(movie);
+			_shouldRefreshOnNavigatingBack = true;
+		}
+
+		/// <summary>
+		///		Navigates back asynchronously.
+		/// </summary>
+		private async Task navigateBackAsync()
+		{
+			LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+
+			await NavigationService.GoBackAsync(new NavigationParameters
+					{
+						{ NavParamKeys.ShouldRefreshPage, _shouldRefreshOnNavigatingBack }
+					});
+
+			await LoadingPageService.HideLoadingPageAsync(500);
 		}
 
 		#endregion

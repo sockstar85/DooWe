@@ -6,6 +6,7 @@ using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Diot.ViewModels
 {
@@ -84,7 +85,9 @@ namespace Diot.ViewModels
 			ConnectivityManager = connectivityManager ?? throw new ArgumentNullException(nameof(connectivityManager));
 
 			_hasNetworkConnection = ConnectivityManager.HasNetworkConnection;
-		}
+
+			ConnectivityManager.ConnectivityChanged += updateHasConnectivity;
+		}		
 
 		#endregion
 
@@ -93,6 +96,17 @@ namespace Diot.ViewModels
 		/// </summary>
 		public virtual void Destroy()
 		{
+			ConnectivityManager.ConnectivityChanged -= updateHasConnectivity;
+		}
+
+		/// <summary>
+		///		Updates the has connectivity flag.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="ConnectivityChangedEventArgs"/> instance containing the event data.</param>
+		private void updateHasConnectivity(object sender, ConnectivityChangedEventArgs e)
+		{
+			HasNetworkConnection = ConnectivityManager.HasNetworkConnection;
 		}
 
 		/// <summary>

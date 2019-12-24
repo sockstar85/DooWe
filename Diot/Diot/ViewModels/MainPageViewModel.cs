@@ -172,7 +172,7 @@ namespace Diot.ViewModels
 
             var navigationResult = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
 
-			await LoadingPageService.HideLoadingPageAsync();
+			await LoadingPageService.HideLoadingPageAsync(500);
 
             if (!navigationResult.Success)
             {
@@ -243,7 +243,9 @@ namespace Diot.ViewModels
 		/// <param name="parameters">The navigation parameters.</param>
 		public override async void OnNavigatedTo(INavigationParameters parameters)
 		{
-			if (parameters.GetNavigationMode() == NavigationMode.Back)
+			parameters.TryGetValue(NavParamKeys.ShouldRefreshPage, out bool shouldRefresh);
+
+			if (shouldRefresh)
 			{
 				await InitializeAsync(parameters);
 			}

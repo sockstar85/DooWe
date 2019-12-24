@@ -11,6 +11,7 @@ using Diot.Interface.ViewModels;
 using Diot.Models;
 using Diot.Views.Pages;
 using DryIoc;
+using Prism.Navigation;
 using Prism.Services;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
@@ -227,7 +228,11 @@ namespace Diot.ViewModels
                 });
             }
 
-            await NavigationService.GoBackAsync();
+            await NavigationService.GoBackAsync(
+				new NavigationParameters 
+				{ 
+					{ NavParamKeys.ShouldRefreshPage, true } 
+				});
 
             await LoadingPageService.HideLoadingPageAsync();
         }

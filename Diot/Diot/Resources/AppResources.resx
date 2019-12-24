@@ -193,7 +193,7 @@
     <value>Tap "</value>
   </data>
   <data name="NoMoviesInstructions2" xml:space="preserve">
-    <value>" in the toolbar to add a movie</value>
+    <value>" add a movie</value>
   </data>
   <data name="OtherColon" xml:space="preserve">
     <value>Other: </value>
