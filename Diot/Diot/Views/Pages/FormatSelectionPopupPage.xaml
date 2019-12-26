@@ -54,17 +54,18 @@
             <controls:FormatSelectorControl
                 x:Name="Dvd"
                 Image="dvd.png"
+				TintColor="{DynamicResource PrimaryTextLight}"
                 Grid.Column="1"
 				Grid.Row="0"/>
             <controls:FormatSelectorControl
                 x:Name="Vudu"
                 Image="vudu.png"
                 Grid.Column="2"
-				Grid.Row="0"/>
-			
+				Grid.Row="0"/>			
             <controls:FormatSelectorControl
                 x:Name="Amazon"
                 Image="amazon.png"
+				TintColor="{DynamicResource PrimaryTextLight}"
                 Grid.Column="0"
 				Grid.Row="1"/>
             <controls:FormatSelectorControl
