@@ -28,6 +28,11 @@ namespace Diot.Interface.ViewModels
         /// </summary>
         string MovieTitle { get; set; }
 
+		/// <summary>
+		///		Gets or sets the save items image source.
+		/// </summary>
+		string SaveItemsImageSource { get; set; }
+
         /// <summary>
         ///     Gets or sets the search results.
         /// </summary>

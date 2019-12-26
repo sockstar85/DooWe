@@ -128,12 +128,16 @@ namespace Diot.ViewModels
                 return;
             }
 
+			LoadingPageService.ShowLoadingPage(_resourceManager.GetString("Loading"));
+
             var navigationResult = await NavigationService.NavigateAsync(PageNames.AddNewPage);
 
             if (!navigationResult.Success)
             {
                 await handleFailedNavigationAsync(navigationResult.Exception);
             }
+
+			await LoadingPageService.HideLoadingPageAsync();
         }
 
         /// <summary>
@@ -143,6 +147,8 @@ namespace Diot.ViewModels
         private async Task handleFailedNavigationAsync(Exception exception)
         {
             Console.WriteLine(exception.Message);
+
+			await LoadingPageService.HideLoadingPageAsync();
 
             await _dialogService.DisplayAlertAsync(
                 _resourceManager.GetString("NavigationError"),

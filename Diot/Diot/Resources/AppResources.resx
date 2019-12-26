@@ -120,8 +120,8 @@
   <data name="AddingMovies" xml:space="preserve">
     <value>Saving your selections...</value>
   </data>
-  <data name="AddNew" xml:space="preserve">
-    <value>Add New</value>
+  <data name="AddNewPageTitle" xml:space="preserve">
+    <value>Add New Movie</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -230,5 +230,8 @@
   </data>
   <data name="Starring" xml:space="preserve">
     <value>Starring</value>
+  </data>
+  <data name="FilterByTitle" xml:space="preserve">
+    <value>Filter by title...</value>
   </data>
 </root>

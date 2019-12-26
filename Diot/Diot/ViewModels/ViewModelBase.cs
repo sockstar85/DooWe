@@ -12,5 +12,10 @@ namespace Diot.ViewModels
     /// <seealso cref="IDestructible" />
     public class ViewModelBase : BindableBase, IViewModelBase
     {
+		#region Properties
+
+		protected bool _isBusy;
+
+		#endregion
 	}
 }

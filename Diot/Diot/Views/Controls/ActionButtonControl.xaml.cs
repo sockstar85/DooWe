@@ -122,6 +122,7 @@ namespace Diot.Views.Controls
 		{
 			OuterContainer.WidthRequest = Size;
 			CircularBackground.CornerRadius = new CornerRadius(Size / 2);
+			CircularBackgroundShadow.CornerRadius = new CornerRadius(Size / 2);
 		}
 
 		/// <summary>

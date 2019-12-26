@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="clr-namespace:Diot.Views.Controls"
+			 xmlns:entry="clr-namespace:Diot.Views.Effects.Entry"			 
+			 xmlns:helpers="clr-namespace:Diot.Helpers"
+			 mc:Ignorable="d"
+             x:Class="Diot.Views.Controls.SearchControl">
+	<ContentView.Content>
+		<!--#region Search area-->
+	  
+		<Grid 
+			ColumnSpacing="5"
+		    BackgroundColor="{DynamicResource SearchBarBackgroundColor}"
+		    x:Name="OuterContainer">
+			
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+
+			</Grid.ColumnDefinitions>
+
+			<controls:IconLabel 
+				IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
+				VerticalOptions="Center"
+				FontSize="24"
+				TextColor="{DynamicResource SearchPlaceholderTextColor}"
+				x:Name="ControlIcon"
+				Grid.Column="0"
+				Margin="15,0,0,0"
+				IsVisible="False"/>
+
+			<Entry 
+				x:Name="ControlEntry"
+			    HorizontalOptions="FillAndExpand"
+			    Margin="0,5"
+			    Placeholder="Replace this!"
+                VerticalOptions="Center"
+			    HeightRequest="45"
+			    TextColor="{DynamicResource SearchTextColor}"
+			    PlaceholderColor="{DynamicResource SearchPlaceholderTextColor}"
+			    Grid.Column="1">
+				
+				<Entry.Effects>
+					<entry:EntryNoUnderlineEffect/>
+				</Entry.Effects>
+			</Entry>
+
+			<Grid 
+				BackgroundColor="{DynamicResource PrimaryColor}"
+			    VerticalOptions="Center"
+			    HorizontalOptions="End"
+			    HeightRequest="55"
+			    Grid.Column="2"
+			    Padding="10,0"
+				x:Name="ButtonContainer">
+
+				<Grid.GestureRecognizers>
+					<TapGestureRecognizer x:Name="ButtonGestureRestureRecognizer"
+										  Tapped="ButtonGestureRestureRecognizer_Tapped"/>
+				</Grid.GestureRecognizers>
+				
+				<controls:IconLabel 
+					IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
+					VerticalOptions="Center"
+					FontSize="24"
+					TextColor="White"
+					x:Name="ControlButton"/>
+			</Grid>
+
+		</Grid>
+		<!--#endregion-->
+	</ContentView.Content>
+</ContentView>
