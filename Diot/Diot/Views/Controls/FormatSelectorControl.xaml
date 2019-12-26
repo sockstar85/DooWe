@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Diot.Views.Controls.FormatSelectorControl"
+			 xmlns:controls="clr-namespace:Diot.Views.Controls"
+			 x:Class="Diot.Views.Controls.FormatSelectorControl"
              Opacity="0.3"
              x:Name="Control">
   <ContentView.Content>
-      <Image x:Name="FormatImage"
+      <controls:TintableImage x:Name="FormatImage"
              Aspect="AspectFit">
           <Image.GestureRecognizers>
               <TapGestureRecognizer Tapped="OnTapped"/>
           </Image.GestureRecognizers>
-      </Image>
+      </controls:TintableImage>
   </ContentView.Content>
 </ContentView>

@@ -27,9 +27,31 @@ namespace Diot.Views.Controls
 	        set => SetValue(IsSelectedProperty, value);
 	    }
 
-        #endregion
+		/// <summary>
+		///		Gets or sets the color of the tint.
+		/// </summary>
+		public Color TintColor
+		{
+			get => (Color)GetValue(TintColorProperty);
+			set => SetValue(TintColorProperty, value);
+		}
 
-        #region Bindable Properties
+		#endregion
+
+		#region Bindable Properties
+
+		/// <summary>
+		///		The bindable property for <see cref="TintColor"/>.
+		/// </summary>
+		public static readonly BindableProperty TintColorProperty =
+			BindableProperty.Create(
+				nameof(TintColor),
+				typeof(Color),
+				typeof(FormatSelectorControl),
+				Color.Transparent,
+				propertyChanged:
+				(bindable, oldValue, newValue) =>
+					((FormatSelectorControl)bindable).updateTintColor());
 
 	    /// <summary>
 	    ///     The bindable property for <see cref="Image"/>.
@@ -71,7 +93,15 @@ namespace Diot.Views.Controls
 			InitializeComponent ();
 		}
 
-        #endregion
+		#endregion
+
+		/// <summary>
+		///		Updates the color of the tint.
+		/// </summary>
+		private void updateTintColor()
+		{
+			FormatImage.TintColor = TintColor;
+		}
 
 	    /// <summary>
 	    ///     Updates the control opacity indicating it's selected.

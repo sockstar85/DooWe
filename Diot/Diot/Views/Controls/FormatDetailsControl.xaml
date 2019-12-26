@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Diot.Views.Controls.FormatDetailsControl"
              xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
-             Orientation="Horizontal">
+			xmlns:controls="clr-namespace:Diot.Views.Controls"
+			Orientation="Horizontal">
     <StackLayout Orientation="Horizontal">
         <StackLayout.Resources>
             <ResourceDictionary>
@@ -13,19 +14,27 @@
                     <Setter Property="HeightRequest" Value="40"/>
                     <Setter Property="VerticalOptions" Value="Center"/>
                 </Style>
-            </ResourceDictionary>
+				<Style TargetType="controls:TintableImage">
+					<Setter Property="IsVisible" Value="False"/>
+					<Setter Property="Aspect" Value="AspectFit"/>
+					<Setter Property="HeightRequest" Value="40"/>
+					<Setter Property="VerticalOptions" Value="Center"/>
+				</Style>
+			</ResourceDictionary>
         </StackLayout.Resources>
 
         <Image x:Name="BlurayImg"
                Source="bluray.png"/>
-		<Image x:Name="DvdImg"
-               Source="dvd.png"/>
+		<controls:TintableImage x:Name="DvdImg"
+               Source="dvd.png"
+			   TintColor="{DynamicResource PrimaryTextLight}"/>
 		<Image x:Name="VuduImg"
                Source="vudu.png"/>
 		<Image x:Name="MoviesAnywhereImg"
                Source="movies_anywhere.png"/>
-		<Image x:Name="AmazonImg"
-               Source="amazon.png"/>
+		<controls:TintableImage x:Name="AmazonImg"
+               Source="amazon.png"
+			   TintColor="{DynamicResource PrimaryTextLight}"/>
 		<Image x:Name="PlexImg"
                Source="plex.png"/>
         <Label x:Name="OtherLabel"
