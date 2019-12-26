@@ -12,6 +12,9 @@ namespace Diot.Views.Effects.Entry
 
 		#region Constructors
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="EntryNoUnderlineEffect"/> class.
+		/// </summary>
 		public EntryNoUnderlineEffect() 
 			: base($"{ EffectGroupName.ResolutionGroupName}.{nameof(EntryNoUnderlineEffect)}")
 		{

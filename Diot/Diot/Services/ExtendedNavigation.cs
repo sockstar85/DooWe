@@ -11,13 +11,17 @@ namespace Diot.Services
 
         private readonly INavigationService _navigationService;
 
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        #region Constructors
+		#region Constructors
 
-        public ExtendedNavigation(INavigationService navigationService)
+		/// <summary>
+		///		Initializes a new instance of the <see cref="ExtendedNavigation"/> class.
+		/// </summary>
+		/// <param name="navigationService">The navigation service.</param>
+		public ExtendedNavigation(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
@@ -30,7 +34,6 @@ namespace Diot.Services
         /// <param name="parameters">The parameters.</param>
         /// <param name="animated">if set to <c>true</c> [animated].</param>
         /// <param name="useModal">if set to <c>true</c> [use modal].</param>
-        /// <returns></returns>
         public async Task<INavigationResult> GoBackAsync(INavigationParameters parameters = null, bool animated = true,
             bool useModal = false)
         {
@@ -44,7 +47,6 @@ namespace Diot.Services
         /// <param name="parameters">The parameters.</param>
         /// <param name="useModal">if set to <c>true</c> [use modal].</param>
         /// <param name="animated">if set to <c>true</c> [animated].</param>
-        /// <returns></returns>
         public async Task<INavigationResult> NavigateAsync(Uri uri, INavigationParameters parameters = null,
             bool useModal = false, bool animated = true)
         {
@@ -58,7 +60,6 @@ namespace Diot.Services
         /// <param name="parameters">The parameters.</param>
         /// <param name="useModal">if set to <c>true</c> [use modal].</param>
         /// <param name="animated">if set to <c>true</c> [animated].</param>
-        /// <returns></returns>
         public async Task<INavigationResult> NavigateAsync(string name, INavigationParameters parameters = null,
             bool useModal = false, bool animated = true)
         {

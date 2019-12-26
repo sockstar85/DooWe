@@ -70,11 +70,11 @@ namespace Diot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add New.
+        ///   Looks up a localized string similar to Add New Movie.
         /// </summary>
-        internal static string AddNew {
+        internal static string AddNewPageTitle {
             get {
-                return ResourceManager.GetString("AddNew", resourceCulture);
+                return ResourceManager.GetString("AddNewPageTitle", resourceCulture);
             }
         }
         
@@ -165,6 +165,15 @@ namespace Diot.Resources {
         internal static string EnterCustomFormat {
             get {
                 return ResourceManager.GetString("EnterCustomFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter by title....
+        /// </summary>
+        internal static string FilterByTitle {
+            get {
+                return ResourceManager.GetString("FilterByTitle", resourceCulture);
             }
         }
         

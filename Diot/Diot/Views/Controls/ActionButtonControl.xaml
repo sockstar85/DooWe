@@ -10,7 +10,13 @@
 	  WidthRequest="65"
 	  HeightRequest="65"
 	  x:Name="OuterContainer">
-	
+
+	<BoxView x:Name="CircularBackgroundShadow"
+			 BackgroundColor="#77111111"
+			 CornerRadius="32.5"
+			 TranslationX="3"
+			 TranslationY="3"/>
+
 	<BoxView x:Name="CircularBackground"
 			 BackgroundColor="{DynamicResource SecondaryColor}"
 			 CornerRadius="32.5"/>

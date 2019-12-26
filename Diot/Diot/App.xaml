@@ -32,6 +32,7 @@
             <Color x:Key="PrimaryTextDark">#121212</Color>
 			<Color x:Key="SearchPlaceholderTextColor">#666666</Color>
 			<Color x:Key="SearchTextColor">#BABABA</Color>
+			<Color x:Key="TextShadowColor">#55222222</Color>
             <!--#endregion-->
 			
 			<!--#region Search Bar styles-->
@@ -43,8 +44,9 @@
             <!--#region Selected icon-->
             <Color x:Key="SelectedIconColor">#268021</Color>
             <Color x:Key="SelectedIconAccentColor">White</Color>
-
             <!--#endregion-->
+
+			<Color x:Key="LoadingPageBackgroundColor">#DDFFFFFF</Color>
 
             <!--#endregion-->
 

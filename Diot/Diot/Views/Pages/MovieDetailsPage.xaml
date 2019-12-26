@@ -14,6 +14,7 @@
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+			<x:Double x:Key="ShadowDistance">1.75</x:Double>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	
@@ -68,6 +69,29 @@
 				<!--TODO: Move this into a control-->
 				<Grid Padding="15">
 
+					<!--#region Back Arrow-->
+					<controls:IconLabel TextColor="{DynamicResource TextShadowColor}"
+										TranslationX="{StaticResource ShadowDistance}"
+										TranslationY="{StaticResource ShadowDistance}">
+						<controls:IconLabel.IconCode>
+							<OnPlatform x:TypeArguments="x:String">
+								<On Platform="iOS" Value="{x:Static helpers:AppConsts+IconFontCodes.ico_backArrow_iOS}"/>
+								<On Platform="Android" Value="{x:Static helpers:AppConsts+IconFontCodes.ico_backArrow}"/>
+							</OnPlatform>
+						</controls:IconLabel.IconCode>
+						<controls:IconLabel.FontSize>
+							<OnPlatform x:TypeArguments="x:Double">
+								<On Platform="iOS" Value="40"/>
+								<On Platform="Android" Value="30"/>
+							</OnPlatform>
+						</controls:IconLabel.FontSize>
+
+						<controls:IconLabel.GestureRecognizers>
+							<TapGestureRecognizer Command="{Binding NavigateBackCommand}"/>
+						</controls:IconLabel.GestureRecognizers>
+
+					</controls:IconLabel>
+
 					<controls:IconLabel TextColor="White">
 						<controls:IconLabel.IconCode>
 							<OnPlatform x:TypeArguments="x:String">
@@ -82,30 +106,65 @@
 							</OnPlatform>
 					</controls:IconLabel.FontSize>
 
-								<controls:IconLabel.GestureRecognizers>
+						<controls:IconLabel.GestureRecognizers>
 							<TapGestureRecognizer Command="{Binding NavigateBackCommand}"/>
 						</controls:IconLabel.GestureRecognizers>
 					
 					</controls:IconLabel>
-				
+					<!--#endregion-->
+									
 					<StackLayout Orientation="Horizontal" 
 								 HorizontalOptions="End"
 								 Spacing="15">
-						<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_edit}"
-											FontSize="25" 
-											TextColor="White">
-							<controls:IconLabel.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding EditMovieCommand}"/>
-							</controls:IconLabel.GestureRecognizers>
-						</controls:IconLabel>
+						
+						<!--#region Edit-->
 
-						<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_trash}" 
+						<Grid>
+							<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_edit}"
+											FontSize="25" 
+											TextColor="{DynamicResource TextShadowColor}"
+											TranslationX="{StaticResource ShadowDistance}"
+											TranslationY="{StaticResource ShadowDistance}">
+								<controls:IconLabel.GestureRecognizers>
+									<TapGestureRecognizer Command="{Binding EditMovieCommand}"/>
+								</controls:IconLabel.GestureRecognizers>
+							</controls:IconLabel>
+
+							<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_edit}"
 											FontSize="25" 
 											TextColor="White">
-							<controls:IconLabel.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding DeleteMovieCommand}"/> 
-							</controls:IconLabel.GestureRecognizers>
-						</controls:IconLabel>
+								<controls:IconLabel.GestureRecognizers>
+									<TapGestureRecognizer Command="{Binding EditMovieCommand}"/>
+								</controls:IconLabel.GestureRecognizers>
+							</controls:IconLabel>
+						</Grid>						
+						
+						<!--#endregion-->
+
+						<!--#region Delete-->
+
+						<Grid>
+							<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_trash}" 
+											FontSize="25" 
+											TextColor="{DynamicResource TextShadowColor}"
+											TranslationX="{StaticResource ShadowDistance}"
+											TranslationY="{StaticResource ShadowDistance}">
+								<controls:IconLabel.GestureRecognizers>
+									<TapGestureRecognizer Command="{Binding DeleteMovieCommand}"/>
+								</controls:IconLabel.GestureRecognizers>
+							</controls:IconLabel>
+
+							<controls:IconLabel IconCode="{x:Static helpers:AppConsts+IconFontCodes.ico_trash}" 
+											FontSize="25" 
+											TextColor="White">
+								<controls:IconLabel.GestureRecognizers>
+									<TapGestureRecognizer Command="{Binding DeleteMovieCommand}"/>
+								</controls:IconLabel.GestureRecognizers>
+							</controls:IconLabel>
+						</Grid>						
+						
+						<!--#endregion-->
+						
 					</StackLayout>
 				
 				</Grid>

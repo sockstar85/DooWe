@@ -7,38 +7,30 @@
      xmlns:extensions="clr-namespace:Diot.Views.Extensions;assembly=Diot"
     xmlns:converters="clr-namespace:Diot.Views.Converters"
     xmlns:controls="clr-namespace:Diot.Views.Controls"
-	xmlns:helpers="clr-namespace:Diot.Helpers"
     x:Class="Diot.Views.Pages.AddNewPage"
     x:Name="ThisPage"
-    Title="{extensions:Translate AddNew}">
+    Title="{extensions:Translate AddNewPageTitle}">
 
     <ContentPage.Resources>
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
     </ContentPage.Resources>
 
+	<ContentPage.ToolbarItems>
+		<ToolbarItem IconImageSource="{Binding SaveItemsImageSource}"
+					 Command="{Binding AddSelectedMoviesCommand}"/>
+
+	</ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         
-        <Grid>
+        <Grid Margin="-10"
+			  RowSpacing="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <controls:BorderedEntry Text="{Binding MovieTitle, Mode=TwoWay}"
-                       Placeholder="{extensions:Translate MovieTitle}"
-                       Grid.Column="0"/>
-				<controls:IconButton Text="{x:Static helpers:AppConsts+IconFontCodes.ico_search}"
-                        Command="{Binding SearchMovieCommand}"
-                        Grid.Column="1"/>
-            </Grid>
-
-            <ScrollView Grid.Row="1">
+            <ScrollView Grid.Row="0">
                 <controls:ExtendedFlexLayout 
                     Direction="Row" 
                     Wrap="Wrap"
@@ -57,9 +49,12 @@
                 </controls:ExtendedFlexLayout>
             </ScrollView>
 
-            <Button Text="{extensions:Translate AddSelectedMovies}"
-                    Command="{Binding AddSelectedMoviesCommand}"
-                    Grid.Row="2"/>
+			<controls:SearchControl
+				Placeholder="{extensions:Translate SearchByTitle}"
+				Text="{Binding MovieTitle}"
+				Grid.Row="1"
+				ButtonCommand="{Binding SearchMovieCommand}"/>
+			
         </Grid>
     </ContentPage.Content>
 </pages:BasePage>
