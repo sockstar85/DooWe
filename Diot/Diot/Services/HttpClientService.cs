@@ -23,7 +23,13 @@ namespace Diot.Services
         /// </summary>
         public HttpClientService()
         {
-			client = new HttpClient();// {MaxResponseContentBufferSize = 256000};
+            //Bypasses the SSL connection. TODO: handle this better.
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
+
+            client = new HttpClient(clientHandler);// {MaxResponseContentBufferSize = 256000};
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
