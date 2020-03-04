@@ -1,1 +1,1 @@
-"# DoWeGotThat" 
+This is an application to track the movies that you own. It allows you to search a movie database and select which formats you have the movie on. There's nothing worse than buying a movie you already own because, let's be real, you're not going to go and return it. 
