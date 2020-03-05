@@ -208,7 +208,7 @@ namespace Diot.ViewModels
             }
             else
             {
-                await DialogService.DisplayAlertAsync(
+                await PageDialogService.DisplayAlertAsync(
                     _resourceManager.GetString("NoSearchResults"),
                     string.Format(_resourceManager.GetString("NoSearchResultsMessage"), MovieTitle),
                     _resourceManager.GetString("Ok"));
