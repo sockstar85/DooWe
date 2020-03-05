@@ -193,12 +193,14 @@ namespace Diot.ViewModels
             {
                 results = await MoviesDbHelper.SearchMovieAsync(_dataService, MovieTitle);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await _dialogService.DisplayAlertAsync(
                     _resourceManager.GetString("GenericErrorTitle"),
                     _resourceManager.GetString("GenericErrorMessage"),
                     _resourceManager.GetString("Ok"));
+
+                await LoadingPageService.HideLoadingPageAsync();
                 return;
             }
 
