@@ -16,7 +16,7 @@ namespace Diot.Interface.ViewModels
 		/// <summary>
 		///     Gets the dialog service.
 		/// </summary>
-		IPageDialogService DialogService { get; }
+		IPageDialogService PageDialogService { get; }
 
 		/// <summary>
 		///     Gets or sets the title.

@@ -268,7 +268,7 @@ namespace Diot.ViewModels
                 return;
             }
 
-            var confirmDelete = await DialogService.DisplayAlertAsync(
+            var confirmDelete = await PageDialogService.DisplayAlertAsync(
 				_resourceManager.GetString("DeleteConfirmationTitle"),
                 string.Format(_resourceManager.GetString("DeleteConfirmationMessage"), SelectedMovie.Title),
                 _resourceManager.GetString("Yes"), 

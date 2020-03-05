@@ -28,7 +28,7 @@ namespace Diot.ViewModels
 		/// <summary>
 		///		Gets the dialog service.
 		/// </summary>
-		public IPageDialogService DialogService { get; }
+		public IPageDialogService PageDialogService { get; }
 
 		/// <summary>
 		///		Gets or sets the title.
@@ -81,7 +81,7 @@ namespace Diot.ViewModels
 		{
 			LoadingPageService = loadingPageService ?? throw new ArgumentNullException(nameof(loadingPageService));
 			NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-			DialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
+			PageDialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
 			ConnectivityManager = connectivityManager ?? throw new ArgumentNullException(nameof(connectivityManager));
 
 			_hasNetworkConnection = ConnectivityManager.HasNetworkConnection;

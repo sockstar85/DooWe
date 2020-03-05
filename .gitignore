@@ -18,3 +18,6 @@
 /obj/Debug/90
 /Diot/Diot.iOS/obj/Diot.iOS.csproj.nuget.dgspec.json
 /Diot.ViewModels.UnitTests/bin/Debug/netcoreapp3.0
+/Diot.ViewModels.UnitTests/obj/Debug/netcoreapp3.0
+/Diot.ViewModels.UnitTests/obj
+/Diot.ViewModels.UnitTests/bin/Debug/netcoreapp3.0

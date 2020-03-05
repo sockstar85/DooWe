@@ -24,7 +24,7 @@ namespace Diot.ViewModels
 		private string _titleSearch;
 		private List<MovieDbModel> _sortedMoviesList = new List<MovieDbModel>();
 		private readonly IDatabaseService _databaseService;
-        private readonly IPageDialogService _dialogService;
+        private readonly IPageDialogService _pageDialogService;
         private readonly IResourceManager _resourceManager;
 		private readonly IHttpClientService _dataService;
 
@@ -93,20 +93,20 @@ namespace Diot.ViewModels
 		///     Initializes a new instance of the <see cref="MainPageViewModel"/> class.
 		/// </summary>
 		/// <param name="navigationService">The navigation service.</param>
-		/// <param name="dialogService">The dialog service.</param>
+		/// <param name="pageDialogService">The dialog service.</param>
 		/// <param name="loadingPageService">The loading page service.</param>
 		public MainPageViewModel(
             IExtendedNavigation navigationService, 
-            IPageDialogService dialogService, 
+            IPageDialogService pageDialogService, 
             ILoadingPageService loadingPageService,
             IDatabaseService databaseService,
             IResourceManager resourceManager,
 			IHttpClientService dataService,
 			IConnectivityManager connectivityManager)
-            : base(navigationService, dialogService, loadingPageService, connectivityManager)
+            : base(navigationService, pageDialogService, loadingPageService, connectivityManager)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _pageDialogService = pageDialogService ?? throw new ArgumentNullException(nameof(pageDialogService));
             _resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
 			_dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
@@ -120,7 +120,7 @@ namespace Diot.ViewModels
         {
             if (!HasNetworkConnection)
             {
-                await _dialogService.DisplayAlertAsync(
+                await _pageDialogService.DisplayAlertAsync(
                     _resourceManager.GetString("NoNetworkConnection"), 
                     _resourceManager.GetString("NoNetworkConnectionMessage"),
                     _resourceManager.GetString("Ok"));
@@ -150,7 +150,7 @@ namespace Diot.ViewModels
 
 			await LoadingPageService.HideLoadingPageAsync();
 
-            await _dialogService.DisplayAlertAsync(
+            await _pageDialogService.DisplayAlertAsync(
                 _resourceManager.GetString("NavigationError"),
                 _resourceManager.GetString("NavigationErrorMessage"),
                 _resourceManager.GetString("Ok"));
@@ -236,7 +236,7 @@ namespace Diot.ViewModels
 			}
 			catch (Exception)
 			{
-				await _dialogService.DisplayAlertAsync(
+				await _pageDialogService.DisplayAlertAsync(
 					_resourceManager.GetString("GenericErrorTitle"),
 					_resourceManager.GetString("GenericErrorMessage"),
 					_resourceManager.GetString("Ok"));
