@@ -262,6 +262,17 @@ namespace Diot.ViewModels.UnitTests
 			#endregion
 		}
 
+		//TODO: Navigate to add new page without network connection
+		//TODO: Navigate to add new page closes loading page
+		//TODO: Navigate to add new page handles failed navigation correctly
+
+		//TODO: Navigate to movie details page closes loading page
+		//TODO: Navigate to movie details page handles failed navigation correctly
+
+		//TODO: Cover images get set to default icon if there isn't an image stream
+
+		//TODO: InitializeAsync() initializes correctly
+
 		#endregion
 	}
 }
