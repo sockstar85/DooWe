@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Diot.Helpers;
 using Diot.Interface;
 using Diot.Interface.Manager;
 using Diot.Models;
 using Moq;
-using Newtonsoft.Json;
 using Prism.Navigation;
 using Prism.Services;
 using Xunit;
@@ -17,9 +17,9 @@ namespace Diot.ViewModels.UnitTests
 	{
 		#region Fields
 
+		private readonly Mock<IExtendedNavigation> _navigationService = new Mock<IExtendedNavigation>();
 		public static IEnumerable<object[]> ConstructorArguments = getConstructorArguments();
-
-		private List<MovieDbModel> _moviesList = new List<MovieDbModel>
+		private readonly List<MovieDbModel> _moviesList = new List<MovieDbModel>
 		{
 			new MovieDbModel
 			{
@@ -199,12 +199,106 @@ namespace Diot.ViewModels.UnitTests
 		}
 
 		[Fact]
-		public void NavigateToMovieDetailsCommand_NavigatesToNewPage()
+		public void NavigateToAddNewPageCommand_HandlesNoNetworkConnection()
+		{
+			#region Arrange
+
+			_navigationService.Setup(x => x.NavigateAsync(It.IsAny<string>(), It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()))
+				.ReturnsAsync(
+				new NavigationResult
+				{
+					Success = true
+				});
+
+			var pageDialogService = new Mock<IPageDialogService>();			
+
+			var viewModel = createViewModel(_navigationService, pageDialogService: pageDialogService);
+
+			#endregion
+
+			#region Act
+
+			viewModel.HasNetworkConnection = false;
+			viewModel.NavigateToAddNewPageCommand.Execute(null);
+
+			#endregion
+
+			#region Assert
+
+			_navigationService.Verify(x => x.NavigateAsync(PageNames.AddNewPage, It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never);
+			pageDialogService.Verify(x => x.DisplayAlertAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
+			#endregion
+		}
+
+		[Fact]
+		public void NavigateToNewPageCommand_ClosesLoadingPage()
 		{
 			#region Arrange
 
 			var navigationService = new Mock<IExtendedNavigation>();
 			navigationService = new Mock<IExtendedNavigation>();
+			navigationService.Setup(x => x.NavigateAsync(It.IsAny<string>(), It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()))
+				.ReturnsAsync(
+				new NavigationResult
+				{
+					Success = true
+				});
+
+			var loadingPageService = new Mock<ILoadingPageService>();
+
+			var viewModel = createViewModel(navigationService, loadingPageService: loadingPageService);
+
+			#endregion
+
+			#region Act
+
+			viewModel.NavigateToAddNewPageCommand.Execute(null);
+
+			#endregion
+
+			#region Assert
+
+			loadingPageService.Verify(x => x.HideLoadingPageAsync(It.IsAny<int>(), It.IsAny<string>()), Times.AtLeastOnce);
+
+			#endregion
+		}
+
+		[Fact]
+		public void NavigateToNewPageCommand_HandlesFailedNavigation()
+		{
+			#region Arrange
+
+			var navigationService = new Mock<IExtendedNavigation>();
+			navigationService.Setup(x => x.NavigateAsync(It.IsAny<string>(), It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()))
+				.ReturnsAsync(new NavigationResult { Exception = new Exception("Mock exception"), Success = false });
+
+			var pageDialogService = new Mock<IPageDialogService>();
+
+			var viewModel = createViewModel(navigationService, pageDialogService: pageDialogService);
+
+			#endregion
+
+			#region Act
+
+			viewModel.NavigateToAddNewPageCommand.Execute(null);
+
+			#endregion
+
+			#region Assert
+
+			navigationService.Verify(x => x.NavigateAsync(PageNames.AddNewPage, It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once);
+			pageDialogService.Verify(x => x.DisplayAlertAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
+			#endregion
+		}
+
+		[Fact]
+		public void NavigateToMovieDetailsCommand_NavigatesToNewPage()
+		{
+			#region Arrange
+
+			var navigationService = new Mock<IExtendedNavigation>();
 			navigationService.Setup(x => x.NavigateAsync(It.IsAny<string>(), It.IsAny<INavigationParameters>(), It.IsAny<bool>(), It.IsAny<bool>()))
 				.ReturnsAsync(
 				new NavigationResult
@@ -262,16 +356,119 @@ namespace Diot.ViewModels.UnitTests
 			#endregion
 		}
 
-		//TODO: Navigate to add new page without network connection
-		//TODO: Navigate to add new page closes loading page
-		//TODO: Navigate to add new page handles failed navigation correctly
+		[Fact]
+		public void NavigateToMovieDetailsCommand_ClosesLoadingPage()
+		{
+			#region Arrange
 
-		//TODO: Navigate to movie details page closes loading page
-		//TODO: Navigate to movie details page handles failed navigation correctly
+			var loadingPageService = new Mock<ILoadingPageService>();
+			var viewModel = createViewModel(loadingPageService: loadingPageService);
+
+			#endregion
+
+			#region Act
+
+			viewModel.NavigateToAddNewPageCommand.Execute(new MovieCreditsModel());
+
+			#endregion
+
+			#region Assert
+
+			loadingPageService.Verify(x => x.HideLoadingPageAsync(It.IsAny<int>(), It.IsAny<string>()), Times.AtLeastOnce);
+
+			#endregion
+		}
+
+		[Fact]
+		public void NavigateToMovieDetailsPage_HandlesFailedNavigationCorrectly()
+		{
+			#region Arrange
+
+			var pageDialogService = new Mock<IPageDialogService>();
+			var loadingPageService = new Mock<ILoadingPageService>();
+			var navigationService = new Mock<IExtendedNavigation>();
+			navigationService.Setup(x => x.NavigateAsync(PageNames.AddNewPage, It.IsAny<INavigationParameters>(),
+					It.IsAny<bool>(), It.IsAny<bool>()))
+				.ReturnsAsync(new NavigationResult
+				{
+					Success = false,
+					Exception = new Exception("Test exception")
+				});
+
+			var viewModel = createViewModel(
+				pageDialogService: pageDialogService, 
+				navigationService: navigationService,
+				loadingPageService: loadingPageService);
+
+			#endregion
+
+			#region Act
+
+			viewModel.NavigateToAddNewPageCommand.Execute(new MovieDbModel());
+
+			#endregion
+
+			#region Assert
+
+			loadingPageService.Verify(x => x.HideLoadingPageAsync(It.IsAny<int>(), It.IsAny<string>()), Times.AtLeastOnce);
+			pageDialogService.Verify(x => x.DisplayAlertAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
+			#endregion
+		}
+
+		[Fact]
+		public async Task InitializeAsync_InitializesCorrectly()
+		{
+			#region Arrange
+
+			var expectedMovies = getMovieList();
+			var databaseService = new Mock<IDatabaseService>();
+
+			databaseService.Setup(x => x.GetAllMovies()).Returns(expectedMovies);
+
+			var viewModel = createViewModel(databaseService: databaseService);
+
+			#endregion
+
+			#region Act
+
+			await viewModel.InitializeAsync(new NavigationParameters());
+
+			#endregion
+
+			#region Assert
+
+			Assert.Equal(expectedMovies.Count, viewModel.MoviesList.Count);
+			Assert.Equal(expectedMovies, viewModel.MoviesList);
+			Assert.Equal(expectedMovies.Count, viewModel.SortedMoviesList.Count);
+
+			#endregion
+		}
+		
+		private IList<MovieDbModel> getMovieList()
+		{
+			return new List<MovieDbModel>
+			{
+				new MovieDbModel
+				{
+					Id = 1,
+					Title = "Movie1"
+				},
+				new MovieDbModel
+				{
+					Id = 2,
+					Title = "Movie2"
+				},
+				new MovieDbModel
+				{
+					Id = 3,
+					Title = "Movie3"
+				}
+			};
+		}
+
 
 		//TODO: Cover images get set to default icon if there isn't an image stream
-
-		//TODO: InitializeAsync() initializes correctly
 
 		#endregion
 	}

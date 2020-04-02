@@ -31,12 +31,12 @@ namespace Diot.Interface.ViewModels
         /// <summary>
         ///     Gets or sets the movies list.
         /// </summary>
-        List<MovieDbModel> MoviesList { get; set; }
+        IList<MovieDbModel> MoviesList { get; set; }
 
 		/// <summary>
 		///     Gets or sets the sorted movies list.
 		/// </summary>
-		List<MovieDbModel> SortedMoviesList { get; set; }
+		IList<MovieDbModel> SortedMoviesList { get; set; }
 
 		/// <summary>
 		///     Gets or sets a value indicating whether this instance has no movies.

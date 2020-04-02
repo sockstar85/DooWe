@@ -19,10 +19,10 @@ namespace Diot.ViewModels
     {
         #region Fields
 
-        private List<MovieDbModel> _moviesList = new List<MovieDbModel>();
+        private IList<MovieDbModel> _moviesList = new List<MovieDbModel>();
         private bool _hasNoMovies;
 		private string _titleSearch;
-		private List<MovieDbModel> _sortedMoviesList = new List<MovieDbModel>();
+		private IList<MovieDbModel> _sortedMoviesList = new List<MovieDbModel>();
 		private readonly IDatabaseService _databaseService;
         private readonly IPageDialogService _pageDialogService;
         private readonly IResourceManager _resourceManager;
@@ -50,7 +50,7 @@ namespace Diot.ViewModels
 		/// <summary>
 		///     Gets or sets the movies list.
 		/// </summary>
-		public List<MovieDbModel> MoviesList
+		public IList<MovieDbModel> MoviesList
         {
             get => _moviesList;
             set => SetProperty(ref _moviesList, value);
@@ -59,7 +59,7 @@ namespace Diot.ViewModels
 		/// <summary>
 		///     Gets or sets the sorted movies list.
 		/// </summary>
-		public List<MovieDbModel> SortedMoviesList
+		public IList<MovieDbModel> SortedMoviesList
 		{
 			get => _sortedMoviesList;
 			set => SetProperty(ref _sortedMoviesList, value, updateNoMoviesInstructionVisibility);
@@ -95,6 +95,10 @@ namespace Diot.ViewModels
 		/// <param name="navigationService">The navigation service.</param>
 		/// <param name="pageDialogService">The dialog service.</param>
 		/// <param name="loadingPageService">The loading page service.</param>
+		/// <param name="databaseService">The database service.</param>
+		/// <param name="resourceManager">The resource manager.</param>
+		/// <param name="dataService">The data service.</param>
+		/// <param name="connectivityManager">The connectivity manager.</param>
 		public MainPageViewModel(
             IExtendedNavigation navigationService, 
             IPageDialogService pageDialogService, 
@@ -172,9 +176,6 @@ namespace Diot.ViewModels
             {
                 { NavParamKeys.SelectedMovie, selectedMovie }
             };
-
-            //reset the selected movie
-            selectedMovie = null;
 
             var navigationResult = await NavigationService.NavigateAsync(PageNames.MovieDetailsPage, navigationParameters);
 

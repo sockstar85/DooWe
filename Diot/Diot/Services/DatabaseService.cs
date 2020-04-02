@@ -47,11 +47,11 @@ namespace Diot.Services
         /// <summary>
         ///     Gets all movies and returns sorted list.
         /// </summary>
-        public List<MovieDbModel> GetAllMovies()
+        public IList<MovieDbModel> GetAllMovies()
         {
             lock (locker)
             {
-                return conn?.Table<MovieDbModel>()?.ToList()?.OrderBy(x => x.Title)?.ToList();
+                return conn?.Table<MovieDbModel>()?.ToList()?.OrderBy(x => x.Title).ToList();
             }
         }
 
@@ -77,7 +77,7 @@ namespace Diot.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error : " + ex.Message);
+                    Console.WriteLine("Error: " + ex.Message);
                 }
 
                 if (!movieExists)
@@ -90,11 +90,11 @@ namespace Diot.Services
             }
         }
 
-        /// <summary>
-        ///     Saves the movie.
-        /// </summary>
-        /// <param name="movie">The movie.</param>
-        public int SaveMovie(ISelectableMovieViewModel viewModel)
+		/// <summary>
+		///     Saves the movie.
+		/// </summary>
+		/// <param name="viewModel">The movie.</param>
+		public int SaveMovie(ISelectableMovieViewModel viewModel)
         {
             return SaveMovie(viewModel?.Movie);
         }
@@ -128,7 +128,7 @@ namespace Diot.Services
         /// <summary>
         ///     Deletes all movies.
         /// </summary>
-        public List<MovieDbModel> DeleteAllMovies()
+        public IList<MovieDbModel> DeleteAllMovies()
         {
             lock (locker)
             {
