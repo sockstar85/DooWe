@@ -11,7 +11,7 @@ namespace Diot.Interface
         /// <summary>
         ///     Gets all movies.
         /// </summary>
-        List<MovieDbModel> GetAllMovies();
+        IList<MovieDbModel> GetAllMovies();
 
         /// <summary>
         ///     Saves the movie.
@@ -33,7 +33,7 @@ namespace Diot.Interface
         /// <summary>
         ///     Deletes all movies.
         /// </summary>
-        List<MovieDbModel> DeleteAllMovies();
+        IList<MovieDbModel> DeleteAllMovies();
 
         #endregion
     }
