@@ -13,7 +13,7 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Diot.Droid
 {
-    [Activity(Label = "DoWee", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme.Base", MainLauncher = true,
+    [Activity(Label = "DoWee", Icon = "@mipmap/logo", Theme = "@style/MainTheme.Base", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsAppCompatActivity
     {
